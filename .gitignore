@@ -136,5 +136,5 @@ dist
 .pnp.*
 
 # inkarus
-db/database.sqlite
-sessions.sqlite
+db/*.sqlite
+*.sqlite
