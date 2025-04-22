@@ -1,0 +1,22 @@
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Drafts</h2>
+
+  <form action="/drafts/<%= projectId %>" method="POST" class="d-flex">
+    <input type="text" name="title" class="form-control me-2" placeholder="New draft title..." required>
+    <button type="submit" class="btn btn-success">+ Add</button>
+  </form>
+</div>
+
+<% if (drafts.length === 0) { %>
+  <p>No drafts found.</p>
+<% } else { %>
+  <div class="list-group">
+    <% drafts.forEach(draft => { %>
+      <a href="/drafts/edit/<%= draft.id %>" class="list-group-item list-group-item-action bg-dark border-secondary text-light">
+        <%= draft.title %>
+        <div class="small text-muted">Last saved: <%= draft.last_saved %></div>
+      </a>
+    <% }) %>
+  </div>
+<% } %>

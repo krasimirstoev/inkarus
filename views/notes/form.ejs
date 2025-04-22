@@ -1,0 +1,18 @@
+<div class="container py-5">
+  <h2><%= note ? 'Edit Note' : 'New Note' %></h2>
+
+  <form method="POST" action="/notes/<%= projectId %><%= note ? '/' + note.id : '' %>">
+    <div class="mb-3">
+      <label for="note-title" class="form-label">Title</label>
+      <input type="text" class="form-control" id="note-title" name="title" value="<%= note?.title || '' %>" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="note-content" class="form-label">Content</label>
+      <textarea class="form-control" id="note-content" name="content" rows="5" required><%= note?.content || '' %></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">💾 Save Note</button>
+    <a href="/notes/<%= projectId %>" class="btn btn-secondary ms-2">← Back to List</a>
+  </form>
+</div>

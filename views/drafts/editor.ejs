@@ -1,0 +1,64 @@
+<div class="writing-layout">
+  <!-- Sidebar --> 
+  <aside class="sidebar">
+    <button class="sidebar-item active">Projects</button>
+    <button class="sidebar-item" id="toggle-notes">Notes</button>
+    <button class="sidebar-item">Characters</button>
+    <button class="sidebar-item">Outline</button>
+  </aside>
+
+  <!-- Main writing area --> 
+  <section class="editor-area">
+    <!-- Top bar --> 
+    <div class="d-flex justify-content-between align-items-center mb-3 editor-topbar">
+      <h2><%= draft.title %></h2>
+      <div class="d-flex align-items-center gap-3 flex-wrap" id="status-bar">
+        <small>
+          💾 Last autosave: <span id="last-saved">Never</span> |
+          🧠 Word count: <span id="word-count">0</span>
+        </small>
+        <button id="manual-save" class="btn btn-sm btn-outline-light" type="button">💾 Save Now</button>
+        <button id="back-to-dashboard" class="btn btn-sm btn-secondary" type="button">← Back</button>
+        <button id="toggle-fullscreen" class="btn btn-sm btn-outline-secondary" type="button">⛶ Full Screen</button>
+        <button id="toggle-reading" class="btn btn-sm btn-outline-secondary" type="button">📖 Reading Mode</button>
+        <button id="exit-reading" class="btn btn-sm btn-danger d-none" type="button">✕ Exit Reading</button>
+        <button id="exit-fullscreen" class="btn btn-sm btn-danger d-none" type="button">✕ Exit Fullscreen</button>
+      </div>
+    </div>
+
+    <!-- Quill Editor --> 
+    <form id="editor-form" data-draft-id="<%= draft.id %>" data-project-id="<%= draft.project_id %>">
+      <div id="quill-editor"><%- draft.content %></div>
+    </form>
+
+    <!-- Notes Panel -->
+    <div id="notes-panel" class="side-panel d-none">
+      <div class="panel-header">
+        <h5>📝 Project Notes</h5>
+        <button id="close-notes" class="btn btn-sm btn-outline-light">✕</button>
+      </div>
+      <div class="panel-body">
+        <form id="note-form" class="mb-3" data-project-id="<%= draft.project_id %>">
+          <div class="mb-2">
+            <label for="note-title" class="form-label">Title</label>
+            <input type="text" id="note-title" class="form-control" required />
+          </div>
+          <div class="mb-2">
+            <label for="note-content" class="form-label">Content</label>
+            <textarea id="note-content" class="form-control" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-sm btn-outline-success">➕ Add Note</button>
+        </form>
+
+        <div id="note-list" class="mt-4">
+          <p class="text-muted small">Your notes will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Scripts --> 
+<script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script type="module" src="/js/quill-init.js"></script>

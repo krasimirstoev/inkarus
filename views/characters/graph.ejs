@@ -1,0 +1,72 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Character Relationship Graph</h2>
+    <a href="/characters/<%= projectId %>" class="btn btn-outline-light">← Back to Characters</a>
+  </div>
+
+  <div id="graph" style="height: 600px; background: #1e1e1e;" class="rounded shadow"></div>
+</div>
+
+<!-- vis-network -->
+<link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" />
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch(`/characters/<%= projectId %>/relationships/graph`);
+      const data = await res.json();
+
+      const container = document.getElementById('graph');
+      const options = {
+        nodes: {
+          shape: 'dot',
+          size: 18,
+          font: {
+            color: '#ffffff'
+          },
+          color: {
+            background: '#4b8df8',
+            border: '#ffffff'
+          }
+        },
+        edges: {
+          arrows: {
+            to: { enabled: true, scaleFactor: 1 }
+          },
+          color: '#888',
+          font: {
+            color: '#ccc',
+            size: 12,
+            align: 'top'
+          },
+          smooth: {
+            type: 'cubicBezier',
+            forceDirection: 'horizontal',
+            roundness: 0.4
+          }
+        },
+        layout: {
+          improvedLayout: true
+        },
+        physics: {
+          enabled: true,
+          stabilization: {
+            iterations: 200
+          }
+        },
+        interaction: {
+          hover: true
+        }
+      };
+
+      const network = new vis.Network(container, {
+        nodes: new vis.DataSet(data.nodes),
+        edges: new vis.DataSet(data.edges)
+      }, options);
+    } catch (err) {
+      console.error('❌ Failed to load graph:', err);
+      alert('Failed to load graph data');
+    }
+  });
+</script>

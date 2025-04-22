@@ -1,0 +1,109 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Character Relationships</h2>
+    <div class="btn-group">
+      <a href="/characters/<%= projectId %>" class="btn btn-sm btn-outline-secondary">← Back to Characters</a>
+      <a href="/characters/<%= projectId %>/relationships/graph-view" class="btn btn-sm btn-outline-info ms-2">📊 Graph View</a>
+    </div>
+  </div>
+
+  <% if (error === 'same') { %>
+    <div class="alert alert-warning">
+      ⚠ A character cannot be related to themselves. Please choose two different characters.
+    </div>
+  <% } %>
+
+  <form action="/characters/<%= projectId %>/relationships" method="POST" class="mb-4 row g-3">
+    <div class="col-md-4">
+      <label for="character_id" class="form-label">Character</label>
+      <select name="character_id" id="character_id" class="form-select" required>
+        <% characters.forEach(char => { %>
+          <option value="<%= char.id %>"><%= char.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label for="related_character_id" class="form-label">Related Character</label>
+      <select name="related_character_id" id="related_character_id" class="form-select" required>
+        <% characters.forEach(char => { %>
+          <option value="<%= char.id %>"><%= char.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="relation" class="form-label">Relation</label>
+      <input type="text" name="relation" id="relation" class="form-control" placeholder="e.g. sibling, friend" required>
+    </div>
+
+    <div class="col-md-1 d-flex align-items-end">
+      <button type="submit" class="btn btn-success w-100">➕</button>
+    </div>
+  </form>
+
+  <% if (relationships.length === 0) { %>
+    <p class="text-muted">No relationships defined yet.</p>
+  <% } else { %>
+    <div class="list-group">
+      <% 
+        let currentGroup = null;
+        relationships.forEach(r => {
+          if (currentGroup !== r.character_name) {
+            currentGroup = r.character_name;
+      %>
+        <div class="list-group-item bg-secondary text-white fw-bold">
+          <%= currentGroup %>
+        </div>
+      <% } %>
+        <div class="list-group-item d-flex justify-content-between align-items-center bg-dark text-light ps-4">
+          <div>
+            <em><%= r.relation %></em> of <strong><%= r.related_name %></strong>
+          </div>
+          <div class="btn-group btn-group-sm">
+            <button
+              type="button"
+              class="btn btn-outline-warning btn-edit-relation"
+              data-id="<%= r.id %>"
+              data-project="<%= projectId %>"
+              data-relation="<%= r.relation %>"
+              title="Edit Relation"
+            >✏</button>
+
+            <form action="/characters/<%= projectId %>/relationships/<%= r.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this relationship?')" class="ms-2">
+              <button type="submit" class="btn btn-outline-danger">🗑</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<!-- ✏ Edit Relation Modal -->
+<div class="modal fade" id="editRelationModal" tabindex="-1" aria-labelledby="editRelationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editRelationModalLabel">Edit Relationship</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" id="editRelationForm">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="editRelationInput" class="form-label">Relation</label>
+            <input type="text" class="form-control" id="editRelationInput" name="relation" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/js/pages/character-relationships.js"></script>
+

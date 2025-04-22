@@ -1,0 +1,112 @@
+<div class="container py-5">
+  <h2><%= character ? 'Edit Character' : 'New Character' %></h2>
+
+  <form action="/characters/<%= projectId %><%= character ? '/' + character.id : '' %>" method="POST" class="mt-4">
+
+    <div class="mb-3">
+      <label for="name" class="form-label">🧍 Name</label>
+      <input type="text" class="form-control" id="name" name="name" value="<%= character?.name || '' %>" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="pseudonym" class="form-label">🕵️ Pseudonym</label>
+      <input type="text" class="form-control" id="pseudonym" name="pseudonym" value="<%= character?.pseudonym || '' %>">
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">📝 Description</label>
+      <textarea class="form-control" id="description" name="description" rows="3"><%= character?.description || '' %></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="birthdate" class="form-label">🎂 Birth Date</label>
+	<input type="text" class="form-control" name="birthdate" id="birthdate" value="<%= character?.birthdate || '' %>">
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="gender" class="form-label">⚥ Gender</label>
+        <input type="text" class="form-control" id="gender" name="gender" value="<%= character?.gender || '' %>">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="origin" class="form-label">🌍 Origin</label>
+      <input type="text" class="form-control" id="origin" name="origin" value="<%= character?.origin || '' %>">
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="occupation" class="form-label">💼 Occupation</label>
+        <input type="text" class="form-control" id="occupation" name="occupation" value="<%= character?.occupation || '' %>">
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="location" class="form-label">📍 Location</label>
+        <input type="text" class="form-control" id="location" name="location" value="<%= character?.location || '' %>">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="health_status" class="form-label">🩺 Health Status</label>
+      <select class="form-select" id="health_status" name="health_status">
+        <option value="healthy" <%= character?.health_status === 'healthy' ? 'selected' : '' %>>Healthy</option>
+        <option value="sick" <%= character?.health_status === 'sick' ? 'selected' : '' %>>Sick</option>
+        <option value="injured" <%= character?.health_status === 'injured' ? 'selected' : '' %>>Injured</option>
+        <option value="deceased" <%= character?.health_status === 'deceased' ? 'selected' : '' %>>Deceased</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="comment" class="form-label">🗒️ Author Notes</label>
+      <textarea class="form-control" id="comment" name="comment" rows="3"><%= character?.comment || '' %></textarea>
+    </div>
+
+    <hr class="my-4">
+
+    <h5>🔗 Optional Relationship</h5>
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <label for="related_character_id" class="form-label">Choose Related Character</label>
+        <select class="form-select" id="related_character_id" name="related_character_id">
+          <option value="">None</option>
+          <% allCharacters.forEach(c => { %>
+            <% if (!character || c.id !== character.id) { %>
+              <option value="<%= c.id %>"><%= c.name %></option>
+            <% } %>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label for="relation" class="form-label">Relation Type</label>
+        <input type="text" class="form-control" id="relation" name="relation" placeholder="e.g. father, rival, ally">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">💾 Save Character</button>
+    <a href="/characters/<%= projectId %>" class="btn btn-secondary ms-2">← Back</a>
+  </form>
+</div>
+
+<!-- Include select2 for relation -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('related_character_id');
+    if (select) $(select).select2({ width: '100%' });
+  });
+</script>
+<!-- Include FlatPickr for calendar -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  flatpickr("input[name='birthdate']", {
+    dateFormat: "Y-m-d",
+    altInput: true,
+    altFormat: "F j, Y", // For easy reading
+    //altFormat: "Y-m-d", // For dev purpose
+    allowInput: true
+  });
+</script>

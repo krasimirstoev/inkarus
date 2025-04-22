@@ -1,0 +1,67 @@
+<div class="container py-5">
+  <h2><%= character.name %></h2>
+
+  <% if (character.pseudonym) { %>
+    <p class="text-muted">Also known as: <%= character.pseudonym %></p>
+  <% } %>
+
+  <% if (character.description) { %>
+    <p><%= character.description %></p>
+  <% } %>
+
+  <% if (character.comment) { %>
+    <div class="alert alert-secondary"><%= character.comment %></div>
+  <% } %>
+
+  <hr />
+
+  <h4>🩺 Health Status</h4>
+  <p><strong>Current:</strong> <%= character.health_status || 'Unknown' %></p>
+
+  <h5 class="mt-4">📜 Health History</h5>
+  <% if (healthEvents.length === 0) { %>
+    <p class="text-muted">No health events yet.</p>
+  <% } else { %>
+    <ul class="list-group mb-3">
+      <% healthEvents.forEach(event => { %>
+        <li class="list-group-item d-flex justify-content-between">
+          <span><%= event.date %>: <%= event.event %></span>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form action="/characters/<%= character.project_id %>/health/<%= character.id %>" method="POST" class="mb-4">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-8">
+        <label for="event" class="form-label">Add Health Event</label>
+        <input type="text" name="event" id="event" class="form-control" required />
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-success w-100">➕ Add Event</button>
+      </div>
+    </div>
+  </form>
+
+  <hr />
+
+  <div class="d-flex justify-content-between align-items-center">
+    <h4>🔗 Relationships</h4>
+    <a href="/characters/<%= character.id %>/relationships" class="btn btn-outline-info btn-sm">View Graph</a>
+  </div>
+
+  <% if (relationships.length === 0) { %>
+    <p class="text-muted">No relationships added yet.</p>
+  <% } else { %>
+    <ul class="list-group">
+      <% relationships.forEach(r => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span><strong><%= r.name %></strong> — <%= r.relation %></span>
+          <form action="/characters/<%= character.id %>/relationships/delete/<%= r.id %>" method="POST" onsubmit="return confirm('Delete relationship?')" style="display:inline;">
+            <button class="btn btn-sm btn-outline-danger">🗑</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>

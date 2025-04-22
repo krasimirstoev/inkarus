@@ -1,0 +1,215 @@
+<div class="container-fluid py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📊 Character Graph</h2>
+    <a href="/characters/<%= projectId %>/relationships" class="btn btn-sm btn-outline-secondary">← Back</a>
+  </div>
+
+  <div class="row">
+    <!-- Info panel (left) -->
+    <div class="col-md-3">
+      <div class="bg-dark text-light p-3 rounded" style="min-height: 150px;">
+        <h5 class="mb-3">📋 Connections</h5>
+        <div id="connectionList" class="small text-muted">Click a node or edge to view relationships.</div>
+      </div>
+    </div>
+
+    <!-- Graph + Controls (right) -->
+    <div class="col-md-9">
+      <div class="mb-3 d-flex gap-2">
+        <select id="characterFilter" class="form-select w-auto">
+          <option value="">All characters</option>
+        </select>
+        <button id="zoomInBtn" class="btn btn-outline-light btn-sm">➕ Zoom In</button>
+        <button id="zoomOutBtn" class="btn btn-outline-light btn-sm">➖ Zoom Out</button>
+        <button id="savePngBtn" class="btn btn-outline-success btn-sm">💾 Save as PNG</button>
+        <button id="resetViewBtn" class="btn btn-outline-warning btn-sm">🔄 Reset View</button>
+      </div>
+
+      <div id="graph" style="height: 600px; background: #1e1e1e; border-radius: 12px;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('graph');
+  const filterSelect = document.getElementById('characterFilter');
+  const connectionList = document.getElementById('connectionList');
+
+  let network;
+  let data;
+  let allNodes = [];
+  let allEdges = [];
+
+  fetch(`/characters/<%= projectId %>/relationships/graph`)
+    .then(res => res.json())
+    .then(({ nodes, edges }) => {
+      allNodes = nodes;
+      allEdges = edges.map((e, i) => ({
+        ...e,
+        id: i,
+        originalLabel: e.label,
+        label: '',
+        color: { color: colorFromLabel(e.label), inherit: false }
+      }));
+
+      // Fill filter
+      nodes.forEach(n => {
+        const option = document.createElement('option');
+        option.value = n.id;
+        option.textContent = n.label;
+        filterSelect.appendChild(option);
+      });
+
+      drawGraph();
+
+      filterSelect.addEventListener('change', () => {
+        drawGraph(filterSelect.value || null);
+      });
+
+      document.getElementById('zoomInBtn').addEventListener('click', () => {
+        const scale = network.getScale();
+        network.moveTo({ scale: scale + 0.2 });
+      });
+
+      document.getElementById('zoomOutBtn').addEventListener('click', () => {
+        const scale = network.getScale();
+        network.moveTo({ scale: scale - 0.2 });
+      });
+
+      document.getElementById('resetViewBtn').addEventListener('click', () => {
+        network.fit();
+      });
+
+      document.getElementById('savePngBtn').addEventListener('click', () => {
+        const canvas = container.querySelector('canvas');
+        const link = document.createElement('a');
+        link.download = 'graph.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
+
+  function drawGraph(filterId = null) {
+    let filteredNodes = [...allNodes];
+    let filteredEdges = [...allEdges];
+
+    if (filterId) {
+      const selectedId = parseInt(filterId);
+      filteredEdges = allEdges.filter(e => e.from === selectedId || e.to === selectedId);
+      const relatedNodeIds = new Set([selectedId]);
+      filteredEdges.forEach(e => {
+        relatedNodeIds.add(e.from);
+        relatedNodeIds.add(e.to);
+      });
+      filteredNodes = allNodes.filter(n => relatedNodeIds.has(n.id));
+    }
+
+    data = {
+      nodes: new vis.DataSet(filteredNodes),
+      edges: new vis.DataSet(filteredEdges.map(e => ({ ...e, label: '' })))
+    };
+
+    const options = {
+      layout: { improvedLayout: true },
+      nodes: {
+        color: '#00aced',
+        shape: 'dot',
+        size: 18,
+        font: { color: '#fff' }
+      },
+      edges: {
+        arrows: 'to',
+        smooth: { type: 'curvedCW', roundness: 0.4 },
+        font: { size: 0 }
+      },
+      physics: {
+        enabled: true,
+        solver: 'forceAtlas2Based',
+        forceAtlas2Based: {
+          gravitationalConstant: -100,
+          springLength: 220,
+          damping: 0.4
+        }
+      },
+      interaction: {
+        hover: false,
+        tooltipDelay: 0
+      }
+    };
+
+    network = new vis.Network(container, data, options);
+
+    network.on('click', (params) => {
+      // Reset styles
+      allNodes.forEach(n => data.nodes.update({ id: n.id, color: '#555' }));
+      allEdges.forEach(e => data.edges.update({ id: e.id, color: '#333' }));
+
+      if (params.nodes.length > 0) {
+        const selectedId = params.nodes[0];
+        const outgoing = allEdges.filter(e => e.from === selectedId);
+        const incoming = allEdges.filter(e => e.to === selectedId);
+        const relations = [];
+
+        outgoing.forEach(e => {
+          const to = allNodes.find(n => n.id === e.to);
+          relations.push(`<strong>${e.originalLabel}</strong> → ${to.label}`);
+        });
+
+        incoming.forEach(e => {
+          const from = allNodes.find(n => n.id === e.from);
+          relations.push(`<strong>${e.originalLabel}</strong> ← ${from.label}`);
+        });
+
+        connectionList.innerHTML = relations.length > 0
+          ? relations.map(r => `<div>${r}</div>`).join('')
+          : `<em>No relationships.</em>`;
+
+        // Highlight
+        data.nodes.update({ id: selectedId, color: '#00aced' });
+        outgoing.forEach(e => {
+          data.nodes.update({ id: e.to, color: '#00aced' });
+          data.edges.update({ id: e.id, color: e.color });
+        });
+        incoming.forEach(e => {
+          data.nodes.update({ id: e.from, color: '#00aced' });
+          data.edges.update({ id: e.id, color: e.color });
+        });
+      } else if (params.edges.length > 0) {
+        const edgeId = params.edges[0];
+        const edge = data.edges.get(edgeId);
+        const from = allNodes.find(n => n.id === edge.from);
+        const to = allNodes.find(n => n.id === edge.to);
+        const label = edge.originalLabel || 'relation';
+
+        connectionList.innerHTML = `
+          <div><strong>${from.label}</strong> → <strong>${to.label}</strong></div>
+          <div class="text-muted">${label}</div>
+        `;
+
+        data.nodes.update([
+          { id: edge.from, color: '#00aced' },
+          { id: edge.to, color: '#00aced' }
+        ]);
+        data.edges.update({ id: edgeId, color: edge.color });
+      }
+    });
+
+    network.on('deselectNode', () => {
+      connectionList.innerHTML = `Click a node or edge to view relationships.`;
+      allNodes.forEach(n => data.nodes.update({ id: n.id, color: '#00aced' }));
+      allEdges.forEach(e => data.edges.update({ id: e.id, color: e.color }));
+    });
+  }
+
+  function colorFromLabel(label) {
+    let hash = 0;
+    for (let i = 0; i < label.length; i++) {
+      hash = label.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+    return '#' + '00000'.substring(0, 6 - c.length) + c;
+  }
+});
+</script>

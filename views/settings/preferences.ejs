@@ -1,0 +1,29 @@
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="mb-4 text-center">Preferences</h2>
+
+    <form action="/settings" method="POST">
+      <div class="mb-3">
+        <label for="autosave_interval" class="form-label">Autosave Interval (minutes)</label>
+        <input type="number" class="form-control" id="autosave_interval" name="autosave_interval" min="1" value="<%= prefs.autosave_interval %>">
+      </div>
+
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="show_status_bar" name="show_status_bar" <%= prefs.show_status_bar ? 'checked' : '' %>>
+        <label class="form-check-label" for="show_status_bar">Show Status Bar</label>
+      </div>
+
+      <div class="mb-3">
+        <label for="font_choice" class="form-label">Font Choice</label>
+        <select name="font_choice" id="font_choice" class="form-select">
+          <option value="Manrope" <%= prefs.font_choice === 'Manrope' ? 'selected' : '' %>>Manrope</option>
+          <option value="Fira Sans" <%= prefs.font_choice === 'Fira Sans' ? 'selected' : '' %>>Fira Sans</option>
+          <option value="IBM Plex Sans" <%= prefs.font_choice === 'IBM Plex Sans' ? 'selected' : '' %>>IBM Plex Sans</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Save Preferences</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/projects">✍️ Inkarus</a>
+
+    <% if (currentUser) { %>
+      <div class="d-flex gap-3">
+        <a href="/projects" class="nav-link text-light">Projects</a>
+        <a href="/search?q=" class="nav-link text-light">Search</a>
+        <a href="/settings" class="nav-link text-light">Settings</a>
+        <a href="/logout" class="nav-link text-danger">Logout</a>
+      </div>
+    <% } else { %>
+      <div class="d-flex gap-3">
+        <a href="/login" class="nav-link text-light">Login</a>
+        <a href="/register" class="nav-link text-light">Register</a>
+      </div>
+    <% } %>
+  </div>
+</nav>

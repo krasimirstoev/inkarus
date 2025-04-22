@@ -1,0 +1,65 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Characters</h2>
+    <div class="btn-group">
+      <a href="/characters/<%= projectId %>/relationships" class="btn btn-outline-info">🔗 Relationships</a>
+      <a href="/characters/<%= projectId %>/new" class="btn btn-outline-light">+ New Character</a>
+    </div>
+  </div>
+
+  <% if (characters.length === 0) { %>
+    <p class="text-muted">No characters yet.</p>
+  <% } else { %>
+    <div class="list-group">
+      <% characters.forEach(character => { %>
+        <div class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+          <div class="flex-grow-1">
+            <strong><%= character.name %></strong>
+            <% if (character.pseudonym) { %>
+              <small class="text-muted d-block">AKA: <%= character.pseudonym %></small>
+            <% } %>
+            <% if (character.description) { %>
+              <p class="mb-1 small text-secondary"><%= character.description %></p>
+            <% } %>
+          </div>
+          <div class="btn-group btn-group-sm ms-3">
+            <!-- 👁 View button -->
+            <button 
+              class="btn btn-outline-info rounded me-1 view-character-btn"
+              data-id="<%= character.id %>"
+              data-project="<%= projectId %>"
+              title="Quick view"
+            >👁</button>
+
+            <!-- 📝 Edit -->
+            <a href="/characters/<%= projectId %>/edit/<%= character.id %>" class="btn btn-sm btn-outline-warning rounded me-1">📝</a>
+
+            <!-- 🗑 Delete -->
+            <form action="/characters/delete/<%= character.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure?')" style="margin: 0;">
+              <button type="submit" class="btn btn-outline-danger rounded">🗑</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<!-- 🌟 Character Modal -->
+<div class="modal fade" id="characterModal" tabindex="-1" aria-labelledby="characterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="characterModalLabel">Character Info</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="characterModalBody">
+        <!-- AJAX content will be loaded here -->
+        <div class="text-center text-muted">Loading...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🌐 Include script -->
+<script src="/js/pages/character-list.js"></script>
