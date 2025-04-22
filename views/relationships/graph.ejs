@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
 <script>
-  const projectId = <%= projectId %>;
+  const projectId = '<%= projectId %>';
   fetch(`/relationships/json/${projectId}`)
     .then(res => res.json())
     .then(data => {
