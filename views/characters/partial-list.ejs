@@ -1,0 +1,17 @@
+<% if (characters.length === 0) { %>
+    <p class="text-muted small">No characters found.</p>
+  <% } else { %>
+    <div class="list-group">
+      <% characters.forEach(c => { %>
+        <button type="button"
+                class="list-group-item list-group-item-action view-character-btn py-2"
+                data-id="<%= c.id %>" data-project="<%= projectId %>">
+          <strong><%= c.name %></strong>
+          <% if (c.pseudonym) { %>
+            <small class="text-muted"> (<%= c.pseudonym %>)</small>
+          <% } %>
+        </button>
+      <% }) %>
+    </div>
+  <% } %>
+  

@@ -3,6 +3,7 @@
 
   <form action="/characters/<%= projectId %><%= character ? '/' + character.id : '' %>" method="POST" class="mt-4">
 
+    <!-- Basic Info -->
     <div class="mb-3">
       <label for="name" class="form-label">🧍 Name</label>
       <input type="text" class="form-control" id="name" name="name" value="<%= character?.name || '' %>" required>
@@ -21,7 +22,7 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <label for="birthdate" class="form-label">🎂 Birth Date</label>
-	<input type="text" class="form-control" name="birthdate" id="birthdate" value="<%= character?.birthdate || '' %>">
+        <input type="text" class="form-control" name="birthdate" id="birthdate" value="<%= character?.birthdate || '' %>">
       </div>
 
       <div class="col-md-6 mb-3">
@@ -64,6 +65,70 @@
 
     <hr class="my-4">
 
+    <!-- New fields for deeper character profiles -->
+
+    <h4>🎯 Character Details</h4>
+
+    <div class="mb-3">
+      <label for="goal" class="form-label">🎯 Goal</label>
+      <textarea class="form-control" id="goal" name="goal" rows="2"><%= character?.goal || '' %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="character_type" class="form-label">📚 Character Type</label>
+      <select class="form-select" id="character_type" name="character_type">
+        <option value="">Select Type</option>
+        <option value="Protagonist" <%= character?.character_type === 'Protagonist' ? 'selected' : '' %>>Protagonist</option>
+        <option value="Antagonist" <%= character?.character_type === 'Antagonist' ? 'selected' : '' %>>Antagonist</option>
+        <option value="Supporting" <%= character?.character_type === 'Supporting' ? 'selected' : '' %>>Supporting</option>
+        <option value="Mentor" <%= character?.character_type === 'Mentor' ? 'selected' : '' %>>Mentor</option>
+        <option value="Other" <%= character?.character_type === 'Other' ? 'selected' : '' %>>Other</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="motivation" class="form-label">🔥 Motivation</label>
+      <textarea class="form-control" id="motivation" name="motivation" rows="2"><%= character?.motivation || '' %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="fears" class="form-label">😨 Fears</label>
+      <textarea class="form-control" id="fears" name="fears" rows="2"><%= character?.fears || '' %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="weaknesses" class="form-label">💔 Weaknesses</label>
+      <textarea class="form-control" id="weaknesses" name="weaknesses" rows="2"><%= character?.weaknesses || '' %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="arc" class="form-label">🌀 Character Arc</label>
+      <select class="form-select" id="arc" name="arc">
+        <option value="">Select Arc</option>
+        <option value="Positive" <%= character?.arc === 'Positive' ? 'selected' : '' %>>Positive</option>
+        <option value="Negative" <%= character?.arc === 'Negative' ? 'selected' : '' %>>Negative</option>
+        <option value="Flat" <%= character?.arc === 'Flat' ? 'selected' : '' %>>Flat/Static</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="secrets" class="form-label">🤫 Secrets</label>
+      <textarea class="form-control" id="secrets" name="secrets" rows="2"><%= character?.secrets || '' %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="allies" class="form-label">🛡️ Allies (comma-separated IDs)</label>
+      <input type="text" class="form-control" id="allies" name="allies" value="<%= character?.allies || '' %>">
+    </div>
+
+    <div class="mb-3">
+      <label for="enemies" class="form-label">⚔️ Enemies (comma-separated IDs)</label>
+      <input type="text" class="form-control" id="enemies" name="enemies" value="<%= character?.enemies || '' %>">
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Optional Relationship -->
     <h5>🔗 Optional Relationship</h5>
     <div class="row">
       <div class="col-md-8 mb-3">
@@ -98,6 +163,7 @@
     if (select) $(select).select2({ width: '100%' });
   });
 </script>
+
 <!-- Include FlatPickr for calendar -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -105,8 +171,7 @@
   flatpickr("input[name='birthdate']", {
     dateFormat: "Y-m-d",
     altInput: true,
-    altFormat: "F j, Y", // For easy reading
-    //altFormat: "Y-m-d", // For dev purpose
+    altFormat: "F j, Y",
     allowInput: true
   });
 </script>

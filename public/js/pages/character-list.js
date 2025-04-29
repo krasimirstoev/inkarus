@@ -28,6 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
             modalBody.innerHTML = `
               <div>
                 <p><strong>📖 Description:</strong> ${c.description || '<em>No description</em>'}</p>
+                <p><strong>🎯 Goal:</strong> ${c.goal || '-'}</p>
+                <p><strong>📚 Character Type:</strong> ${c.character_type || '-'}</p>
+                <p><strong>🔥 Motivation:</strong> ${c.motivation || '-'}</p>
+                <p><strong>😨 Fears:</strong> ${c.fears || '-'}</p>
+                <p><strong>💔 Weaknesses:</strong> ${c.weaknesses || '-'}</p>
+                <p><strong>🌀 Arc:</strong> ${c.arc || '-'}</p>
+                <p><strong>🤫 Secrets:</strong> ${c.secrets || '-'}</p>
+                <p><strong>🛡️ Allies:</strong> ${c.allies || '-'}</p>
+                <p><strong>⚔️ Enemies:</strong> ${c.enemies || '-'}</p>
+                <hr/>
                 <p><strong>🎂 Birth Date:</strong> ${c.birthdate || '-'}</p>
                 <p><strong>⚧ Gender:</strong> ${c.gender || '-'}</p>
                 <p><strong>🌍 Origin:</strong> ${c.origin || '-'}</p>

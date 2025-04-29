@@ -15,6 +15,45 @@
 
   <hr />
 
+  <!-- Character Details -->
+  <h4>🎯 Character Goal</h4>
+  <p><%= character.goal || 'No goal defined.' %></p>
+
+  <h4 class="mt-4">📚 Character Type</h4>
+  <p><%= character.character_type || 'Not specified.' %></p>
+
+  <h4 class="mt-4">🔥 Motivation</h4>
+  <p><%= character.motivation || 'No motivation defined.' %></p>
+
+  <h4 class="mt-4">😨 Fears</h4>
+  <p><%= character.fears || 'No fears defined.' %></p>
+
+  <h4 class="mt-4">💔 Weaknesses</h4>
+  <p><%= character.weaknesses || 'No weaknesses defined.' %></p>
+
+  <h4 class="mt-4">🌀 Character Arc</h4>
+  <p><%= character.arc || 'No arc specified.' %></p>
+
+  <h4 class="mt-4">🤫 Secrets</h4>
+  <p><%= character.secrets || 'No secrets defined.' %></p>
+
+  <h4 class="mt-4">🛡️ Allies</h4>
+  <% if (character.allies) { %>
+    <p><%= character.allies %></p>
+  <% } else { %>
+    <p class="text-muted">No allies listed.</p>
+  <% } %>
+
+  <h4 class="mt-4">⚔️ Enemies</h4>
+  <% if (character.enemies) { %>
+    <p><%= character.enemies %></p>
+  <% } else { %>
+    <p class="text-muted">No enemies listed.</p>
+  <% } %>
+
+  <hr />
+
+  <!-- Health Info -->
   <h4>🩺 Health Status</h4>
   <p><strong>Current:</strong> <%= character.health_status || 'Unknown' %></p>
 
@@ -45,6 +84,7 @@
 
   <hr />
 
+  <!-- Relationships -->
   <div class="d-flex justify-content-between align-items-center">
     <h4>🔗 Relationships</h4>
     <a href="/characters/<%= character.id %>/relationships" class="btn btn-outline-info btn-sm">View Graph</a>

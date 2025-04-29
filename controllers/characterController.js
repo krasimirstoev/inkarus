@@ -1,6 +1,8 @@
 const db = require('../models/db');
+const ejs = require('ejs');
+const path = require('path');
 
-// List characters for a project
+// List characters for a project (full page)
 exports.list = (req, res) => {
   const { projectId } = req.params;
 
@@ -14,7 +16,7 @@ exports.list = (req, res) => {
   });
 };
 
-// Form for create/edit
+// Form for create/edit character
 exports.form = (req, res) => {
   const { projectId, id } = req.params;
 
@@ -30,7 +32,7 @@ exports.form = (req, res) => {
 
   const fetchOthers = () =>
     new Promise((resolve, reject) => {
-      db.all(`SELECT id, name FROM characters WHERE project_id = ?`, [projectId], (err, rows) => {
+      db.all(`SELECT id, name FROM characters WHERE project_id = ? ORDER BY name`, [projectId], (err, rows) => {
         if (err) reject(err);
         else resolve(rows);
       });
@@ -65,6 +67,15 @@ exports.save = (req, res) => {
     location,
     occupation,
     comment,
+    goal,
+    character_type,
+    motivation,
+    fears,
+    weaknesses,
+    arc,
+    secrets,
+    allies,
+    enemies,
     related_character_id,
     relation,
   } = req.body;
@@ -95,8 +106,18 @@ exports.save = (req, res) => {
 
   if (id) {
     db.run(
-      `UPDATE characters SET name = ?, pseudonym = ?, description = ?, health_status = ?, birthdate = ?, gender = ?, origin = ?, location = ?, occupation = ?, comment = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-      [name, pseudonym, description, health_status, birthdate, gender, origin, location, occupation, comment, id],
+      `UPDATE characters SET 
+        name = ?, pseudonym = ?, description = ?, health_status = ?, birthdate = ?, gender = ?, 
+        origin = ?, location = ?, occupation = ?, comment = ?, goal = ?, character_type = ?, 
+        motivation = ?, fears = ?, weaknesses = ?, arc = ?, secrets = ?, allies = ?, enemies = ?, 
+        updated_at = CURRENT_TIMESTAMP
+       WHERE id = ?`,
+      [
+        name, pseudonym, description, health_status, birthdate, gender,
+        origin, location, occupation, comment, goal, character_type,
+        motivation, fears, weaknesses, arc, secrets, allies, enemies,
+        id
+      ],
       function (err) {
         if (err) {
           console.error('❌ Update character error:', err);
@@ -109,9 +130,16 @@ exports.save = (req, res) => {
     );
   } else {
     db.run(
-      `INSERT INTO characters (project_id, name, pseudonym, description, health_status, birthdate, gender, origin, location, occupation, comment)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [projectId, name, pseudonym, description, health_status, birthdate, gender, origin, location, occupation, comment],
+      `INSERT INTO characters (
+        project_id, name, pseudonym, description, health_status, birthdate, gender, 
+        origin, location, occupation, comment, goal, character_type, motivation, 
+        fears, weaknesses, arc, secrets, allies, enemies
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        projectId, name, pseudonym, description, health_status, birthdate, gender,
+        origin, location, occupation, comment, goal, character_type, motivation,
+        fears, weaknesses, arc, secrets, allies, enemies
+      ],
       function (err) {
         if (err) {
           console.error('❌ Insert character error:', err);
@@ -126,7 +154,7 @@ exports.save = (req, res) => {
   }
 };
 
-// Delete
+// Delete a character
 exports.delete = (req, res) => {
   const { id } = req.params;
 
@@ -148,7 +176,7 @@ exports.delete = (req, res) => {
   });
 };
 
-// Return JSON for a single character
+// Return JSON data for one character (used in modals)
 exports.json = (req, res) => {
   const { id } = req.params;
 
@@ -160,4 +188,22 @@ exports.json = (req, res) => {
 
     res.json({ success: true, character });
   });
+};
+
+// ✅ Return JSON list of characters (for sidebar panel)
+exports.listJson = (req, res) => {
+  const { projectId } = req.params;
+
+  db.all(
+    `SELECT id, name, pseudonym FROM characters WHERE project_id = ? ORDER BY name`,
+    [projectId],
+    (err, characters) => {
+      if (err) {
+        console.error('❌ DB error in listJson:', err);
+        return res.json({ success: false });
+      }
+
+      res.json({ success: true, characters });
+    }
+  );
 };
