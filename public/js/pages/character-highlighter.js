@@ -1,62 +1,61 @@
 /**
- * Highlights all occurrences of each character name in the Quill editor
+ * Highlights all occurrences of each character name or pseudonym in the Quill editor
  * using our custom 'character' blot, and wires up click-to-modal.
  *
  * @param {Quill} quillEditor
- * @param {Array<{id: string, name: string}>} characters
+ * @param {Array<{id: string, name: string, pseudonym?: string}>} characters
  * @param {string} projectId
  */
 export function initCharacterHighlighter(quillEditor, characters, projectId) {
-    console.log('[Highlighter] initCharacterHighlighter called');
-    console.log('[Highlighter] quillEditor:', quillEditor);
-    console.log('[Highlighter] projectId:', projectId);
-    console.log('[Highlighter] raw characters:', characters);
-  
-    // Ensure we have at least a Quill instance
-    if (!quillEditor) {
-      console.warn('[Highlighter] No Quill instance found; aborting.');
+    if (!quillEditor || !Array.isArray(characters) || characters.length === 0 || !projectId) {
+      console.warn('[Highlighter] Missing required data; aborting.');
       return;
     }
   
-    // Sort by descending name length to prevent partial overlaps
-    const list = Array.isArray(characters) 
-      ? [...characters].sort((a, b) => (b.name||'').length - (a.name||'').length)
-      : [];
-  
-    if (!list.length) {
-      console.warn('[Highlighter] Character list empty; nothing to highlight.');
-      return;
-    }
+    // Prepare search terms (name + pseudonym), sorted by length desc to avoid overlaps
+    const terms = characters.flatMap(c => {
+      const out = [];
+      if (c.name)      out.push({ id: c.id, text: c.name,      isAlias: false });
+      if (c.pseudonym) out.push({ id: c.id, text: c.pseudonym, isAlias: true  });
+      return out;
+    }).sort((a, b) => b.text.length - a.text.length);
   
     const fullText = quillEditor.getText();
-    console.log('[Highlighter] Editor text length:', fullText.length);
   
-    list.forEach(({ id, name }) => {
-      if (!name) return;
-      // Escape regex specials
-      const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Highlight each term
+    terms.forEach(({ id, text, isAlias }) => {
+      const escaped = text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const regex   = new RegExp(escaped, 'gi');
-  
-      console.log(`[Highlighter] Searching for "${name}"…`);
       let match;
+  
       while ((match = regex.exec(fullText)) !== null) {
         const idx    = match.index;
         const length = match[0].length;
-        console.log(`→ Found "${match[0]}" at ${idx}, length ${length}`);
-  
-        // Apply our custom blot format silently
+        // apply our custom blot format
         quillEditor.formatText(idx, length, 'character', id, 'silent');
+      }
+  
+      // If this was a pseudonym, find those anchors and tag them
+      if (isAlias) {
+        // query all links for this character id
+        const links = quillEditor.root.querySelectorAll(
+          `a.character-link[data-character-id="${id}"]`
+        );
+        links.forEach(link => {
+          // only mark those whose exact innerText matches the alias (case-insensitive)
+          if (link.innerText.trim().toLowerCase() === text.toLowerCase()) {
+            link.classList.add('pseudonym');
+          }
+        });
       }
     });
   
-    // Now wire up clicks on the rendered <a.character-link>
-    quillEditor.root.addEventListener('click', (e) => {
+    // Delegate clicks on the rendered <a.character-link>
+    quillEditor.root.addEventListener('click', e => {
       const link = e.target.closest('a.character-link');
       if (!link) return;
       e.preventDefault();
-      const charId = link.getAttribute('data-character-id');
-      console.log('[Highlighter] Click on character link ID:', charId);
-      openCharacterModal(charId);
+      openCharacterModal(link.dataset.characterId);
     });
   
     function openCharacterModal(characterId) {
