@@ -16,22 +16,22 @@ router.get('/:projectId/relationships', relationshipController.view);
 router.post('/:projectId/relationships', relationshipController.add);
 router.delete('/:projectId/relationships/:id', relationshipController.remove);
 
-// Graph view (HTML page with vis-network)
+// Graph views
 router.get('/:projectId/relationships/graph-view', relationshipController.graphView);
 router.get('/:projectId/relationships/graph', relationshipController.graphJson);
 
-// Character JSON API (for modals)
+// JSON API for a single character (modal)
 router.get('/:projectId/json/:id', characterController.json);
 
-// JSON list of characters for sidebar panel
+// JSON list of characters (sidebar panel & highlighter)
 router.get('/:projectId/json-list', characterController.listJson);
 
-// Relationship update
+// Update an existing relationship via AJAX
 router.post('/:projectId/relationships/update/:id', relationshipController.update);
 
 // Character CRUD
 router.delete('/delete/:id', characterController.delete);
-router.post('/delete/:id', characterController.delete);
+router.post('/delete/:id', characterController.delete);   // fallback if DELETE unsupported
 router.get('/:projectId', characterController.list);
 router.get('/:projectId/new', characterController.form);
 router.get('/:projectId/edit/:id', characterController.form);
