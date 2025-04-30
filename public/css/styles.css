@@ -99,6 +99,19 @@ form select:focus {
   box-shadow: none;
 }
 
+/* Character highlightning in Quill editor */
+.ql-editor a.character-link {
+  color: #fff !important;              /* white link text */
+  text-decoration: none !important;    /* remove Quill's built-in underline */
+  border-bottom: 1px dotted currentColor; /* dotted underline effect */
+  cursor: pointer;                     /* pointer cursor on hover */
+}
+
+/* On hover, make the dots a solid line (optional) */
+.ql-editor a.character-link:hover {
+  border-bottom-style: solid;
+}
+
 /* Fullscreen mode */
 .fullscreen-mode main.container {
   max-width: 100vw;
