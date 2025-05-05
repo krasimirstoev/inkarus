@@ -1,0 +1,69 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Parts</h2>
+  <a href="/parts/<%= projectId %>/new" class="btn btn-primary">+ New Part</a>
+</div>
+
+<%# Quick-add form (AJAX) %>
+<form
+  id="new-part-form"
+  action="/parts/<%= projectId %>"
+  method="POST"
+  class="mb-4 row g-2"
+>
+  <div class="col-auto">
+    <input
+      name="title"
+      type="text"
+      class="form-control"
+      placeholder="Part title…"
+      required
+    />
+  </div>
+  <div class="col-auto">
+    <input
+      name="order"
+      type="number"
+      class="form-control"
+      placeholder="Order"
+      value="0"
+      min="0"
+    />
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-success">Add Part</button>
+  </div>
+</form>
+
+<%# Container for AJAX-rendered list (initial server-rendered fallback) %>
+<div id="parts-list" data-project-id="<%= projectId %>">
+  <% if (!parts.length) { %>
+    <p class="text-muted">No parts defined yet.</p>
+  <% } else { %>
+    <ul class="list-group">
+      <% parts.forEach(part => { %>
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          data-id="<%= part.id %>"
+        >
+          <div>
+            <strong><%= part.title %></strong>
+            <small class="text-muted">(Order: <%= part.order %>)</small>
+          </div>
+          <div>
+            <a
+              href="/parts/<%= projectId %>/edit/<%= part.id %>"
+              class="btn btn-sm btn-outline-light me-2"
+            >Edit</a>
+            <button
+              class="btn btn-sm btn-danger delete-part-btn"
+              data-id="<%= part.id %>"
+            >Delete</button>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>
+
+<%# Load our client-side script for AJAX + drag&drop %>
+<script type="module" src="/js/pages/parts.js"></script>

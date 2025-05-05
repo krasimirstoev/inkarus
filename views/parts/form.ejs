@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><%= title %></h2>
+    <a href="/parts/<%= projectId %>" class="btn btn-secondary">← Back to Parts</a>
+  </div>
+  
+  <form
+    id="part-form"
+    data-project-id="<%= projectId %>"
+    action="/parts/<%= projectId %><% if (part) { %>/<%= part.id %><% } %>"
+    method="POST"
+  >
+    <%# Part title field %>
+    <div class="mb-3">
+      <label for="part-title" class="form-label">Title</label>
+      <input
+        type="text"
+        id="part-title"
+        name="title"
+        class="form-control"
+        value="<%= part ? part.title : '' %>"
+        required
+      />
+    </div>
+  
+    <%# Part order field %>
+    <div class="mb-3">
+      <label for="part-order" class="form-label">Order</label>
+      <input
+        type="number"
+        id="part-order"
+        name="order"
+        class="form-control"
+        value="<%= part ? part.order : 0 %>"
+        min="0"
+      />
+    </div>
+  
+    <%# Submit button toggles label based on create or update %>
+    <button type="submit" class="btn btn-primary">
+      <%= part ? 'Update Part' : 'Create Part' %>
+    </button>
+  </form>

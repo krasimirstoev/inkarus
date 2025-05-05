@@ -1,11 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const path    = require('path');
 
 const db = new sqlite3.Database(path.join(__dirname, '../db/database.sqlite'));
 
 // Initialize database schema if it does not exist
 db.serialize(() => {
-  // Users
+  // Users table
   db.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
@@ -13,7 +13,7 @@ db.serialize(() => {
     password TEXT NOT NULL
   )`);
 
-  // Projects
+  // Projects table
   db.run(`CREATE TABLE IF NOT EXISTS projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
@@ -22,17 +22,28 @@ db.serialize(() => {
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 
-  // Drafts
-  db.run(`CREATE TABLE IF NOT EXISTS drafts (
+  // Parts table (book parts / volumes)
+  db.run(`CREATE TABLE IF NOT EXISTS parts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    project_id INTEGER,
+    project_id INTEGER NOT NULL,
     title TEXT NOT NULL,
-    content TEXT,
-    last_saved DATETIME DEFAULT CURRENT_TIMESTAMP,
+    "order" INTEGER DEFAULT 0,
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Notes
+  // Drafts table (chapters)
+  db.run(`CREATE TABLE IF NOT EXISTS drafts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER,
+    part_id INTEGER,
+    title TEXT NOT NULL,
+    content TEXT,
+    last_saved DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(project_id) REFERENCES projects(id),
+    FOREIGN KEY(part_id)    REFERENCES parts(id)
+  )`);
+
+  // Notes table
   db.run(`CREATE TABLE IF NOT EXISTS notes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER,
@@ -41,7 +52,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Characters
+  // Characters table
   db.run(`CREATE TABLE IF NOT EXISTS characters (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL,
@@ -69,7 +80,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Health Events
+  // Health history table
   db.run(`CREATE TABLE IF NOT EXISTS health_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     character_id INTEGER,
@@ -78,7 +89,7 @@ db.serialize(() => {
     FOREIGN KEY(character_id) REFERENCES characters(id)
   )`);
 
-  // Character Relationships
+  // Character relationships table
   db.run(`CREATE TABLE IF NOT EXISTS character_relationships (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     character_id INTEGER,
@@ -88,7 +99,7 @@ db.serialize(() => {
     FOREIGN KEY(related_character_id) REFERENCES characters(id)
   )`);
 
-  // User Preferences
+  // Preferences table
   db.run(`CREATE TABLE IF NOT EXISTS preferences (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
@@ -98,18 +109,23 @@ db.serialize(() => {
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 
-  // Migrate existing characters table if needed
-  db.serialize(() => {
-    db.run(`ALTER TABLE characters ADD COLUMN goal TEXT`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN character_type VARCHAR(255)`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN motivation TEXT`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN fears TEXT`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN weaknesses TEXT`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN arc VARCHAR(255)`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN secrets TEXT`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN allies TEXT`, () => {});
-    db.run(`ALTER TABLE characters ADD COLUMN enemies TEXT`, () => {});
-  });
+  // Migrate existing characters table if needed (silent failures)
+  db.run(`ALTER TABLE characters ADD COLUMN goal TEXT`,         () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN character_type TEXT`,() => {});
+  db.run(`ALTER TABLE characters ADD COLUMN motivation TEXT`,   () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN fears TEXT`,        () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN weaknesses TEXT`,   () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN arc TEXT`,          () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN secrets TEXT`,      () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN allies TEXT`,       () => {});
+  db.run(`ALTER TABLE characters ADD COLUMN enemies TEXT`,      () => {});
+
+  // Ensure drafts has part_id (silent if already exists)
+  db.run(`ALTER TABLE drafts ADD COLUMN part_id INTEGER`, () => {});
+
+  // Ensure drafts has creation and update timestamps (silent if already exists)
+  db.run(`ALTER TABLE drafts ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP`, () => {});
+  db.run(`ALTER TABLE drafts ADD COLUMN updated_at TEXT DEFAULT CURRENT_TIMESTAMP`, () => {});
 });
 
 module.exports = db;

@@ -19,6 +19,7 @@ const characterRelationshipsRoutes = require('./routes/characterRelationships');
 const searchRoutes = require('./routes/search');
 const settingsRoutes = require('./routes/settings');
 const relationshipRoutes = require('./routes/relationships');
+const partsRoutes = require('./routes/parts');  // ← добави това
 
 // EJS Setup
 app.set('view engine', 'ejs');
@@ -60,6 +61,7 @@ app.use('/relationships', characterRelationshipsRoutes);
 app.use('/search', searchRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/relationships', relationshipRoutes);
+app.use('/parts', partsRoutes);
 
 // Home
 app.get('/', (req, res) => {

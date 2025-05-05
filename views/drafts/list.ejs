@@ -1,22 +1,102 @@
-
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2>Drafts</h2>
-
-  <form action="/drafts/<%= projectId %>" method="POST" class="d-flex">
-    <input type="text" name="title" class="form-control me-2" placeholder="New draft title..." required>
-    <button type="submit" class="btn btn-success">+ Add</button>
-  </form>
 </div>
 
-<% if (drafts.length === 0) { %>
-  <p>No drafts found.</p>
+<% if (!parts || parts.length === 0) { %>
+  <p class="text-muted">No parts or chapters found.</p>
 <% } else { %>
-  <div class="list-group">
-    <% drafts.forEach(draft => { %>
-      <a href="/drafts/edit/<%= draft.id %>" class="list-group-item list-group-item-action bg-dark border-secondary text-light">
-        <%= draft.title %>
-        <div class="small text-muted">Last saved: <%= draft.last_saved %></div>
-      </a>
-    <% }) %>
+  <% /* === Global “Add Chapter” form === */ %>
+  <div class="mb-4">
+    <form action="/drafts/<%= projectId %>" method="POST" class="d-flex align-items-center">
+      <input
+        type="text"
+        name="title"
+        class="form-control me-2"
+        placeholder="New chapter title…"
+        required
+      />
+      <select name="part_id" class="form-select me-2" style="width:auto">
+        <option value="">Ungrouped</option>
+        <% parts.filter(p => p.id !== null).forEach(p => { %>
+          <option value="<%= p.id %>"><%= p.title %></option>
+        <% }) %>
+      </select>
+      <button type="submit" class="btn btn-success">+ Add Chapter</button>
+    </form>
   </div>
+
+  <% /* === Ungrouped chapters (part_id = null) === */ %>
+  <% const ungrouped = parts.find(p => p.id === null); %>
+  <% if (ungrouped) { %>
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3><%= ungrouped.title %></h3>
+        <% /* Inline form for this group */ %>
+        <form action="/drafts/<%= projectId %>" method="POST" class="d-flex">
+          <input type="hidden" name="part_id" value="">
+          <input
+            type="text"
+            name="title"
+            class="form-control form-control-sm me-2"
+            placeholder="New chapter title..."
+            required
+          />
+          <button type="submit" class="btn btn-success btn-sm">+ Add</button>
+        </form>
+      </div>
+      <% if (ungrouped.chapters.length > 0) { %>
+        <div class="list-group">
+          <% ungrouped.chapters.forEach(draft => { %>
+            <a
+              href="/drafts/edit/<%= draft.id %>"
+              class="list-group-item list-group-item-action bg-dark border-secondary text-light
+                     d-flex justify-content-between align-items-center"
+            >
+              <span><%= draft.title %></span>
+              <small class="text-muted">Last saved: <%= draft.last_saved %></small>
+            </a>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-muted">No chapters in this group.</p>
+      <% } %>
+    </div>
+  <% } %>
+
+  <% /* === All other parts === */ %>
+  <% parts.filter(p => p.id !== null).forEach(part => { %>
+    <div class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3><%= part.title %></h3>
+        <% /* Inline form for this part */ %>
+        <form action="/drafts/<%= projectId %>" method="POST" class="d-flex">
+          <input type="hidden" name="part_id" value="<%= part.id %>">
+          <input
+            type="text"
+            name="title"
+            class="form-control form-control-sm me-2"
+            placeholder="New chapter title..."
+            required
+          />
+          <button type="submit" class="btn btn-success btn-sm">+ Add</button>
+        </form>
+      </div>
+      <% if (part.chapters && part.chapters.length > 0) { %>
+        <div class="list-group">
+          <% part.chapters.forEach(draft => { %>
+            <a
+              href="/drafts/edit/<%= draft.id %>"
+              class="list-group-item list-group-item-action bg-dark border-secondary text-light
+                     d-flex justify-content-between align-items-center"
+            >
+              <span><%= draft.title %></span>
+              <small class="text-muted">Last saved: <%= draft.last_saved %></small>
+            </a>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-muted">No chapters in this part.</p>
+      <% } %>
+    </div>
+  <% }) %>
 <% } %>
