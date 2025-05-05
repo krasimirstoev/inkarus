@@ -90,7 +90,7 @@ exports.list = (req, res) => {
                     if (ungrouped.length) {
                       result.push({
                         id: null,
-                        title: 'Без част',
+                        title: 'Without part (ungrouped)',
                         order: Infinity,
                         chapters: ungrouped
                       });
