@@ -1,25 +1,38 @@
 const express = require('express');
-const router = express.Router();
-const draftController = require('../controllers/draftController');
+const router  = express.Router();
+const c       = require('../controllers/draftController');
 
+// Authentication middleware
 function isAuthenticated(req, res, next) {
   if (req.session.user) return next();
   res.redirect('/login');
 }
-
 router.use(isAuthenticated);
 
-// List drafts for project
-router.get('/:projectId', draftController.list);
+// GET JSON of all parts + their chapters for AJAX
+router.get('/:projectId/json-groups',   c.jsonGroups);
 
-// Create new draft
-router.post('/:projectId', draftController.create);
+// POST create a new chapter
+router.post('/:projectId',              c.create);
 
-// Edit specific draft
-router.get('/edit/:id', draftController.edit);
+// POST reorder a chapter within the same part
+router.post('/:projectId/reorder/:id',  c.reorder);
 
-// Autosave (update content)
-router.post('/update/:id', draftController.update);
-router.post('/save/:id', draftController.update); //Alias 
+// POST move a chapter to another part and set its order
+router.post('/:projectId/move/:id',     c.move);
+
+// DELETE a chapter (with fallback POST)
+router.delete('/:projectId/delete/:id', c.delete);
+router.post('/:projectId/delete/:id',   c.delete);
+
+// POST autosave or explicit save of chapter content
+router.post('/:projectId/update/:id',   c.update);
+router.post('/:projectId/save/:id',     c.update);
+
+// GET editor view for a single chapter
+router.get('/:projectId/edit/:id',      c.edit);
+
+// GET list view for a project
+router.get('/:projectId',               c.list);
 
 module.exports = router;

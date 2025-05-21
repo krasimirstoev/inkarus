@@ -19,7 +19,7 @@ const characterRelationshipsRoutes = require('./routes/characterRelationships');
 const searchRoutes = require('./routes/search');
 const settingsRoutes = require('./routes/settings');
 const relationshipRoutes = require('./routes/relationships');
-const partsRoutes = require('./routes/parts');  // ← добави това
+const partsRoutes = require('./routes/parts');
 
 // EJS Setup
 app.set('view engine', 'ejs');
@@ -34,10 +34,13 @@ app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 // Serve Quill assets from node_modules
 app.use('/quill', express.static(path.join(__dirname, 'node_modules', 'quill', 'dist')));
 
-// Middleware
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
 app.use(bodyParser.json());
+
 app.use(methodOverride('_method'));
+
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.sqlite' }),
   secret: config.sessionSecret,

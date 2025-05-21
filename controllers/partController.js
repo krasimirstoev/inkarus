@@ -162,3 +162,33 @@ exports.delete = (req, res) => {
       }
     );
   };
+
+/**
+ * Render only the form for AJAX modal (no layout).
+ */
+exports.modalForm = (req, res) => {
+  const { projectId, id } = req.params;
+  if (!id) {
+    // new part form
+    return res.render('parts/modalForm', {
+      projectId,
+      part: null,
+      layout: false
+    });
+  }
+  // edit existing part
+  db.get(
+    `SELECT id, title, "order"
+       FROM parts
+      WHERE id = ?`,
+    [id],
+    (err, part) => {
+      if (err || !part) return res.sendStatus(404);
+      res.render('parts/modalForm', {
+        projectId,
+        part,
+        layout: false
+      });
+    }
+  );
+};

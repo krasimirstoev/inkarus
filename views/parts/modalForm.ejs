@@ -1,0 +1,38 @@
+<% /* views/parts/modalForm.ejs — only the form, no header/footer */ %>
+
+<form
+  id="part-form"
+  action="/parts/<%= projectId %><%= part ? '/' + part.id : '' %>"
+  method="POST"
+>
+  <div class="mb-3">
+    <label for="part-title" class="form-label">Title</label>
+    <input
+      type="text"
+      id="part-title"
+      name="title"
+      class="form-control form-control-sm bg-dark text-white"
+      value="<%= part ? part.title : '' %>"
+      required
+      style="border-color: #6c757d;"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="part-order" class="form-label">Order</label>
+    <input
+      type="number"
+      id="part-order"
+      name="order"
+      class="form-control form-control-sm bg-dark text-white"
+      value="<%= part ? part.order : 0 %>"
+      min="0"
+      style="border-color: #6c757d;"
+    />
+  </div>
+
+  <button type="submit"
+          class="btn btn-primary btn-sm">
+    <%= part ? 'Update Part' : 'Create Part' %>
+  </button>
+</form>

@@ -1,115 +1,82 @@
-import Sortable from 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/modular/sortable.esm.js';
-
 document.addEventListener('DOMContentLoaded', () => {
-  const listEl = document.getElementById('parts-list');
-  const formEl = document.getElementById('new-part-form');
-  if (!listEl || !formEl) return;
+  const modal     = document.getElementById('partsModal');
+  const projectId = modal.dataset.projectId;
+  const formWrap  = document.getElementById('partsFormContainer');
+  const listWrap  = document.getElementById('partsList');
 
-  const projectId = listEl.dataset.projectId;
-
-  // Load parts via AJAX and render them
-  async function loadParts() {
-    try {
-      const res  = await fetch(`/parts/${projectId}/json-list`);
-      const data = await res.json();
-      if (data.success && Array.isArray(data.parts)) {
-        renderParts(data.parts);
-      }
-    } catch (err) {
-      console.error('Error loading parts:', err);
+  // load only the modalForm partial
+  async function loadForm(partId = '') {
+    const url = partId
+      ? `/parts/${projectId}/modal/form/${partId}`
+      : `/parts/${projectId}/modal/form`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      formWrap.innerHTML = `<p class="text-danger">Error ${res.status} loading form</p>`;
+      return;
     }
+    formWrap.innerHTML = await res.text();
   }
 
-  // Render the list of parts and wire up delete buttons
-  function renderParts(parts) {
-    listEl.innerHTML = '';
-    parts.forEach(part => {
-      const item = document.createElement('div');
-      item.className = 'list-group-item d-flex justify-content-between align-items-center';
-      item.dataset.id = part.id;
-      item.innerHTML = `
+  // rest stays the same...
+  async function loadList() {
+    const res  = await fetch(`/parts/${projectId}/json-list`);
+    const data = await res.json();
+    if (!data.success) return;
+    listWrap.innerHTML = data.parts.map(p => `
+      <li class="list-group-item
+                 bg-dark border-secondary text-light
+                 d-flex justify-content-between align-items-center"
+          data-id="${p.id}">
+        <span>${p.title}</span>
         <div>
-          <strong>${part.title}</strong>
-          <small class="text-muted"> (Order: ${part.order})</small>
+          <button class="btn btn-outline-light btn-sm btn-edit-part me-1"
+                  data-id="${p.id}">Edit</button>
+          <button class="btn btn-danger btn-sm btn-delete-part"
+                  data-id="${p.id}">Delete</button>
         </div>
-        <div>
-          <a href="/parts/${projectId}/edit/${part.id}" class="btn btn-sm btn-outline-light me-2">Edit</a>
-          <button class="btn btn-sm btn-danger delete-part-btn" data-id="${part.id}">Delete</button>
-        </div>
-      `;
-      listEl.appendChild(item);
-    });
+      </li>
+    `).join('');
   }
 
-  // Handle new-part form submission via AJAX as URL-encoded
-  formEl.addEventListener('submit', async e => {
+  modal.addEventListener('show.bs.modal', async () => {
+    await loadForm();
+    await loadList();
+  });
+
+  formWrap.addEventListener('submit', async e => {
     e.preventDefault();
-    const formData = new FormData(formEl);
-    const params   = new URLSearchParams();
-    for (const [key, value] of formData.entries()) {
-      params.append(key, value);
+    const form = e.target;
+    const res  = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form)
+    });
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      const json = await res.json();
+      if (json.success) {
+        await loadForm();
+        await loadList();
+      }
+    } else {
+      await loadList();
     }
+  });
 
-    try {
-      const res = await fetch(formEl.action, {
-        method: formEl.method,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        body: params.toString()
+  listWrap.addEventListener('click', async e => {
+    if (e.target.matches('.btn-edit-part')) {
+      await loadForm(e.target.dataset.id);
+    }
+    if (e.target.matches('.btn-delete-part')) {
+      const id = e.target.dataset.id;
+      if (!confirm('Delete this part?')) return;
+      const res = await fetch(`/parts/${projectId}/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
       });
-      if (res.ok) {
-        formEl.reset();
-        await loadParts();
-      } else {
-        console.error('Failed to add part, status:', res.status);
+      const json = await res.json();
+      if (json.success) {
+        await loadForm();
+        await loadList();
       }
-    } catch (err) {
-      console.error('Error adding part:', err);
     }
   });
-
-  // Delegate delete button clicks to AJAX delete.
-  listEl.addEventListener('click', async e => {
-    if (!e.target.matches('.delete-part-btn')) return;
-    const partId = e.target.dataset.id;
-    if (!confirm('Are you sure you want to delete this part?')) return;
-    try {
-      // DELETE /parts/:id matches our Express route
-      const res = await fetch(`/parts/${partId}`, { method: 'DELETE' });
-      if (res.ok) {
-        await loadParts();
-      } else {
-        console.error('Failed to delete part, status:', res.status);
-      }
-    } catch (err) {
-      console.error('Error deleting part:', err);
-    }
-  });
-
-  // Drag-and-drop reordering
-  const sortable = new Sortable(listEl, {
-    animation: 150,
-    onEnd: async () => {
-      const items = Array.from(listEl.children);
-      for (let index = 0; index < items.length; index++) {
-        const id    = items[index].dataset.id;
-        const order = index;
-        try {
-          // reuse save endpoint to update only the order
-          await fetch(`/parts/${projectId}/${id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ order }).toString()
-          });
-        } catch (err) {
-          console.error(`Error updating order for part ${id}:`, err);
-        }
-      }
-      await loadParts();
-    }
-  });
-
-  // Initial load
-  loadParts();
 });

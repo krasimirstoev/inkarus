@@ -1,10 +1,13 @@
 const db = require('../models/db');
 
-// List all drafts for a project, grouped by parts
+/**
+ * List all drafts for a project, grouped by parts (HTML view).
+ * Also load rawParts for the parts‐CRUD modal.
+ */
 exports.list = (req, res) => {
   const { projectId } = req.params;
 
-  // 1) First load all parts for this project, in the desired order
+  // 1) Load all parts in order
   db.all(
     `SELECT id, title, "order"
        FROM parts
@@ -18,85 +21,90 @@ exports.list = (req, res) => {
       }
 
       let remaining = parts.length;
-      const result = [];
+      const grouped = [];
 
+      // Once chapters grouped, load rawParts for modal and render
       const finish = () => {
-        // Render view with parts array, each having its chapters
-        res.render('drafts/list', {
-          title: 'Drafts',
-          parts: result,
-          projectId
-        });
+        db.all(
+          `SELECT id, title, "order"
+             FROM parts
+            WHERE project_id = ?
+            ORDER BY "order"`,
+          [projectId],
+          (err2, rawParts) => {
+            if (err2) {
+              console.error('❌ DB error loading rawParts:', err2);
+              return res.sendStatus(500);
+            }
+            res.render('drafts/list', {
+              title:    'Drafts',
+              parts:    grouped,
+              rawParts,            // for inline CRUD in modal
+              projectId
+            });
+          }
+        );
       };
 
+      // No parts → only Ungrouped
       if (remaining === 0) {
-        // No parts defined → fall back to ungrouped drafts
         db.all(
           `SELECT *
              FROM drafts
-            WHERE project_id = ?
-              AND part_id IS NULL
-         ORDER BY last_saved DESC`,
+            WHERE project_id = ? AND part_id IS NULL
+         ORDER BY "order"`,
           [projectId],
-          (err2, drafts) => {
-            if (err2) {
-              console.error('❌ DB error loading ungrouped drafts:', err2);
+          (err3, drafts) => {
+            if (err3) {
+              console.error('❌ DB error loading ungrouped drafts:', err3);
               return res.sendStatus(500);
             }
-            result.push({
-              id: null,
-              title: 'Ungrouped (Chapters without Part)',
-              order: 0,
-              chapters: drafts
-            });
+            grouped.push({ id: null, title: 'Ungrouped', order: 0, chapters: drafts });
             finish();
           }
         );
       } else {
-        // Load chapters for each part
+        // For each part, load its chapters
         parts.forEach(part => {
           db.all(
             `SELECT *
                FROM drafts
-              WHERE project_id = ?
-                AND part_id = ?
-           ORDER BY last_saved DESC`,
+              WHERE project_id = ? AND part_id = ?
+           ORDER BY "order"`,
             [projectId, part.id],
-            (err3, drafts) => {
-              if (err3) {
-                console.error(`❌ DB error loading drafts for part ${part.id}:`, err3);
+            (err4, drafts) => {
+              if (err4) {
+                console.error(`❌ DB error loading drafts for part ${part.id}:`, err4);
                 return res.sendStatus(500);
               }
-              result.push({
-                id: part.id,
-                title: part.title,
-                order: part.order,
+              grouped.push({
+                id:       part.id,
+                title:    part.title,
+                order:    part.order,
                 chapters: drafts
               });
               if (--remaining === 0) {
-                // Finally also grab any ungrouped drafts
+                // Then load ungrouped as final group
                 db.all(
                   `SELECT *
                      FROM drafts
-                    WHERE project_id = ?
-                      AND part_id IS NULL
-                 ORDER BY last_saved DESC`,
+                    WHERE project_id = ? AND part_id IS NULL
+                 ORDER BY "order"`,
                   [projectId],
-                  (err4, ungrouped) => {
-                    if (err4) {
-                      console.error('❌ DB error loading ungrouped drafts:', err4);
+                  (err5, draftsU) => {
+                    if (err5) {
+                      console.error('❌ DB error loading ungrouped drafts:', err5);
                       return res.sendStatus(500);
                     }
-                    if (ungrouped.length) {
-                      result.push({
-                        id: null,
-                        title: 'Without part (ungrouped)',
-                        order: Infinity,
-                        chapters: ungrouped
+                    if (draftsU.length) {
+                      grouped.push({
+                        id:       null,
+                        title:    'Ungrouped',
+                        order:    Infinity,
+                        chapters: draftsU
                       });
-                      // Sort the final array by 'order'
-                      result.sort((a, b) => a.order - b.order);
                     }
+                    grouped.sort((a, b) => a.order - b.order);
                     finish();
                   }
                 );
@@ -109,7 +117,78 @@ exports.list = (req, res) => {
   );
 };
 
-// Show editor for a chapter
+/**
+ * Return JSON array of all parts + their chapters for AJAX.
+ */
+exports.jsonGroups = (req, res) => {
+  const { projectId } = req.params;
+  db.all(
+    `SELECT id, title, "order"
+       FROM parts
+      WHERE project_id = ?
+      ORDER BY "order"`,
+    [projectId],
+    (err, parts) => {
+      if (err) return res.sendStatus(500);
+      let remaining = parts.length;
+      const groups = [];
+
+      const finishJson = () => {
+        // After parts, include ungrouped drafts
+        db.all(
+          `SELECT *
+             FROM drafts
+            WHERE project_id = ? AND part_id IS NULL
+         ORDER BY "order"`,
+          [projectId],
+          (errU, draftsU) => {
+            if (errU) return res.sendStatus(500);
+            if (draftsU.length) {
+              groups.push({
+                id:      null,
+                title:   'Ungrouped',
+                order:   Infinity,
+                chapters:draftsU
+              });
+            }
+            groups.sort((a, b) => a.order - b.order);
+            res.json({ success: true, groups });
+          }
+        );
+      };
+
+      if (remaining === 0) {
+        // No parts at all
+        finishJson();
+      } else {
+        // Load drafts for each part
+        parts.forEach(part => {
+          db.all(
+            `SELECT *
+               FROM drafts 
+              WHERE project_id = ? AND part_id = ?
+           ORDER BY "order"`,
+            [projectId, part.id],
+            (errD, drafts) => {
+              if (errD) return res.sendStatus(500);
+              groups.push({
+                id:      part.id,
+                title:   part.title,
+                order:   part.order,
+                chapters:drafts
+              });
+              if (--remaining === 0) finishJson();
+            }
+          );
+        });
+      }
+    }
+  );
+};
+
+/**
+ * Show editor for a single chapter.
+ */
 exports.edit = (req, res) => {
   const { id } = req.params;
   db.get(`SELECT * FROM drafts WHERE id = ?`, [id], (err, draft) => {
@@ -118,14 +197,19 @@ exports.edit = (req, res) => {
   });
 };
 
-// Create new chapter, optionally inside a part
+/**
+ * Create a new chapter (optionally inside a part).
+ */
 exports.create = (req, res) => {
   const { projectId } = req.params;
-  const { title, part_id } = req.body;  // form must include `part_id`
+  const { title, part_id } = req.body;
   db.run(
-    `INSERT INTO drafts (project_id, title, part_id) VALUES (?, ?, ?)`,
-    [projectId, title, part_id || null],
-    function (err) {
+    `INSERT INTO drafts (project_id, title, part_id, "order")
+         VALUES (?, ?, ?, COALESCE((
+           SELECT MAX("order")+1 FROM drafts WHERE project_id = ?
+         ), 0))`,
+    [projectId, title, part_id || null, projectId],
+    function(err) {
       if (err) {
         console.error('❌ Insert draft error:', err);
         return res.sendStatus(500);
@@ -135,7 +219,9 @@ exports.create = (req, res) => {
   );
 };
 
-// Update content of a draft (autosave)
+/**
+ * Autosave: update the content of a chapter.
+ */
 exports.update = (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
@@ -152,4 +238,66 @@ exports.update = (req, res) => {
       res.json({ success: true, savedAt: new Date().toISOString() });
     }
   );
+};
+
+/**
+ * Reorder a chapter within the same part: only updates its order.
+ */
+exports.reorder = (req, res) => {
+  console.log('Reorder handler body:', req.body);
+  const { id } = req.params;
+  const order = parseInt(req.body.order, 10) || 0;
+
+  db.run(
+    `UPDATE drafts
+        SET "order" = ?
+      WHERE id = ?`,
+    [order, id],
+    err => {
+      if (err) {
+        console.error('❌ Reorder draft error:', err);
+        return res.sendStatus(500);
+      }
+      res.json({ success: true });
+    }
+  );
+};
+
+/**
+ * Move a chapter to another part and set its order.
+ */
+exports.move = (req, res) => {
+  console.log('Move handler body:', req.body);
+  const { id } = req.params;
+  const partId = req.body.part_id === 'null' ? null : req.body.part_id;
+  const order  = parseInt(req.body.order, 10) || 0;
+
+  db.run(
+    `UPDATE drafts
+        SET part_id = ?, "order" = ?
+      WHERE id = ?`,
+    [partId, order, id],
+    err => {
+      if (err) {
+        console.error('❌ Move draft error:', err);
+        return res.sendStatus(500);
+      }
+      res.json({ success: true });
+    }
+  );
+};
+
+/**
+ * Delete a chapter.
+ */
+exports.delete = (req, res) => {
+  const { id } = req.params;
+  db.run(`DELETE FROM drafts WHERE id = ?`, [id], err => {
+    if (err) {
+      console.error('❌ Delete draft error:', err);
+      return res.sendStatus(500);
+    }
+    if (req.xhr) return res.sendStatus(204);
+    res.redirect('back');
+  });
 };

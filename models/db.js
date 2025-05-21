@@ -3,9 +3,8 @@ const path    = require('path');
 
 const db = new sqlite3.Database(path.join(__dirname, '../db/database.sqlite'));
 
-// Initialize database schema if it does not exist
 db.serialize(() => {
-  // Users table
+  // Users
   db.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
@@ -13,7 +12,7 @@ db.serialize(() => {
     password TEXT NOT NULL
   )`);
 
-  // Projects table
+  // Projects
   db.run(`CREATE TABLE IF NOT EXISTS projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
@@ -22,7 +21,7 @@ db.serialize(() => {
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 
-  // Parts table (book parts / volumes)
+  // Parts (volumes)
   db.run(`CREATE TABLE IF NOT EXISTS parts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL,
@@ -31,19 +30,22 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Drafts table (chapters)
+  // Drafts (chapters)
   db.run(`CREATE TABLE IF NOT EXISTS drafts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER,
     part_id INTEGER,
     title TEXT NOT NULL,
     content TEXT,
+    "order" INTEGER DEFAULT 0,
     last_saved DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(project_id) REFERENCES projects(id),
     FOREIGN KEY(part_id)    REFERENCES parts(id)
   )`);
 
-  // Notes table
+  // Notes
   db.run(`CREATE TABLE IF NOT EXISTS notes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER,
@@ -52,7 +54,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Characters table
+  // Characters
   db.run(`CREATE TABLE IF NOT EXISTS characters (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL,
@@ -80,7 +82,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Health history table
+  // Health history
   db.run(`CREATE TABLE IF NOT EXISTS health_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     character_id INTEGER,
@@ -89,7 +91,7 @@ db.serialize(() => {
     FOREIGN KEY(character_id) REFERENCES characters(id)
   )`);
 
-  // Character relationships table
+  // Character relationships
   db.run(`CREATE TABLE IF NOT EXISTS character_relationships (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     character_id INTEGER,
@@ -99,7 +101,7 @@ db.serialize(() => {
     FOREIGN KEY(related_character_id) REFERENCES characters(id)
   )`);
 
-  // Preferences table
+  // Preferences
   db.run(`CREATE TABLE IF NOT EXISTS preferences (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
@@ -109,21 +111,8 @@ db.serialize(() => {
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 
-  // Migrate existing characters table if needed (silent failures)
-  db.run(`ALTER TABLE characters ADD COLUMN goal TEXT`,         () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN character_type TEXT`,() => {});
-  db.run(`ALTER TABLE characters ADD COLUMN motivation TEXT`,   () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN fears TEXT`,        () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN weaknesses TEXT`,   () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN arc TEXT`,          () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN secrets TEXT`,      () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN allies TEXT`,       () => {});
-  db.run(`ALTER TABLE characters ADD COLUMN enemies TEXT`,      () => {});
-
-  // Ensure drafts has part_id (silent if already exists)
-  db.run(`ALTER TABLE drafts ADD COLUMN part_id INTEGER`, () => {});
-
-  // Ensure drafts has creation and update timestamps (silent if already exists)
+  // Silent migrations for older tables
+  db.run(`ALTER TABLE drafts ADD COLUMN "order" INTEGER DEFAULT 0`,         () => {});
   db.run(`ALTER TABLE drafts ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP`, () => {});
   db.run(`ALTER TABLE drafts ADD COLUMN updated_at TEXT DEFAULT CURRENT_TIMESTAMP`, () => {});
 });

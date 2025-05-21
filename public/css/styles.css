@@ -73,6 +73,12 @@ form select:focus {
   font-weight: 600;
 }
 
+/* force card borders to repaint cleanly after DOM updates */
+#partsContainer .card {
+  will-change: transform;
+}
+
+
 /* Quill editor dark theme */
 #quill-editor {
   background-color: transparent !important;
@@ -324,4 +330,9 @@ input[type="number"]::-webkit-inner-spin-button {
 #connectionList strong {
   font-weight: bold;
   color: #ffc107; /* only for the relation */
+}
+
+/* make empty chapter-lists droppable */
+ul.list-group[data-part-id] {
+  min-height: 2rem;
 }
