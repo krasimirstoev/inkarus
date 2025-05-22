@@ -26,8 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     await reloadGroups();
   });
 
-  // 2) Delegate Delete & Rename clicks
+  // 2) Delegate Open, Rename & Delete clicks
   document.body.addEventListener('click', async e => {
+    // Open
+    if (e.target.matches('.btn-open-chapter')) {
+      e.preventDefault();
+      const id = e.target.dataset.id;
+      window.location.href = `/drafts/${projectId}/edit/${id}`;
+      return;
+    }
     // Rename
     if (e.target.matches('.btn-rename-chapter')) {
       e.preventDefault();
@@ -75,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         animation: 150,
         handle: '.chapter-item',
         onEnd: async evt => {
-          const chapId = evt.item.dataset.id;
+          const chapId  = evt.item.dataset.id;
           const fromPid = evt.from.dataset.partId;
           const toPid   = evt.to.dataset.partId;
           const endpoint = (fromPid === toPid)
@@ -97,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res  = await fetch(`/drafts/${projectId}/json-groups`);
       const data = await res.json();
-      if (!data.success) throw new Error('JSON-groups failed');
+      if (!data.success) throw new Error('json-groups failed');
       renderGroups(data.groups);
       initSorting();
     } catch {
@@ -105,11 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 6) Render cards with header styling, divider, and Rename/Delete buttons
+  // 6) Render cards with header styling, divider, and buttons
   function renderGroups(groups) {
     container.innerHTML = '';
     groups.forEach(g => {
-      const title = g.id === null ? 'Ungrouped (Without Part)' : g.title;
+      const title = g.id === null
+        ? 'Ungrouped (Without Part)'
+        : g.title;
 
       const itemsHtml = g.chapters.length
         ? g.chapters.map(ch => `
@@ -122,15 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${ch.title}
               </a>
               <div class="d-flex align-items-center">
-                <button
-                  class="btn btn-sm btn-warning btn-rename-chapter me-2"
-                  data-id="${ch.id}"
-                  data-title="${ch.title}"
-                >Rename</button>
-                <button
-                  class="btn btn-sm btn-danger btn-delete-chapter"
-                  data-id="${ch.id}"
-                >Delete</button>
+                <button class="btn btn-sm btn-primary btn-open-chapter me-2"
+                        data-id="${ch.id}">Open</button>
+                <button class="btn btn-sm btn-warning btn-rename-chapter me-2"
+                        data-id="${ch.id}"
+                        data-title="${ch.title}">Rename</button>
+                <button class="btn btn-sm btn-danger btn-delete-chapter"
+                        data-id="${ch.id}">Delete</button>
               </div>
             </li>`).join('')
         : `<li class="list-group-item empty text-center text-muted"
@@ -152,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 7) Initial setup
-  renderGroups([]);   // clear any static content
+  renderGroups([]);   // clear any static/old content
   initSorting();
   reloadGroups();
 });

@@ -42,7 +42,9 @@
 <% } else { %>
   <div id="partsContainer" data-project-id="<%= projectId %>">
     <% parts.forEach(part => {
-         const title = part.id===null ? 'Ungrouped (Without Part)' : part.title;
+         const title = part.id === null
+           ? 'Ungrouped (Without Part)'
+           : part.title;
     %>
       <div class="card mb-4 bg-dark border-secondary border-2 rounded shadow-sm text-light">
         <div class="card-header fw-bold fs-4"><%= title %></div>
@@ -60,6 +62,10 @@
                     <%= ch.title %>
                   </a>
                   <div class="d-flex align-items-center">
+                    <button
+                      class="btn btn-sm btn-primary btn-open-chapter me-2"
+                      data-id="<%= ch.id %>"
+                    >Open</button>
                     <button
                       class="btn btn-sm btn-warning btn-rename-chapter me-2"
                       data-id="<%= ch.id %>"
