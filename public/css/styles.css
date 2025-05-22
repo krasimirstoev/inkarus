@@ -336,3 +336,10 @@ input[type="number"]::-webkit-inner-spin-button {
 ul.list-group[data-part-id] {
   min-height: 2rem;
 }
+
+/* fixing nowrap for success button in Drafts section */
+#addChapterBtn {
+  white-space: nowrap;    
+  padding: 0.25rem 0.75rem; 
+  line-height: 1.5;        
+}
