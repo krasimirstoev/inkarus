@@ -9,6 +9,10 @@ function isAuthenticated(req, res, next) {
 }
 router.use(isAuthenticated);
 
+// Alias autosave/save without projectId (catch `/drafts/update/:id`)
+router.post('/update/:id',   c.update);
+router.post('/save/:id',     c.update);
+
 // GET JSON of all parts + their chapters for AJAX
 router.get('/:projectId/json-groups',   c.jsonGroups);
 
