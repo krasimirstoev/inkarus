@@ -301,3 +301,24 @@ exports.delete = (req, res) => {
     res.redirect('back');
   });
 };
+
+/**
+ * Rename a chapter: update its title.
+ */
+exports.rename = (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  db.run(
+    `UPDATE drafts
+        SET title = ?
+      WHERE id = ?`,
+    [title, id],
+    err => {
+      if (err) {
+        console.error('❌ Rename draft error:', err);
+        return res.sendStatus(500);
+      }
+      res.json({ success: true });
+    }
+  );
+};

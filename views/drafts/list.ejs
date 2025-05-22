@@ -42,9 +42,7 @@
 <% } else { %>
   <div id="partsContainer" data-project-id="<%= projectId %>">
     <% parts.forEach(part => {
-         const title = part.id===null
-           ? 'Ungrouped (Without Part)'
-           : part.title;
+         const title = part.id===null ? 'Ungrouped (Without Part)' : part.title;
     %>
       <div class="card mb-4 bg-dark border-secondary border-2 rounded shadow-sm text-light">
         <div class="card-header fw-bold fs-4"><%= title %></div>
@@ -61,10 +59,17 @@
                      class="text-white text-decoration-none flex-grow-1">
                     <%= ch.title %>
                   </a>
-                  <button
-                    class="btn btn-sm btn-danger btn-delete-chapter"
-                    data-id="<%= ch.id %>"
-                  >Delete</button>
+                  <div class="d-flex align-items-center">
+                    <button
+                      class="btn btn-sm btn-warning btn-rename-chapter me-2"
+                      data-id="<%= ch.id %>"
+                      data-title="<%= ch.title %>"
+                    >Rename</button>
+                    <button
+                      class="btn btn-sm btn-danger btn-delete-chapter"
+                      data-id="<%= ch.id %>"
+                    >Delete</button>
+                  </div>
                 </li>
               <% }) %>
             <% } else { %>
@@ -80,7 +85,37 @@
   </div>
 <% } %>
 
-<!-- Parts Modal -->
+<!-- Rename Chapter Modal -->
+<div class="modal fade" id="renameChapterModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="rename-chapter-form" class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Rename Chapter</h5>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="rename-chapter-title" class="form-label">New Title</label>
+          <input
+            type="text"
+            id="rename-chapter-title"
+            name="title"
+            class="form-control bg-dark text-white"
+            required
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-warning">Save</button>
+        <button type="button" class="btn btn-secondary"
+                data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Parts AJAX Modal -->
 <div
   class="modal fade"
   id="partsModal"
@@ -93,13 +128,11 @@
       <div class="modal-header">
         <h5 class="modal-title">Manage Parts</h5>
         <button type="button" class="btn-close btn-close-white"
-                data-bs-dismiss="modal" aria-label="Close"></button>
+                data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <!-- here we’ll inject the Add/Edit form -->
         <div id="partsFormContainer" class="mb-3"></div>
         <hr class="border-secondary">
-        <!-- here we’ll inject the JSON list -->
         <ul id="partsList" class="list-group list-group-flush"></ul>
       </div>
     </div>

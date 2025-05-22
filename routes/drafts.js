@@ -25,6 +25,9 @@ router.post('/:projectId/reorder/:id',  c.reorder);
 // POST move a chapter to another part and set its order
 router.post('/:projectId/move/:id',     c.move);
 
+// POST rename a chapter title
+router.post('/:projectId/rename/:id',   c.rename);
+
 // DELETE a chapter (with fallback POST)
 router.delete('/:projectId/delete/:id', c.delete);
 router.post('/:projectId/delete/:id',   c.delete);
