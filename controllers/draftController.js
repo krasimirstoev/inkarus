@@ -380,7 +380,7 @@ exports.revisionsJson = (req, res) => {
         type: row.type || 'unknown'
       }));
 
-      res.json({ success: true, revisions: result });
+      res.json({ success: true, count: result.length, revisions: result });
     }
   );
 };

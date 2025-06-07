@@ -1,4 +1,6 @@
 // revision-panel.js — Handles revision history panel logic
+//console.log('📦 revision-panel.js loaded');
+
 document.addEventListener('DOMContentLoaded', () => {
   const openBtn = document.getElementById('open-revisions');
   const modalEl = document.getElementById('revisionModal');
@@ -18,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) throw new Error('Failed to load revisions');
       const json = await res.json();
       if (!json.success) throw new Error('Failed to load revisions');
-      renderRevisions(json.revisions);
+      renderRevisions(json.revisions, json.count);
     } catch (err) {
       listEl.innerHTML = '<div class="text-danger text-center">Error loading revisions</div>';
       console.error(err);
@@ -26,7 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 // Render revisions list with restore buttons
-function renderRevisions(revisions) {
+function renderRevisions(revisions, count) {
+  const header = document.getElementById('revision-count');
+  if (header) {
+    header.textContent = `${count} revision${count !== 1 ? 's' : ''}`;
+  }
+
   if (!revisions.length) {
     listEl.innerHTML = '<div class="text-center text-muted">No revisions available.</div>';
     return;

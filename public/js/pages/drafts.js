@@ -171,41 +171,74 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 7) Open revision modal and fetch data
-  function openRevisionModal(draftId, title) {
-    const modalEl     = document.getElementById('revisionsModal');
-    const container   = document.getElementById('revisionsModalBody');
-    const modalTitle  = document.getElementById('revisionsModalTitle');
+function openRevisionModal(draftId, title) {
+  console.log('🧪 openRevisionModal triggered for', draftId, title);
+  const modalEl     = document.getElementById('revisionModal');
+  const container   = document.getElementById('revisions-list');
+  const modalTitle  = document.getElementById('revisionsModalTitle');
+  const countBadge  = document.getElementById('revision-count');
 
-    if (!modalEl || !container) {
-      console.warn('❌ Revision modal not found in DOM');
-      return;
-    }
-
-    if (modalTitle) modalTitle.textContent = `Revisions for "${title}"`;
-    container.innerHTML = '<div class="text-center text-muted">Loading...</div>';
-
-    fetch(`/drafts/${projectId}/revisions/${draftId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.success || !data.revisions.length) {
-          container.innerHTML = '<p class="text-muted">No revisions found for this chapter.</p>';
-          return;
-        }
-
-        container.innerHTML = `
-          <ul class="list-group">
-            ${data.revisions.map(r => `
-              <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
-                <span>${r.created_at} – ${r.word_count || 0} words (${r.type})</span>
-                <button class="btn btn-sm btn-outline-primary" disabled>👁️ Preview</button>
-              </li>
-            `).join('')}
-          </ul>
-        `;
-      });
-
-    new bootstrap.Modal(modalEl).show();
+  if (!modalEl || !container) {
+    console.warn('❌ Revision modal not found in DOM');
+    return;
   }
+
+  fetch(`/drafts/${projectId}/revisions/${draftId}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log('🪵 Revisions response:', data);
+      console.log('🧪 DATA from /revisions/...:', data);
+      alert('🧪 openRevisionModal called');
+
+
+      // Validate data
+      if (!data.success || !Array.isArray(data.revisions)) {
+        container.innerHTML = '<p class="text-muted">No revisions found for this chapter.</p>';
+        if (countBadge) countBadge.textContent = '0 revisions';
+        return;
+      }
+
+      const revisions = Array.isArray(data.revisions) ? data.revisions : [];
+
+      // Update modal title
+      if (modalTitle) {
+        modalTitle.textContent = `Revisions for "${title}"`;
+      }
+
+      // Update revision count
+      if (countBadge) {
+        countBadge.textContent = `${revisions.length} revision${revisions.length !== 1 ? 's' : ''}`;
+      }
+
+      // Render revisions list
+      container.innerHTML = `
+        <ul class="list-group">
+          ${revisions.map(r => `
+            <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+              <span>${r.created_at} – ${r.word_count || 0} words (${r.type})</span>
+              <button class="btn btn-sm btn-outline-primary" disabled>👁️ Preview</button>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+    });
+
+  new bootstrap.Modal(modalEl).show();
+}
+
+
+  // Ensure revision modal is initialized
+  const revisionModalEl = document.getElementById('revisionsModal');
+  if (revisionModalEl) {
+    new bootstrap.Modal(revisionModalEl);
+  } else {
+    console.warn('❌ Revisions modal not found in DOM');
+  }
+  // Ensure revision count badge is initialized
+  const revisionCountBadge = document.getElementById('revision-count');
+  if (!revisionCountBadge) {
+    console.warn('❌ Revision count badge not found in DOM');
+  } 
 
   // 8) Initial setup
   renderGroups([]);
