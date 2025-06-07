@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Render revisions list with restore buttons
+// Render revisions list with restore buttons
 function renderRevisions(revisions) {
   if (!revisions.length) {
     listEl.innerHTML = '<div class="text-center text-muted">No revisions available.</div>';
@@ -33,7 +33,6 @@ function renderRevisions(revisions) {
   }
 
   let html = '<ul class="list-group">';
-  console.log('Revisions from server:', revisions);
   revisions.forEach(rev => {
     const date = new Date(rev.created_at);
     const typeLabel = rev.type === 'manual' ? 'Manual ★' :
@@ -45,15 +44,20 @@ function renderRevisions(revisions) {
         <div>
           <strong>[${typeLabel}]</strong> ${date.toLocaleString()} – ${rev.word_count} words
         </div>
-        <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">
-          ♻️ Restore
-        </button>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">
+            ♻️ Restore
+          </button>
+          <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">
+            🗑 Delete
+          </button>
+        </div>
       </li>`;
   });
   html += '</ul>';
   listEl.innerHTML = html;
 
-  // Restore buttons logic
+  // Restore logic
   document.querySelectorAll('.btn-restore').forEach(btn => {
     btn.addEventListener('click', async () => {
       const revisionId = btn.dataset.id;
@@ -76,6 +80,30 @@ function renderRevisions(revisions) {
       }
     });
   });
+
+  // Delete logic
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const revisionId = btn.dataset.id;
+      if (!confirm('Are you sure you want to delete this revision? This action cannot be undone.')) return;
+
+      try {
+        const res = await fetch(`/drafts/${projectId}/revision/${revisionId}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          btn.closest('li').remove();
+        } else {
+          alert('❌ Failed to delete revision.');
+        }
+      } catch (err) {
+        alert('❌ An error occurred.');
+        console.error(err);
+      }
+    });
+  });
 }
+
 
 });
