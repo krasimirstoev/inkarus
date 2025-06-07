@@ -61,6 +61,9 @@ function renderRevisions(revisions, count) {
           <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">
             ♻️ Restore
           </button>
+          <button class="btn btn-sm btn-outline-primary btn-preview" data-id="${rev.id}">
+            Preview
+          </button>
           <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">
             🗑 Delete
           </button>
@@ -127,6 +130,34 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
   });
 });
 }
+
+// Preview logic
+document.querySelectorAll('.btn-preview').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const revisionId = btn.dataset.id;
+    const modal      = new bootstrap.Modal(document.getElementById('revisionPreviewModal'));
+    const container  = document.getElementById('revisionPreviewContent');
+
+    container.innerHTML = '<div class="text-muted text-center">Loading...</div>';
+
+    try {
+      const res = await fetch(`/drafts/revision/${revisionId}`);
+      const data = await res.json();
+
+      if (!data.success) throw new Error('Failed to load revision');
+
+      container.innerHTML = `
+        <div class="p-3 bg-secondary text-light rounded">
+          ${data.content}
+        </div>
+      `;
+      modal.show();
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = '<div class="text-danger text-center">Error loading preview.</div>';
+    }
+  });
+});
 
 // Close modal when clicking outside
 modalEl.addEventListener('click', e => {

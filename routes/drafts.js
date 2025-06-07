@@ -14,6 +14,16 @@ router.use(isAuthenticated);
 // GET JSON list of revisions for a given draft
 router.get('/:projectId/revisions/:draftId', c.revisionsJson);
 
+// Get content of specific revision
+router.get('/revision/:revisionId', (req, res) => {
+  const { revisionId } = req.params;
+  db.get(`SELECT content FROM draft_revisions WHERE id = ?`, [revisionId], (err, row) => {
+    if (err || !row) {
+      return res.json({ success: false });
+    }
+    res.json({ success: true, content: row.content });
+  });
+});
 
 /**
  * POST restore a specific revision to its draft
