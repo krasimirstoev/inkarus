@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const openBtn = document.getElementById('open-revisions');
   const modalEl = document.getElementById('revisionModal');
   const modal   = new bootstrap.Modal(modalEl);
+  modalEl.addEventListener('hidden.bs.modal', () => {
+    // Fix for aria-hidden warning in Chrome
+  if (document.activeElement && modalEl.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
+});
   const listEl  = document.getElementById('revisions-list');
 
   const projectId = document.getElementById('editor-form').dataset.projectId;
@@ -121,12 +127,18 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
   });
 });
 }
-    // Close modal when clicking outside
-    modalEl.addEventListener('click', e => {
-        if (e.target === modalEl) {
-        document.activeElement.blur();
-        modal.hide();
-        }
-    });
+
+// Close modal when clicking outside
+modalEl.addEventListener('click', e => {
+  if (e.target === modalEl) {
+    // Blur any focused element inside the modal
+    // This is to prevent focus issues when closing the modal.
+    if (document.activeElement && modalEl.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+
+    modal.hide();
+  }
+});
 
 });
