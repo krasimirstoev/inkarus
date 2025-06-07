@@ -62,7 +62,7 @@ function renderRevisions(revisions, count) {
             ♻️ Restore
           </button>
           <button class="btn btn-sm btn-outline-primary btn-preview" data-id="${rev.id}">
-            Preview
+            👁️ Preview
           </button>
           <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">
             🗑 Delete
