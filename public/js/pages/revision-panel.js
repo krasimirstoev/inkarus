@@ -51,7 +51,7 @@ function renderRevisions(revisions, count) {
         <div>
           <strong>[${typeLabel}]</strong> ${date.toLocaleString()} – ${rev.word_count} words
         </div>
-        <div class="btn-group">
+        <div class="d-flex gap-2">
           <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">
             ♻️ Restore
           </button>
