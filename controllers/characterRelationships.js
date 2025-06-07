@@ -22,7 +22,7 @@ exports.list = (req, res) => {
 // Handle form to add a new relationship
 exports.add = (req, res) => {
   const { characterId, projectId } = req.params;
-  const { relatedCharacterId, relation, inverseRelation, description } = req.body;
+  const { relatedCharacterId, relation, description } = req.body;
 
   if (!relatedCharacterId || !relation) {
     return res.status(400).send('Missing fields');
@@ -32,7 +32,6 @@ exports.add = (req, res) => {
     characterId,
     relatedCharacterId,
     relation,
-    inverseRelation,
     description,
     (err) => {
       if (err) {

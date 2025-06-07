@@ -1,13 +1,12 @@
 const db = require('./db');
 
 // Add relationship + its inverse
-function addRelationship(characterId, relatedCharacterId, relation, inverseRelation, description = '', callback) {
-  // Insert original relationship
+function addRelationship(characterId, relatedCharacterId, relation, description = '', callback) {
   db.run(
     `INSERT INTO character_relationships 
-     (character_id, related_character_id, relation, inverse_relation, description) 
-     VALUES (?, ?, ?, ?, ?)`,
-    [characterId, relatedCharacterId, relation, inverseRelation, description],
+     (character_id, related_character_id, relation, description) 
+     VALUES (?, ?, ?, ?)`,
+    [characterId, relatedCharacterId, relation, description],
     function (err) {
       if (err) return callback(err);
 
