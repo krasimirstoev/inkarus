@@ -10,9 +10,8 @@ function isAuthenticated(req, res, next) {
 }
 router.use(isAuthenticated);
 
-/**
- * GET JSON list of revisions for a given draft
- */
+
+// GET JSON list of revisions for a given draft
 router.get('/:projectId/revisions/:draftId', c.revisionsJson);
 
 
@@ -42,6 +41,19 @@ router.post('/:projectId/restore/:revisionId', (req, res) => {
     );
   });
 });
+
+// DELETE a specific revision
+router.delete('/:projectId/revision/:revisionId', (req, res) => {
+  const { revisionId } = req.params;
+  db.run(`DELETE FROM draft_revisions WHERE id = ?`, [revisionId], err => {
+    if (err) {
+      console.error('❌ Failed to delete revision:', err);
+      return res.status(500).json({ success: false });
+    }
+    res.json({ success: true });
+  });
+});
+
 
 // Save or autosave
 router.post('/update/:id',             c.update);
