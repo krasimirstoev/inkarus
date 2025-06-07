@@ -88,28 +88,38 @@ function renderRevisions(revisions, count) {
     });
   });
 
-  // Delete logic
-  document.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const revisionId = btn.dataset.id;
-      if (!confirm('Are you sure you want to delete this revision? This action cannot be undone.')) return;
+// Delete logic
+document.querySelectorAll('.btn-delete').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const revisionId = btn.dataset.id;
+    if (!confirm('Are you sure you want to delete this revision? This action cannot be undone.')) return;
 
-      try {
-        const res = await fetch(`/drafts/${projectId}/revision/${revisionId}`, {
-          method: 'DELETE'
-        });
+    try {
+      const res = await fetch(`/drafts/${projectId}/revision/${revisionId}`, {
+        method: 'DELETE'
+      });
 
-        if (res.ok) {
-          btn.closest('li').remove();
-        } else {
-          alert('❌ Failed to delete revision.');
+      if (res.ok) {
+        // Remove revision from DOM
+        const li = btn.closest('li');
+        li.remove();
+
+        // Update revision count
+        const badge = document.getElementById('revision-count');
+        if (badge) {
+          const currentCount = parseInt(badge.textContent) || 1;
+          const newCount = Math.max(currentCount - 1, 0);
+          badge.textContent = `${newCount} revision${newCount !== 1 ? 's' : ''}`;
         }
-      } catch (err) {
-        alert('❌ An error occurred.');
-        console.error(err);
+      } else {
+        alert('❌ Failed to delete revision.');
       }
-    });
+    } catch (err) {
+      alert('❌ An error occurred.');
+      console.error(err);
+    }
   });
+});
 }
     // Close modal when clicking outside
     modalEl.addEventListener('click', e => {
