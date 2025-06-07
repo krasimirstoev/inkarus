@@ -114,6 +114,7 @@ function renderRevisions(revisions, count) {
     // Close modal when clicking outside
     modalEl.addEventListener('click', e => {
         if (e.target === modalEl) {
+        document.activeElement.blur();
         modal.hide();
         }
     });
