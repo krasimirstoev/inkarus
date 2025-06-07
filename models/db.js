@@ -111,6 +111,17 @@ db.serialize(() => {
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 
+  // Draft revisions
+  db.run(`CREATE TABLE IF NOT EXISTS draft_revisions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  draft_id INTEGER NOT NULL,
+  content TEXT NOT NULL,
+  word_count INTEGER,
+  type TEXT DEFAULT 'autosave', -- autosave, manual, system
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(draft_id) REFERENCES drafts(id)
+)`);
+
   // Silent migrations for older tables
   db.run(`ALTER TABLE drafts ADD COLUMN "order" INTEGER DEFAULT 0`,         () => {});
   db.run(`ALTER TABLE drafts ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP`, () => {});

@@ -225,20 +225,48 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
-  db.run(
-    `UPDATE drafts
-        SET content = ?, last_saved = datetime('now')
-      WHERE id = ?`,
-    [content, id],
-    err => {
-      if (err) {
-        console.error('❌ Update draft error:', err);
+
+  const isManual = req.body.manualSave === true || req.body.manualSave === 'true';
+  const revisionType = isManual ? 'manual' : 'autosave';
+
+  const wordCount = (content.trim().match(/\S+/g) || []).length;
+
+  db.serialize(() => {
+    db.get(`SELECT content FROM drafts WHERE id = ?`, [id], (err, row) => {
+      if (err || !row) {
+        console.error('❌ Error loading draft for revision:', err);
         return res.sendStatus(500);
       }
-      res.json({ success: true, savedAt: new Date().toISOString() });
-    }
-  );
+
+      const original = row.content;
+
+      // Only if the content is edited
+      if (original !== content) {
+        db.run(`
+          INSERT INTO draft_revisions (draft_id, content, word_count, type)
+          VALUES (?, ?, ?, ?)`,
+          [id, original, wordCount, revisionType]
+        );
+      }
+
+      // Saving the new version
+      db.run(`
+        UPDATE drafts
+        SET content = ?, last_saved = datetime('now')
+        WHERE id = ?`,
+        [content, id],
+        err2 => {
+          if (err2) {
+            console.error('❌ Update draft error:', err2);
+            return res.sendStatus(500);
+          }
+          res.json({ success: true, savedAt: new Date().toISOString() });
+        }
+      );
+    });
+  });
 };
+
 
 /**
  * Reorder a chapter within the same part: only updates its order.
@@ -322,3 +350,39 @@ exports.rename = (req, res) => {
     }
   );
 };
+
+/**
+ * Return JSON list of revisions for a given draft.
+ */
+exports.revisionsJson = (req, res) => {
+  const { draftId } = req.params;
+
+  db.all(
+    `SELECT id, content, created_at, type
+     FROM draft_revisions
+     WHERE draft_id = ?
+     ORDER BY created_at DESC`,
+    [draftId],
+    (err, rows) => {
+      if (err) {
+        console.error('❌ Error loading revisions:', err);
+        return res.sendStatus(500);
+      }
+
+      // The next line is commented out for debugging purposes
+      // Uncomment to log raw rows from the database
+      //console.log('✅ Raw rows from DB:', rows);
+
+      const result = rows.map(row => ({
+        id: row.id,
+        created_at: row.created_at,
+        word_count: row.content.replace(/<[^>]*>/g, '').trim().split(/\s+/).length,
+        type: row.type || 'unknown'
+      }));
+
+      res.json({ success: true, revisions: result });
+    }
+  );
+};
+
+

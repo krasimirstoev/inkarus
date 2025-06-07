@@ -7,6 +7,9 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const app = express();
 
+// Initialize DB
+require('./models/db');
+// Configuration
 const config = require('./config/config');
 
 // Route imports
