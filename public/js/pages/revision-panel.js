@@ -104,6 +104,11 @@ function renderRevisions(revisions) {
     });
   });
 }
-
+    // Close modal when clicking outside
+    modalEl.addEventListener('click', e => {
+        if (e.target === modalEl) {
+        modal.hide();
+        }
+    });
 
 });
