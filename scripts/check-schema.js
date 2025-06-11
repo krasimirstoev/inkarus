@@ -81,3 +81,13 @@ const db = new sqlite3.Database(DB_PATH, sqlite3.OPEN_READONLY, (err) => {
   checkSchema(db);
 });
 
+// Close the database connection
+process.on('exit', () => {
+  db.close((err) => {
+    if (err) {
+      console.error('❌ Error closing database:', err.message);
+    } else {
+      console.log('✅ Database connection closed.');
+    }
+  });
+});
