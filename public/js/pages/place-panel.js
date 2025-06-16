@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <strong>${p.name}</strong>
           <small class="text-secondary fst-italic ms-2">(${p.type})</small>
         </div>
-        <span class="ms-auto text-muted">›</span>
+        <!-- <span class="ms-auto text-muted">›</span> -->
       </li>
     `).join('');
 
