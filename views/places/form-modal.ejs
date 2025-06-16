@@ -1,0 +1,59 @@
+<% const title = place.id ? 'Edit Place' : 'Add Place'; %>
+
+<div id="placeFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title"><%= title %></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="place-form" action="<%= place.id ? `/places/${projectId}/update/${place.id}` : `/places/${projectId}` %>" method="POST">
+          <% if (place.id) { %>
+            <input type="hidden" name="_method" value="POST">
+          <% } %>
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required value="<%= place.name || '' %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Type</label>
+            <select name="type" id="place-type" class="form-select">
+              <% types.forEach(t => { %>
+                <option value="<%= t %>" <%= place.type === t ? 'selected' : '' %>><%= t %></option>
+              <% }) %>
+            </select>
+            <input type="text"
+                   name="customType"
+                   id="custom-type"
+                   class="form-control mt-2 d-none"
+                   placeholder="Custom type"
+                   value="<%= place.type && !types.includes(place.type) ? place.type : '' %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="4"><%= place.description || '' %></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="place-form" class="btn btn-sm btn-outline-success">💾 Save</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Show customType input if “custom” selected
+  const typeEl   = document.getElementById('place-type');
+  const customEl = document.getElementById('custom-type');
+  function toggleCustom() {
+    customEl.classList.toggle('d-none', typeEl.value !== 'custom');
+  }
+  typeEl.addEventListener('change', toggleCustom);
+  toggleCustom();
+</script>

@@ -21,7 +21,7 @@ db.serialize(() => {
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 
-  // Parts (volumes)
+  // Parts
   db.run(`CREATE TABLE IF NOT EXISTS parts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL,
@@ -30,7 +30,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
 
-  // Drafts (chapters)
+  // Drafts
   db.run(`CREATE TABLE IF NOT EXISTS drafts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER,
@@ -113,26 +113,46 @@ db.serialize(() => {
 
   // Draft revisions
   db.run(`CREATE TABLE IF NOT EXISTS draft_revisions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  draft_id INTEGER NOT NULL,
-  content TEXT NOT NULL,
-  word_count INTEGER,
-  type TEXT DEFAULT 'autosave', -- autosave, manual, system
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(draft_id) REFERENCES drafts(id)
-)`);
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    draft_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    word_count INTEGER,
+    type TEXT DEFAULT 'autosave', -- autosave, manual, system
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(draft_id) REFERENCES drafts(id)
+  )`);
 
-  // Locations
+  // Locations—with custom_type and CHECK constraint
   db.run(`CREATE TABLE IF NOT EXISTS locations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
-    type TEXT NOT NULL CHECK (type IN ('city', 'village', 'country', 'continent', 'mountain', 'river', 'sea', 'lake', 'forest', 'desert', 'region', 'island', 'planet', 'custom')),
+    type TEXT NOT NULL CHECK (
+      type IN (
+        'city','village','country','continent',
+        'mountain','river','sea','lake',
+        'forest','desert','region','island',
+        'planet','custom'
+      )
+    ),
+    custom_type TEXT DEFAULT '',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
-);`);
+  );`);
+
+  // Trigger to auto-update updated_at
+  db.run(`
+    CREATE TRIGGER IF NOT EXISTS trg_locations_updated_at
+    AFTER UPDATE ON locations
+    FOR EACH ROW
+    BEGIN
+      UPDATE locations
+         SET updated_at = CURRENT_TIMESTAMP
+       WHERE id = NEW.id;
+    END;
+  `);
 
   // Silent migrations for older tables
   db.run(`ALTER TABLE drafts ADD COLUMN "order" INTEGER DEFAULT 0`,         () => {});

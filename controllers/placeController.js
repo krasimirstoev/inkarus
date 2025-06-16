@@ -1,26 +1,14 @@
-// controllers/placeController.js - Handles place management operations
+// controllers/placeController.js — Handles place management operations
 
 const locationModel = require('../models/locationModel');
-
 const PLACE_TYPES = [
-  'city',
-  'village',
-  'country',
-  'continent',
-  'mountain',
-  'river',
-  'sea',
-  'lake',
-  'forest',
-  'desert',
-  'region',
-  'island',
-  'planet',
-  'custom'
+  'city','village','country','continent','mountain',
+  'river','sea','lake','forest','desert','region',
+  'island','planet','custom'
 ];
 
 /**
- * Show list of places for a project.
+ * Show list of places (HTML).
  */
 exports.list = (req, res) => {
   const { projectId } = req.params;
@@ -29,52 +17,47 @@ exports.list = (req, res) => {
       console.error('❌ DB error loading places:', err);
       return res.sendStatus(500);
     }
-    res.render('places/list', {
-      title:      'Places',
-      places,
-      projectId
-    });
+    res.render('places/list', { title: 'Places', places, projectId });
   });
 };
 
 /**
- * Return JSON list of places for AJAX (editor panel).
+ * Return JSON for AJAX (editor panel).
  */
 exports.jsonList = (req, res) => {
   const { projectId } = req.params;
   locationModel.getAll(projectId, (err, places) => {
-    if (err) return res.sendStatus(500);
+    if (err) {
+      console.error('❌ DB error loading places (JSON):', err);
+      return res.sendStatus(500);
+    }
     res.json({ success: true, places });
   });
 };
 
 /**
- * Show form for creating a new place or editing an existing one.
+ * Render “new” or “edit” form.
+ * AJAX → form-modal.ejs, otherwise form-page.ejs
  */
 exports.form = (req, res) => {
   const { projectId, id } = req.params;
+  const data = { projectId, types: PLACE_TYPES };
+
   if (id) {
-    // Edit existing
+    // edit
     locationModel.getById(id, (err, place) => {
-      if (err || !place) {
-        console.error('❌ Place not found or DB error:', err);
-        return res.sendStatus(404);
-      }
-      res.render('places/form', {
-        title:      'Edit Place',
-        place,
-        projectId,
-        types:      PLACE_TYPES
-      });
+      if (err || !place) return res.sendStatus(404);
+      data.place = place;
+      data.title = 'Edit Place';
+      if (req.xhr) return res.render('places/form-modal', data);
+      res.render('places/form-page', data);
     });
   } else {
-    // New place
-    res.render('places/form', {
-      title:      'New Place',
-      place:      {},
-      projectId,
-      types:      PLACE_TYPES
-    });
+    // new
+    data.place = { name:'', type:'', custom_type:'', description:'' };
+    data.title = 'Add Place';
+    if (req.xhr) return res.render('places/form-modal', data);
+    res.render('places/form-page', data);
   }
 };
 
@@ -84,18 +67,22 @@ exports.form = (req, res) => {
 exports.create = (req, res) => {
   const { projectId } = req.params;
   const { name, type, customType, description } = req.body;
-  const finalType = type === 'custom' ? customType : type;
+  const finalType = type === 'custom' ? 'custom' : type;
+  const custom_type = type === 'custom' ? customType : '';
 
   locationModel.create(
     projectId,
     name,
     finalType,
+    custom_type,
     description,
     (err, result) => {
       if (err) {
         console.error('❌ Error creating place:', err);
         return res.sendStatus(500);
       }
+      const place = { id: result.id, name, type: finalType, custom_type, description };
+      if (req.xhr) return res.json({ success: true, place });
       res.redirect(`/places/${projectId}`);
     }
   );
@@ -107,18 +94,22 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
   const { projectId, id } = req.params;
   const { name, type, customType, description } = req.body;
-  const finalType = type === 'custom' ? customType : type;
+  const finalType = type === 'custom' ? 'custom' : type;
+  const custom_type = type === 'custom' ? customType : '';
 
   locationModel.update(
     id,
     name,
     finalType,
+    custom_type,
     description,
     err => {
       if (err) {
         console.error('❌ Error updating place:', err);
         return res.sendStatus(500);
       }
+      const place = { id: Number(id), name, type: finalType, custom_type, description };
+      if (req.xhr) return res.json({ success: true, place });
       res.redirect(`/places/${projectId}`);
     }
   );
