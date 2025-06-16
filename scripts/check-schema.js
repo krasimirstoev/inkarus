@@ -17,7 +17,8 @@ const expectedSchema = {
   character_relationships: ['id', 'character_id', 'related_character_id', 'relation'],
   preferences: ['id', 'user_id', 'autosave_interval', 'show_status_bar', 'font_choice'],
   draft_revisions: ['id', 'draft_id', 'content', 'word_count', 'type', 'created_at'],
-  users: ['id', 'username', 'password', 'email']
+  users: ['id', 'username', 'password', 'email'],
+  locations: ['id', 'project_id', 'name', 'description', 'type', 'created_at', 'updated_at'] 
 };
 
 function checkSchema(db) {
