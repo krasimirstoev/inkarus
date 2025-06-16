@@ -144,10 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="btn btn-sm btn-warning btn-rename-chapter me-2"
                         data-id="${ch.id}"
                         data-title="${ch.title}">Rename</button>
-                <button class="btn btn-sm btn-secondary btn-revisions me-2"
+                <!-- <button class="btn btn-sm btn-secondary btn-revisions me-2"
                         data-id="${ch.id}" data-title="${ch.title}">
                   🕘 History
-                </button> 
+                </button> --> 
                 <button class="btn btn-sm btn-danger btn-delete-chapter"
                         data-id="${ch.id}">Delete</button>
               </div>
