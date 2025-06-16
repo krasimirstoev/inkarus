@@ -87,12 +87,14 @@
 </div>
 
 <!-- Revisions Modal -->
- <div class="modal fade" id="revisionModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="revisionModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content bg-dark text-light">
       <div class="modal-header border-secondary">
-        <h5 class="modal-title" id="revisionsModalTitle">
-           Revisions <span id="revision-count" class="badge bg-secondary">0</span>
+        <h5 id="revisionsModalTitle" class="modal-title">
+          <span id="revisionsModalText">Revisions</span>
+          <span class="badge bg-secondary ms-2" id="revision-count">0</span>
+          <button id="delete-autosaves-btn" class="btn btn-sm btn-outline-danger ms-2" title="Delete all autosave revisions">🧹</button>
         </h5>
         <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>

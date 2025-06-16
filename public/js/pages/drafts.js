@@ -144,10 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="btn btn-sm btn-warning btn-rename-chapter me-2"
                         data-id="${ch.id}"
                         data-title="${ch.title}">Rename</button>
-               <!-- Hide the button History (for a while) <button class="btn btn-sm btn-secondary btn-revisions me-2"
+                <button class="btn btn-sm btn-secondary btn-revisions me-2"
                         data-id="${ch.id}" data-title="${ch.title}">
                   🕘 History
-                </button> --> 
+                </button> 
                 <button class="btn btn-sm btn-danger btn-delete-chapter"
                         data-id="${ch.id}">Delete</button>
               </div>
@@ -172,73 +172,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7) Open revision modal and fetch data
 function openRevisionModal(draftId, title) {
-  console.log('🧪 openRevisionModal triggered for', draftId, title);
-  const modalEl     = document.getElementById('revisionModal');
-  const container   = document.getElementById('revisions-list');
-  const modalTitle  = document.getElementById('revisionsModalTitle');
-  const countBadge  = document.getElementById('revision-count');
+  // Wait one event loop cycle to ensure DOM is ready
+  setTimeout(() => {
+    const modalEl     = document.getElementById('revisionModal');
+    const container   = document.getElementById('revisions-list');
+    const modalTitle  = document.getElementById('revisionsModalTitle');
+    const titleText   = document.getElementById('revisionsModalText');
+    const countBadge  = document.getElementById('revision-count');
+    const deleteBtn   = document.getElementById('delete-autosaves-btn');
 
-  if (!modalEl || !container) {
-    console.warn('❌ Revision modal not found in DOM');
-    return;
-  }
+    // Check if all elements exist in DOM
+    if (!modalEl || !container || !modalTitle || !titleText || !countBadge || !deleteBtn) {
+      console.warn('❌ Some elements of the revision modal are missing in the DOM');
+      console.log('modalEl:', modalEl);
+      console.log('container:', container);
+      console.log('modalTitle:', modalTitle);
+      console.log('titleText:', titleText);
+      console.log('countBadge:', countBadge);
+      console.log('deleteBtn:', deleteBtn);
+      return;
+    }
 
-  fetch(`/drafts/${projectId}/revisions/${draftId}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log('🪵 Revisions response:', data);
-      console.log('🧪 DATA from /revisions/...:', data);
-      alert('🧪 openRevisionModal called');
+    modalEl.dataset.draftId = draftId;
 
+    fetch(`/drafts/${projectId}/revisions/${draftId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success || !Array.isArray(data.revisions)) {
+          container.innerHTML = '<p class="text-muted">No revisions found for this chapter.</p>';
+          titleText.textContent = `Revisions for "${title}"`;
+          countBadge.textContent = '0';
+          return;
+        }
 
-      // Validate data
-      if (!data.success || !Array.isArray(data.revisions)) {
-        container.innerHTML = '<p class="text-muted">No revisions found for this chapter.</p>';
-        if (countBadge) countBadge.textContent = '0 revisions';
-        return;
-      }
+        const revisions = data.revisions;
 
-      const revisions = Array.isArray(data.revisions) ? data.revisions : [];
-
-      // Update modal title
-      if (modalTitle) {
-        modalTitle.textContent = `Revisions for "${title}"`;
-      }
-
-      // Update revision count
-      if (countBadge) {
+        titleText.textContent = `Revisions for "${title}"`;
         countBadge.textContent = `${revisions.length} revision${revisions.length !== 1 ? 's' : ''}`;
-      }
 
-      // Render revisions list
-      container.innerHTML = `
-        <ul class="list-group">
-          ${revisions.map(r => `
-            <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
-              <span>${r.created_at} – ${r.word_count || 0} words (${r.type})</span>
-              <button class="btn btn-sm btn-outline-primary" disabled>👁️ Preview</button>
-            </li>
-          `).join('')}
-        </ul>
-      `;
-    });
+        container.innerHTML = `
+          <ul class="list-group">
+            ${revisions.map(r => `
+              <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+                <span>${r.created_at} – ${r.word_count || 0} words (${r.type})</span>
+                <button class="btn btn-sm btn-outline-primary" disabled>👁️ Preview</button>
+              </li>
+            `).join('')}
+          </ul>
+        `;
 
-  new bootstrap.Modal(modalEl).show();
+        // Attach fresh click handler to 🧹 button
+        deleteBtn.onclick = async () => {
+          console.log('🧹 Delete button clicked');
+          if (!confirm('Are you sure you want to delete all autosave revisions?')) return;
+
+          try {
+            const res = await fetch(`/drafts/${draftId}/revisions/delete-autosaves`, {
+              method: 'DELETE'
+            });
+
+            if (res.ok) {
+              alert('Autosave revisions deleted.');
+              openRevisionModal(draftId, title); // reload the modal
+            } else {
+              alert('Error deleting autosaves.');
+            }
+          } catch (err) {
+            console.error('❌ Failed to delete autosaves:', err);
+            alert('Request failed.');
+          }
+        };
+      });
+
+    // Show the modal
+    const modalInstance = new bootstrap.Modal(modalEl);
+    modalInstance.show();
+    console.log('🟢 Showing modal now');
+  }, 0); // Let the DOM breathe
 }
-
-
-  // Ensure revision modal is initialized
-  const revisionModalEl = document.getElementById('revisionsModal');
-  if (revisionModalEl) {
-    new bootstrap.Modal(revisionModalEl);
-  } else {
-    console.warn('❌ Revisions modal not found in DOM');
-  }
-  // Ensure revision count badge is initialized
-  const revisionCountBadge = document.getElementById('revision-count');
-  if (!revisionCountBadge) {
-    console.warn('❌ Revision count badge not found in DOM');
-  } 
 
   // 8) Initial setup
   renderGroups([]);

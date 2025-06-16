@@ -385,4 +385,17 @@ exports.revisionsJson = (req, res) => {
   );
 };
 
-
+/**
+ * Delete all autosave revisions for a draft.
+ */
+exports.deleteAutosaveRevisions = (req, res) => {
+  const draftId = req.params.projectId;
+  db.run(
+    `DELETE FROM draft_revisions WHERE draft_id = ? AND type = 'autosave'`,
+    [draftId],
+    function(err) {
+      if (err) return res.sendStatus(500);
+      res.json({ success: true, deleted: this.changes });
+    }
+  );
+};

@@ -1,20 +1,19 @@
 // revision-panel.js — Handles revision history panel logic
 
 document.addEventListener('DOMContentLoaded', () => {
-  const openBtn = document.getElementById('open-revisions');
-  const modalEl = document.getElementById('revisionModal');
-  const modal = new bootstrap.Modal(modalEl);
+  const openBtn    = document.getElementById('open-revisions');
+  const modalEl    = document.getElementById('revisionModal');
+  const modal      = new bootstrap.Modal(modalEl);
+  const listEl     = document.getElementById('revisions-list');
+  const projectId  = document.getElementById('editor-form').dataset.projectId;
+  const draftId    = document.getElementById('editor-form').dataset.draftId;
 
+  // Fix for aria-hidden warning in Chrome
   modalEl.addEventListener('hidden.bs.modal', () => {
-    // Fix for aria-hidden warning in Chrome
     if (document.activeElement && modalEl.contains(document.activeElement)) {
       document.activeElement.blur();
     }
   });
-
-  const listEl = document.getElementById('revisions-list');
-  const projectId = document.getElementById('editor-form').dataset.projectId;
-  const draftId = document.getElementById('editor-form').dataset.draftId;
 
   // Open revisions modal and load history
   openBtn.addEventListener('click', async () => {
@@ -22,10 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     listEl.innerHTML = '<div class="text-center text-muted">Loading...</div>';
 
     try {
-      const res = await fetch(`/drafts/${projectId}/revisions/${draftId}`);
-      if (!res.ok) throw new Error('Failed to load revisions');
+      const res  = await fetch(`/drafts/${projectId}/revisions/${draftId}`);
       const json = await res.json();
-      if (!json.success) throw new Error('Failed to load revisions');
+      if (!res.ok || !json.success) throw new Error('Failed to load revisions');
       renderRevisions(json.revisions, json.count);
     } catch (err) {
       listEl.innerHTML = '<div class="text-danger text-center">Error loading revisions</div>';
@@ -33,12 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Render revisions list with restore buttons
+  // Render revisions list with restore/delete/preview buttons
   function renderRevisions(revisions, count) {
     const header = document.getElementById('revision-count');
-    if (header) {
-      header.textContent = `${count} revision${count !== 1 ? 's' : ''}`;
-    }
+    header && (header.textContent = `${count} revision${count !== 1 ? 's' : ''}`);
 
     if (!revisions.length) {
       listEl.innerHTML = '<div class="text-center text-muted">No revisions available.</div>';
@@ -46,16 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let html = '<ul class="list-group">';
-    revisions.forEach(rev => {
+    for (const rev of revisions) {
       const date = new Date(rev.created_at);
       const typeLabel =
-        rev.type === 'manual'
-          ? 'Manual ★'
-          : rev.type === 'autosave'
-          ? 'Autosave'
-          : rev.type
-          ? rev.type
-          : 'Unknown';
+        rev.type === 'manual'   ? 'Manual ★' :
+        rev.type === 'autosave' ? 'Autosave' :
+        rev.type || 'Unknown';
 
       html += `
         <li class="list-group-item bg-dark text-light border-secondary d-flex justify-content-between align-items-center">
@@ -63,18 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <strong>[${typeLabel}]</strong> ${date.toLocaleString()} – ${rev.word_count} words
           </div>
           <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">
-              ♻️ Restore
-            </button>
-            <button class="btn btn-sm btn-outline-primary btn-preview" data-id="${rev.id}">
-              👁️ Preview
-            </button>
-            <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">
-              🗑 Delete
-            </button>
+            <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">♻️ Restore</button>
+            <button class="btn btn-sm btn-outline-primary btn-preview" data-id="${rev.id}">👁️ Preview</button>
+            <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">🗑 Delete</button>
           </div>
         </li>`;
-    });
+    }
     html += '</ul>';
     listEl.innerHTML = html;
 
@@ -83,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', async () => {
         const revisionId = btn.dataset.id;
         if (!confirm('Are you sure you want to restore this revision?')) return;
-
         try {
           const res = await fetch(`/drafts/${projectId}/restore/${revisionId}`, { method: 'POST' });
           if (res.ok) {
@@ -99,24 +84,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Delete logic
+    // Individual delete logic
     document.querySelectorAll('.btn-delete').forEach(btn => {
       btn.addEventListener('click', async () => {
         const revisionId = btn.dataset.id;
         if (!confirm('Are you sure you want to delete this revision? This action cannot be undone.')) return;
-
         try {
           const res = await fetch(`/drafts/${projectId}/revision/${revisionId}`, { method: 'DELETE' });
           if (res.ok) {
-            const li = btn.closest('li');
-            li.remove();
-
+            btn.closest('li').remove();
+            // update badge
             const badge = document.getElementById('revision-count');
-            if (badge) {
-              const currentCount = parseInt(badge.textContent) || 1;
-              const newCount = Math.max(currentCount - 1, 0);
-              badge.textContent = `${newCount} revision${newCount !== 1 ? 's' : ''}`;
-            }
+            const current = parseInt(badge.textContent) || 1;
+            badge.textContent = `${Math.max(current - 1, 0)} revision${current - 1 !== 1 ? 's' : ''}`;
           } else {
             alert('❌ Failed to delete revision.');
           }
@@ -131,21 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-preview').forEach(btn => {
       btn.addEventListener('click', async () => {
         const revisionId = btn.dataset.id;
-        const modal = new bootstrap.Modal(document.getElementById('revisionPreviewModal'));
+        const previewModal = new bootstrap.Modal(document.getElementById('revisionPreviewModal'));
         const container = document.getElementById('revisionPreviewContent');
         container.innerHTML = '<div class="text-muted text-center">Loading...</div>';
-
         try {
-          const res = await fetch(`/drafts/revision/${revisionId}`);
+          const res  = await fetch(`/drafts/revision/${revisionId}`);
           const data = await res.json();
-          if (!data.success) throw new Error('Failed to load revision');
-
-          container.innerHTML = `
-            <div class="bg-dark text-light p-3 border rounded">
-              ${data.content}
-            </div>
-          `;
-          modal.show();
+          if (!data.success) throw new Error();
+          container.innerHTML = `<div class="bg-dark text-light p-3 border rounded">${data.content}</div>`;
+          previewModal.show();
         } catch (err) {
           console.error(err);
           container.innerHTML = '<div class="text-danger text-center">Error loading preview.</div>';
@@ -154,11 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ————— Delete all AUTOSAVE revisions —————
+  const deleteAllBtn = document.getElementById('delete-autosaves-btn');
+  deleteAllBtn?.addEventListener('click', async () => {
+    if (!confirm('Are you sure you want to delete all autosave revisions?')) return;
+    try {
+      const delRes = await fetch(`/drafts/${projectId}/revisions/delete-autosaves`, { method: 'DELETE' });
+      if (!delRes.ok) {
+        alert('❌ Failed to delete autosave revisions.');
+        return;
+      }
+      alert('🧹 All autosave revisions deleted.');
+      // reload list
+      listEl.innerHTML = '<div class="text-center text-muted">Loading...</div>';
+      const res2  = await fetch(`/drafts/${projectId}/revisions/${draftId}`);
+      const json2 = await res2.json();
+      if (res2.ok && json2.success) {
+        renderRevisions(json2.revisions, json2.count);
+      } else {
+        listEl.innerHTML = '<div class="text-danger text-center">Error loading revisions</div>';
+      }
+    } catch (err) {
+      console.error('❌ Error deleting all autosaves:', err);
+      alert('⚠️ Request failed.');
+    }
+  });
+
   // Close modal when clicking outside
   modalEl.addEventListener('click', e => {
     if (e.target === modalEl) {
-      // Blur any focused element inside the modal
-      // This is to prevent focus issues when closing the modal.
       if (document.activeElement && modalEl.contains(document.activeElement)) {
         document.activeElement.blur();
       }
