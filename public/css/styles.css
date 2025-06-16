@@ -355,7 +355,7 @@ ul.list-group[data-part-id] {
   margin: 0;
 }
 #places-panel .panel-header h5::before {
-  content: "🌍";
+  /* content: "🗺️"; */
   font-size: 1.2rem;
 }
 
