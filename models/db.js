@@ -122,6 +122,18 @@ db.serialize(() => {
   FOREIGN KEY(draft_id) REFERENCES drafts(id)
 )`);
 
+  // Locations
+  db.run(`CREATE TABLE IF NOT EXISTS locations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    type TEXT NOT NULL CHECK (type IN ('city', 'village', 'country', 'continent', 'mountain', 'river', 'sea', 'lake', 'forest', 'desert', 'region', 'island', 'planet', 'custom')),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+);`);
+
   // Silent migrations for older tables
   db.run(`ALTER TABLE drafts ADD COLUMN "order" INTEGER DEFAULT 0`,         () => {});
   db.run(`ALTER TABLE drafts ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP`, () => {});

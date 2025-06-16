@@ -23,6 +23,7 @@ const searchRoutes = require('./routes/search');
 const settingsRoutes = require('./routes/settings');
 const relationshipRoutes = require('./routes/relationships');
 const partsRoutes = require('./routes/parts');
+const placesRouter = require('./routes/places');
 
 // EJS Setup
 app.set('view engine', 'ejs');
@@ -68,6 +69,7 @@ app.use('/search', searchRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/relationships', relationshipRoutes);
 app.use('/parts', partsRoutes);
+app.use('/places', placesRouter);
 
 // Home
 app.get('/', (req, res) => {
