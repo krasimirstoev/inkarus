@@ -1,8 +1,9 @@
-/* Layout base */
+/* ============================================================
+  1. Base Layout & Typography
+  ============================================================ */
 html, body {
   height: 100%;
 }
-
 body {
   display: flex;
   flex-direction: column;
@@ -10,200 +11,19 @@ body {
   color: #f1f1f1;
   font-family: 'Manrope', sans-serif;
 }
-
 main.container {
   flex: 1;
 }
 
-/* Navbar */
+/* ============================================================
+  2. Navbar & Footer
+  ============================================================ */
 .navbar-brand {
   font-weight: bold;
 }
-
 .nav-link:hover {
   text-decoration: underline;
 }
-
-/* Lists */
-.list-group-item {
-  transition: background-color 0.2s ease;
-}
-
-.list-group-item:hover {
-  background-color: #1e1e1e;
-}
-
-/* Buttons */
-.btn-outline-light:hover {
-  background-color: #f1f1f1;
-  color: #121212;
-}
-
-/* Forms */
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form input[type="number"],
-form textarea,
-form select {
-  background-color: #1e1e1e;
-  color: #f1f1f1;
-  border: 1px solid #444;
-}
-
-form input:focus,
-form textarea:focus,
-form select:focus {
-  border-color: #888;
-  box-shadow: none;
-  outline: none;
-}
-
-::placeholder {
-  color: #bbbbbb;
-  opacity: 1;
-}
-
-/* Cards */
-.card {
-  border-radius: 0.75rem;
-}
-
-.card-title {
-  font-weight: 600;
-}
-
-/* Force card borders to repaint cleanly after DOM updates */
-#partsContainer .card {
-  will-change: transform;
-}
-
-/* Quill editor dark theme */
-#quill-editor {
-  background-color: transparent !important;
-  color: #eaeaea;
-  font-size: 1.15rem;
-  line-height: 1.7;
-  padding: 2rem !important;
-  border: none !important;
-  box-shadow: none !important;
-  min-height: 80vh;
-}
-
-/* Quill toolbar styling */
-.ql-toolbar.ql-snow {
-  background-color: #2b2b2b;
-  border: none;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.ql-container.ql-snow {
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: none;
-}
-
-/* Character highlighting in Quill editor */
-.ql-editor a.character-link {
-  color: #fff !important;                 /* white link text */
-  text-decoration: none !important;       /* remove Quill's built-in underline */
-  border-bottom: 1px dotted currentColor; /* dotted underline effect */
-  cursor: pointer;                        /* pointer cursor on hover */
-}
-
-/* On hover, make the dots a solid line */
-.ql-editor a.character-link:hover {
-  border-bottom-style: solid;
-}
-
-/* Place highlighting in Quill editor */
-.ql-editor a.place-link {
-  color: #fff !important;                 /* white link text */
-  text-decoration: none !important;       /* remove Quill's built-in underline */
-  border-bottom: 1px dotted currentColor; /* dotted underline effect */
-  cursor: pointer;                        /* pointer cursor on hover */
-}
-
-/* On hover, make the dots a solid line */
-.ql-editor a.place-link:hover {
-  border-bottom-style: solid;
-}
-
-/* Fullscreen mode adjustments */
-.fullscreen-mode main.container {
-  max-width: 100vw;
-  width: 100%;
-  padding: 2rem;
-}
-
-.fullscreen-mode #quill-editor {
-  min-height: 90vh;
-}
-
-.fullscreen-mode .navbar,
-.fullscreen-mode footer,
-.fullscreen-mode #status-bar,
-.fullscreen-mode #manual-save,
-.fullscreen-mode #back-to-dashboard,
-.fullscreen-mode #toggle-fullscreen {
-  display: none !important;
-}
-
-/* Reading mode adjustments */
-.reading-mode .ql-toolbar,
-.reading-mode #status-bar,
-.reading-mode #manual-save,
-.reading-mode #toggle-fullscreen,
-.reading-mode #back-to-dashboard {
-  display: none !important;
-}
-
-.reading-mode #quill-editor {
-  border: none;
-  background-color: #111;
-  color: #f1f1f1;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  padding: 2rem;
-}
-
-/* Exit buttons positioning */
-#exit-reading,
-#exit-fullscreen {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1000;
-  display: none;
-}
-
-.reading-mode #exit-reading {
-  display: inline-block !important;
-}
-
-.fullscreen-mode #exit-fullscreen {
-  display: inline-block !important;
-}
-
-.hide-controls {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-/* Status bar styling */
-#status-bar {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: #bbb;
-  margin-bottom: 1rem;
-}
-
-/* Footer styling */
 footer {
   opacity: 1;
   text-align: center;
@@ -216,27 +36,116 @@ footer {
   background-color: #121212;
 }
 
-/* Remove number input arrows (Chrome) */
-input[type="number"]::-webkit-inner-spin-button {
-  opacity: 0.25;
+/* ============================================================
+  3. Buttons & Alerts
+  ============================================================ */
+.btn-outline-light:hover {
+  background-color: #f1f1f1;
+  color: #121212;
 }
-
-/* Alert styling */
 .alert-danger {
   background-color: #ffcccc;
   color: #300;
 }
 
-/* === NEW STRUCTURE === */
+/* ============================================================
+  4. Forms & Inputs
+  ============================================================ */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form textarea,
+form select {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+form input:focus,
+form textarea:focus,
+form select:focus {
+  border-color: #888;
+  box-shadow: none;
+  outline: none;
+}
+::placeholder {
+  color: #bbbbbb;
+  opacity: 1;
+}
+/* Remove number input arrows (Chrome) */
+input[type="number"]::-webkit-inner-spin-button {
+  opacity: 0.25;
+}
 
-/* Layout for editor and sidebar */
+/* ============================================================
+  5. Lists & List Items
+  ============================================================ */
+.list-group-item {
+  transition: background-color 0.2s ease;
+}
+.list-group-item:hover {
+  background-color: #1e1e1e;
+}
+/* Make empty chapter lists droppable */
+ul.list-group[data-part-id] {
+  min-height: 2rem;
+}
+
+/* ============================================================
+  6. Cards
+  ============================================================ */
+.card {
+  border-radius: 0.75rem;
+}
+.card-title {
+  font-weight: 600;
+}
+/* Force card borders to repaint cleanly after DOM updates */
+#partsContainer .card {
+  will-change: transform;
+}
+
+/* ============================================================
+  7. Status Bar & Misc Controls
+  ============================================================ */
+#status-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #bbb;
+  margin-bottom: 1rem;
+}
+.hide-controls {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* ============================================================
+  8. Modal & Miscellaneous
+  ============================================================ */
+.modal-footer time {
+  user-select: none;
+  color: #6c757d;
+  font-size: 0.85em;
+}
+/* Fix nowrap for add button in Drafts section */
+#addChapterBtn {
+  white-space: nowrap;    
+  padding: 0.25rem 0.75rem; 
+  line-height: 1.5;        
+}
+
+/* ============================================================
+  9. Editor Layout & Sidebar
+  ============================================================ */
 .writing-layout {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
-
-/* Sidebar styling */
 .sidebar {
   width: 240px;
   background-color: #0f0f0f;
@@ -246,7 +155,6 @@ input[type="number"]::-webkit-inner-spin-button {
   flex-direction: column;
   gap: 1.2rem;
 }
-
 .sidebar-item {
   background: none;
   border: none;
@@ -258,14 +166,11 @@ input[type="number"]::-webkit-inner-spin-button {
   transition: background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
 }
-
 .sidebar-item:hover,
 .sidebar-item.active {
   background-color: #222;
   color: #fff;
 }
-
-/* Main editor area styling */
 .editor-area {
   flex: 1;
   display: flex;
@@ -273,14 +178,14 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 2rem;
   overflow-y: auto;
 }
-
-/* Editor topbar styling */
 .editor-topbar {
   margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
-/* Sidebar panel base styling */
+/* ============================================================
+  10. Panels & Side Panels
+  ============================================================ */
 .side-panel {
   position: fixed;
   top: 0;
@@ -294,72 +199,146 @@ input[type="number"]::-webkit-inner-spin-button {
   z-index: 1050;
   transition: transform 0.3s ease;
 }
-
 .side-panel.d-none {
   display: none;
 }
-
 .side-panel p,
 .side-panel .text-muted {
   color: #ddd !important;
 }
-
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
-
 .panel-body {
   overflow-y: auto;
   max-height: calc(100vh - 100px);
 }
 
-/* Preview panel styling */
-.note-preview {
-  background-color: #1c1c1c;
-  border-color: #333;
+/* ============================================================
+  11. Quill Editor & Toolbar
+  ============================================================ */
+#quill-editor {
+  background-color: transparent !important;
+  color: #eaeaea;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  padding: 2rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: 80vh;
+}
+.ql-toolbar.ql-snow {
+  background-color: #2b2b2b;
+  border: none;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.ql-container.ql-snow {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: none;
 }
 
-/* Modal footer timestamp styling */
-.modal-footer time {
-  user-select: none;
-  color: #6c757d;
-  font-size: 0.85em;
+/* ============================================================
+  12. Quill Editor: Link Highlighting
+  ============================================================ */
+.ql-editor a.character-link,
+.ql-editor a.place-link {
+  color: #fff !important;
+  text-decoration: none !important;
+  border-bottom: 1px dotted currentColor;
+  cursor: pointer;
+}
+.ql-editor a.character-link:hover,
+.ql-editor a.place-link:hover {
+  border-bottom-style: solid;
 }
 
-/* Connection list styling */
+/* ============================================================
+  13. Fullscreen & Reading Modes
+  ============================================================ */
+.fullscreen-mode main.container {
+  max-width: 100vw;
+  width: 100%;
+  padding: 2rem;
+}
+.fullscreen-mode #quill-editor {
+  min-height: 90vh;
+}
+.fullscreen-mode .navbar,
+.fullscreen-mode footer,
+.fullscreen-mode #status-bar,
+.fullscreen-mode #manual-save,
+.fullscreen-mode #back-to-dashboard,
+.fullscreen-mode #toggle-fullscreen {
+  display: none !important;
+}
+.reading-mode .ql-toolbar,
+.reading-mode #status-bar,
+.reading-mode #manual-save,
+.reading-mode #toggle-fullscreen,
+.reading-mode #back-to-dashboard {
+  display: none !important;
+}
+.reading-mode #quill-editor {
+  border: none;
+  background-color: #111;
+  color: #f1f1f1;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  padding: 2rem;
+}
+/* Exit buttons positioning */
+#exit-reading,
+#exit-fullscreen {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: none;
+}
+.reading-mode #exit-reading {
+  display: inline-block !important;
+}
+.fullscreen-mode #exit-fullscreen {
+  display: inline-block !important;
+}
+
+/* ============================================================
+  14. Connection List
+  ============================================================ */
 #connectionList {
   color: #f8f9fa;
   font-size: 0.95rem;
 }
-
 #connectionList div {
   margin-bottom: 6px;
   color: #f8f9fa;
 }
-
 #connectionList strong {
   font-weight: bold;
   color: #ffc107;
 }
 
-/* Make empty chapter lists droppable */
-ul.list-group[data-part-id] {
-  min-height: 2rem;
+/* ============================================================
+  15. Note Preview
+  ============================================================ */
+.note-preview {
+  background-color: #1c1c1c;
+  border-color: #333;
 }
 
-/* Fix nowrap for add button in Drafts section */
-#addChapterBtn {
-  white-space: nowrap;    
-  padding: 0.25rem 0.75rem; 
-  line-height: 1.5;        
+/* ============================================================
+  16. Places Sidebar Panel
+  ============================================================ */
+#places-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
 }
-
-/* === PLACES SIDEBAR POLISH === */
-
-/* Panel title with icon */
 #places-panel .panel-header h5 {
   display: flex;
   align-items: center;
@@ -371,8 +350,6 @@ ul.list-group[data-part-id] {
   /* content: "🗺️"; */
   font-size: 1.2rem;
 }
-
-/* Increased spacing between search input and the list */
 #places-panel #place-search {
   width: 100%;
   margin-bottom: 0.75rem;
@@ -380,8 +357,6 @@ ul.list-group[data-part-id] {
   color: #eee !important;
   border: 1px solid #444 !important;
 }
-
-/* List items styling */
 #places-panel #place-list .list-group-item {
   cursor: pointer;
   padding: 0.75rem 1rem;
@@ -395,8 +370,6 @@ ul.list-group[data-part-id] {
 #places-panel #place-list .list-group-item:hover {
   background-color: #333 !important;
 }
-
-/* Close button (X) styling */
 #places-panel .panel-header button#close-places {
   background: none;
   border: none;
@@ -408,19 +381,10 @@ ul.list-group[data-part-id] {
 #places-panel .panel-header button#close-places:hover {
   color: #fff;
 }
-
-/* Flex layout for header + search + list */
-#places-panel {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-}
 #places-panel .panel-body {
   flex: 1;
   overflow-y: auto;
 }
-
-/* Optional arrow indicator */
 #places-panel #place-list .list-group-item::after {
   content: "›";
   font-weight: bold;
@@ -430,4 +394,141 @@ ul.list-group[data-part-id] {
 #places-panel #place-list .list-group-item:hover::after {
   color: #ddd;
 }
-/* === END PLACES SIDEBAR POLISH === */
+
+/* ============================================================
+  17. Timeline & Events
+  ============================================================ */
+/* Timeline base line */
+#timeline-container .timeline-line {
+  height: 4px;
+  background: #555;
+  margin-top: 20px;
+}
+/* Event boxes */
+.event-box {
+  display: inline-block;
+  margin: 0 12px;
+  padding: 10px;
+  background: #444;
+  color: #eee;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 120px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.event-box:hover {
+  background: #555;
+}
+/* Abstract events style */
+.event-box.abstract {
+  background: #333;
+  font-style: italic;
+  opacity: .9;
+}
+/* Event date/title styling */
+.event-date {
+  font-size: .85rem;
+  opacity: .75;
+}
+.event-title {
+  font-weight: bold;
+  margin-top: 4px;
+}
+/* vis-timeline: hide default axis labels */
+.vis-graph2d .vis-axis.vis-bottom .vis-text {
+  display: none;
+}
+/* Our node template */
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.timeline-node .node-date {
+  font-size: .75rem;
+  color: #9ab;
+}
+.timeline-node .node-title {
+  font-size: .9rem;
+  color: #eee;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+/* Style for the dots (point items) */
+.vis-item.vis-dot {
+  background-color: #2a9d8f !important;
+  border-color: #2a9d8f !important;
+  width: 10px !important;
+  height: 10px !important;
+  margin-top: -5px !important;
+  pointer-events: all;
+}
+/* Override for abstract items */
+.vis-item.abstract .vis-dot {
+  background-color: #666 !important;
+}
+/* remove all axis lines & grid */
+.vis-graph2d .vis-axis,
+.vis-graph2d .vis-grid .vis-grid-line {
+  display: none !important;
+}
+/* remove the outer border */
+.vis-graph2d .vis-panel {
+  border: none !important;
+}
+/* Container + horizontal line */
+.timeline-wrapper {
+  position: relative;
+  padding: 2rem 0;
+}
+.timeline-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  right: 2%;
+  height: 1px;
+  background: #555;
+}
+/* Each event “slot” */
+#timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.timeline-event {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+/* The dot marker */
+.timeline-event::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #2a9d8f;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+/* Abstract events get a different color/style */
+.timeline-event.abstract::before {
+  background: #666;
+}
+/* Label styling */
+.timeline-event .date {
+  display: block;
+  font-size: 0.75rem;
+  color: #9ab;
+  margin-bottom: 0.25rem;
+}
+.timeline-event .title {
+  font-size: 0.9rem;
+  color: #eee;
+  white-space: nowrap;
+}
