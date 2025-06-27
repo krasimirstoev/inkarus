@@ -398,91 +398,16 @@ ul.list-group[data-part-id] {
 /* ============================================================
   17. Timeline & Events
   ============================================================ */
-/* Timeline base line */
-#timeline-container .timeline-line {
-  height: 4px;
-  background: #555;
-  margin-top: 20px;
-}
-/* Event boxes */
-.event-box {
-  display: inline-block;
-  margin: 0 12px;
-  padding: 10px;
-  background: #444;
-  color: #eee;
-  border-radius: 4px;
-  text-align: center;
-  min-width: 120px;
-  cursor: pointer;
-  transition: background .2s;
-}
-.event-box:hover {
-  background: #555;
-}
-/* Abstract events style */
-.event-box.abstract {
-  background: #333;
-  font-style: italic;
-  opacity: .9;
-}
-/* Event date/title styling */
-.event-date {
-  font-size: .85rem;
-  opacity: .75;
-}
-.event-title {
-  font-weight: bold;
-  margin-top: 4px;
-}
-/* vis-timeline: hide default axis labels */
-.vis-graph2d .vis-axis.vis-bottom .vis-text {
-  display: none;
-}
-/* Our node template */
-.timeline-node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: none;
-}
-.timeline-node .node-date {
-  font-size: .75rem;
-  color: #9ab;
-}
-.timeline-node .node-title {
-  font-size: .9rem;
-  color: #eee;
-  white-space: nowrap;
-  margin-top: 2px;
-}
-/* Style for the dots (point items) */
-.vis-item.vis-dot {
-  background-color: #2a9d8f !important;
-  border-color: #2a9d8f !important;
-  width: 10px !important;
-  height: 10px !important;
-  margin-top: -5px !important;
-  pointer-events: all;
-}
-/* Override for abstract items */
-.vis-item.abstract .vis-dot {
-  background-color: #666 !important;
-}
-/* remove all axis lines & grid */
-.vis-graph2d .vis-axis,
-.vis-graph2d .vis-grid .vis-grid-line {
-  display: none !important;
-}
-/* remove the outer border */
-.vis-graph2d .vis-panel {
-  border: none !important;
-}
-/* Container + horizontal line */
+
+/* Wrapper for our custom timeline */
 .timeline-wrapper {
   position: relative;
+  height: 120px;       /* enough room for date, line, title */
+  margin-bottom: 2rem;
   padding: 2rem 0;
 }
+
+/* The central horizontal line */
 .timeline-wrapper::before {
   content: '';
   position: absolute;
@@ -491,20 +416,26 @@ ul.list-group[data-part-id] {
   right: 2%;
   height: 1px;
   background: #555;
+  transform: translateY(-50%);
 }
-/* Each event “slot” */
+
+/* Container for the event items */
 #timeline {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
 }
+
+/* Each event “node” */
 .timeline-event {
   position: relative;
   flex: 1;
   text-align: center;
   cursor: pointer;
 }
-/* The dot marker */
+
+/* The circular marker */
 .timeline-event::before {
   content: '';
   position: absolute;
@@ -516,19 +447,63 @@ ul.list-group[data-part-id] {
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
-/* Abstract events get a different color/style */
+
+/* Abstract-event override */
 .timeline-event.abstract::before {
   background: #666;
 }
-/* Label styling */
+
+/* Date label above the line */
 .timeline-event .date {
   display: block;
   font-size: 0.75rem;
   color: #9ab;
   margin-bottom: 0.25rem;
 }
+
+/* Title label below the line */
 .timeline-event .title {
+  display: block;
   font-size: 0.9rem;
   color: #eee;
+  margin-top: 0.25rem;
   white-space: nowrap;
+}
+
+/* ================================
+   Events List: dark list‐group
+================================ */
+/* --------- Events List (dark list‐group) --------- */
+#events-list {
+  padding: 0;
+}
+
+#events-list .list-group-item-dark {
+  background: #1e1e1e;
+  border: none;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
+  transition: background 0.2s;
+  color: #eee; /* ensure li text is light by default */
+}
+
+#events-list .list-group-item-dark:hover {
+  background: #2a2a2a;
+}
+
+#events-list .list-group-item-dark + .list-group-item-dark {
+  margin-top: 0.5rem;
+}
+
+#events-list .text-muted {
+  color: #888 !important; /* date subtext */
+}
+
+#events-list .btn-link {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+#events-list .btn-link:hover {
+  opacity: 1;
 }

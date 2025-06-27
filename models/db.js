@@ -142,7 +142,21 @@ db.serialize(() => {
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
   );`);
 
-  // Trigger to auto-update updated_at
+  // Events—for project timelines
+  db.run(`CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    description TEXT,
+    event_date TEXT,               -- ISO date or abstract text
+    is_abstract INTEGER DEFAULT 0, -- 1 = abstract event
+    display_order INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_events_project ON events(project_id);`);
+
+  // Trigger to auto-update updated_at for locations
   db.run(`
     CREATE TRIGGER IF NOT EXISTS trg_locations_updated_at
     AFTER UPDATE ON locations

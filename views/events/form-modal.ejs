@@ -1,0 +1,41 @@
+<form id="event-form"
+      action="/events/<%= projectId %><% if(id) { %>/edit/<%= id %><% } else { %>/new<% } %>"
+      method="post">
+  <div class="mb-3">
+    <label for="event-title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="event-title" name="title"
+           value="<%= event.title %>" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="event-date" class="form-label">Date</label>
+    <input type="text" class="form-control" id="event-date" name="event_date"
+           value="<%= event.event_date %>">
+    <div class="form-text">YYYY-MM-DD or free-form text for abstract events.</div>
+  </div>
+
+  <div class="form-check mb-3">
+    <input class="form-check-input" type="checkbox" id="event-abstract"
+           name="is_abstract" <%= event.is_abstract ? 'checked' : '' %>>
+    <label class="form-check-label" for="event-abstract">
+      Abstract event
+    </label>
+  </div>
+
+  <div class="mb-3">
+    <label for="display-order" class="form-label">Display order</label>
+    <input type="number" class="form-control" id="display-order"
+           name="display_order" value="<%= event.display_order %>">
+    <div class="form-text">Used only when “Abstract” is checked.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="event-description" class="form-label">Description</label>
+    <textarea class="form-control" id="event-description" name="description"
+              rows="3"><%= event.description %></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">
+    <%= event.id ? 'Save Changes' : 'Create Event' %>
+  </button>
+</form>
