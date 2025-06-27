@@ -134,6 +134,21 @@
   </div>
 </div>
 
+<!-- Places modal-->
+<div class="modal fade" id="placeModal" tabindex="-1" aria-labelledby="placeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title" id="placeModalLabel">Place Info</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="placeModalBody">
+          <div class="text-center text-muted">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <!-- Quill Snow CSS via Skypack -->
 <link
   rel="stylesheet"
@@ -152,5 +167,6 @@
 <script type="module" src="/js/pages/character-highlighter.js"></script>
 <script type="module" src="/js/pages/revision-panel.js"></script>
 <script type="module" src="/js/pages/place-panel.js"></script>
+<script type="module" src="/js/pages/place-highlighter.js"></script>
 
 

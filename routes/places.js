@@ -12,22 +12,25 @@ function isAuthenticated(req, res, next) {
 router.use(isAuthenticated);
 
 // === AJAX JSON for editor panel ===
-router.get('/json/:projectId', c.jsonList);
+// 1. List of all places for highlighter
+router.get('/json/:projectId',         c.jsonList);
+// 2. Single place detail for modal
+router.get('/json/:projectId/:id',     c.jsonDetail);
 
 // === HTML views ===
 // List all places for a project
-router.get('/:projectId',      c.list);
+router.get('/:projectId',              c.list);
 // Show “new” form
-router.get('/:projectId/new',  c.form);
+router.get('/:projectId/new',          c.form);
 // Show “edit” form
-router.get('/:projectId/edit/:id', c.form);
+router.get('/:projectId/edit/:id',     c.form);
 
 // === Actions ===
 // Create
-router.post('/:projectId',            c.create);
+router.post('/:projectId',             c.create);
 // Update
-router.post('/:projectId/update/:id', c.update);
+router.post('/:projectId/update/:id',  c.update);
 // Delete
-router.delete('/:projectId/delete/:id', c.delete);
+router.delete('/:projectId/delete/:id',c.delete);
 
 module.exports = router;

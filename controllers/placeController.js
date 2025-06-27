@@ -128,3 +128,20 @@ exports.delete = (req, res) => {
     res.redirect(`/places/${projectId}`);
   });
 };
+
+/**
+ * Return JSON detail for a single place (for modal).
+ */
+exports.jsonDetail = (req, res) => {
+  const { id } = req.params;
+  locationModel.getById(id, (err, place) => {
+    if (err) {
+      console.error('❌ DB error loading place detail:', err);
+      return res.sendStatus(500);
+    }
+    if (!place) {
+      return res.status(404).json({ success: false, error: 'Place not found' });
+    }
+    res.json({ success: true, place });
+  });
+};
