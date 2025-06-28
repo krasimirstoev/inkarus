@@ -1,10 +1,26 @@
+// public/js/pages/parts.js - Handling Parts Modal Functionality
+// ---------------------------------------------------
+// This script handles the Parts modal functionality, including loading the form and list of parts,
+// submitting the form, and handling edit/delete actions for parts.
+// It uses the Fetch API to dynamically load content and update the modal without a full page reload
+
 document.addEventListener('DOMContentLoaded', () => {
   const modal     = document.getElementById('partsModal');
   const projectId = modal.dataset.projectId;
   const formWrap  = document.getElementById('partsFormContainer');
   const listWrap  = document.getElementById('partsList');
 
-  // load only the modalForm partial
+  // Helper: Initialize Bootstrap tooltips
+  function initTooltips() {
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+      new bootstrap.Tooltip(el, {
+        trigger: 'click',
+        customClass: 'persistent-tooltip'
+      });
+    });
+  }
+
+  // Load modal form
   async function loadForm(partId = '') {
     const url = partId
       ? `/parts/${projectId}/modal/form/${partId}`
@@ -15,9 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     formWrap.innerHTML = await res.text();
+    initTooltips(); // initialize tooltips after dynamic insert
   }
 
-  // rest stays the same...
+  // Load part list
   async function loadList() {
     const res  = await fetch(`/parts/${projectId}/json-list`);
     const data = await res.json();
@@ -38,11 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
+  // On modal open, load content
   modal.addEventListener('show.bs.modal', async () => {
     await loadForm();
     await loadList();
   });
 
+  // Submit form handler
   formWrap.addEventListener('submit', async e => {
     e.preventDefault();
     const form = e.target;
@@ -50,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       body: new FormData(form)
     });
+
     if (res.headers.get('content-type')?.includes('application/json')) {
       const json = await res.json();
       if (json.success) {
@@ -61,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Edit/Delete button handling
   listWrap.addEventListener('click', async e => {
     if (e.target.matches('.btn-edit-part')) {
       await loadForm(e.target.dataset.id);

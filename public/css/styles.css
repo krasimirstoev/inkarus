@@ -180,6 +180,12 @@ ul.list-group[data-part-id] {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
+/* Modal body padding */
+.modal .modal-body {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 /* ============================================================
   9. Editor Layout & Sidebar
   ============================================================ */
@@ -438,7 +444,7 @@ ul.list-group[data-part-id] {
 }
 
 /* ============================================================
-  Timeline & Events — Final Tuning
+  17. Timeline & Events
   ============================================================ */
 
 .timeline-wrapper {
@@ -546,9 +552,10 @@ ul.list-group[data-part-id] {
   background: linear-gradient(to right, #444, #999, #444);
 }
 
-/* ================================
-   Events List: dark list‐group
-================================ */
+/* ============================================================
+  18. Events List: dark list‐group
+  ============================================================ */
+
 /* --------- Events List (dark list‐group) --------- */
 #events-list {
   padding: 0;
@@ -582,4 +589,53 @@ ul.list-group[data-part-id] {
 
 #events-list .btn-link:hover {
   opacity: 1;
+}
+
+/* ============================================================
+  19. Tooltips - Custom Dark Mode
+  ============================================================ */
+
+  /* Custom tooltip for dark mode */
+.tooltip .tooltip-inner {
+  background-color: rgba(20, 20, 20, 0.95); /* почти черно и по-плътно */
+  color: #f1f1f1; /* светъл текст */
+  font-size: 0.85rem; /* по-удобен за четене */
+  padding: 6px 10px;
+  border-radius: 4px;
+  max-width: 250px;
+  text-align: left;
+}
+
+/* Tooltip arrow */
+.tooltip.bs-tooltip-top .tooltip-arrow::before,
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before,
+.tooltip.bs-tooltip-left .tooltip-arrow::before,
+.tooltip.bs-tooltip-right .tooltip-arrow::before {
+  border-color: rgba(20, 20, 20, 0.95) !important;
+}
+
+/* Persistent tooltip for modals */
+.tooltip.persistent-tooltip .tooltip-inner {
+  background-color: #1f2b38;        
+  color: #fff;                       
+  padding: 0.6rem 1rem;             
+  font-size: 0.9rem;
+  line-height: 1.4;
+  border-radius: 6px;
+  max-width: 260px;                 
+  text-align: left;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.tooltip.persistent-tooltip .tooltip-arrow::before {
+  border-top-color: #1f2b38 !important;
+}
+
+.tooltip.persistent-tooltip {
+  z-index: 1085;
+}
+
+.tooltip.persistent-tooltip.show {
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out;
 }

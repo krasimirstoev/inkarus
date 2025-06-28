@@ -6,7 +6,23 @@
   method="POST"
 >
   <div class="mb-3">
-    <label for="part-title" class="form-label">Title</label>
+    <div class="mb-3 w-100">
+    <div class="p-3 rounded text-light"
+        style="background-color: #1f2d3a; border: 1px solid #2e3f4d;">
+      <strong><i class="bi bi-journal-text me-2 text-info"></i>How book structure works:</strong><br>
+      Books can be divided into logical sections such as
+      <em>Volumes</em>, <em>Parts</em>, or <em>Acts</em>.<br>
+      For example: "Volume I" → "Part 1" → "Act 1" → Chapters.<br>
+      Use parts to break your story into larger thematic or narrative chunks.
+    </div>
+  </div>
+    <label for="part-title" class="form-label">
+      Title
+      <i class="bi bi-info-circle-fill text-info ms-1"
+         data-bs-toggle="tooltip" data-bs-placement="top"
+         title="A short name for this part. Example: 'Act I', 'Act II', 'Act III' and so on.">
+      </i>
+    </label>
     <input
       type="text"
       id="part-title"
@@ -16,10 +32,19 @@
       required
       style="border-color: #6c757d;"
     />
+    <div class="form-text text-muted">
+      Use a clear and meaningful name to organize your chapters.
+    </div>
   </div>
 
   <div class="mb-3">
-    <label for="part-order" class="form-label">Order</label>
+    <label for="part-order" class="form-label">
+      Order
+      <i class="bi bi-info-circle-fill text-info ms-1"
+         data-bs-toggle="tooltip" data-bs-placement="top"
+         title="Controls the order in which parts appear. Lower numbers come first.">
+      </i>
+    </label>
     <input
       type="number"
       id="part-order"
@@ -29,6 +54,9 @@
       min="0"
       style="border-color: #6c757d;"
     />
+    <div class="form-text text-muted">
+      This helps structure your book – parts with smaller numbers appear earlier.
+    </div>
   </div>
 
   <button type="submit"
