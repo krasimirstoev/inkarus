@@ -475,6 +475,32 @@ ul.list-group[data-part-id] {
   white-space: nowrap;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #timeline {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timeline-wrapper {
+    padding: 2rem 0;
+  }
+
+  .timeline-axis {
+    display: none;
+  }
+
+  .timeline-event {
+    margin-bottom: 2rem;
+  }
+
+  .timeline-line {
+    height: 2px;
+    width: 30px;
+  }
+}
+
+
 /* ================================
    Events List: dark list‐group
 ================================ */
