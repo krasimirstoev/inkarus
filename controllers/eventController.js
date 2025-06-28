@@ -1,4 +1,4 @@
-// controllers/eventController.js
+// controllers/eventController.js - Controller for handling event-related actions
 
 const eventModel = require('../models/eventModel');
 

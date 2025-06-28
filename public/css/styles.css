@@ -138,6 +138,11 @@ ul.list-group[data-part-id] {
   line-height: 1.5;        
 }
 
+/* Modal text */
+.modal .form-text {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
 /* ============================================================
   9. Editor Layout & Sidebar
   ============================================================ */
