@@ -49,32 +49,69 @@ footer {
 }
 
 /* ============================================================
-  4. Forms & Inputs
+  4. Forms & Inputs – dark mode friendly, modal-safe, accessible
   ============================================================ */
+
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
 form input[type="number"],
 form textarea,
-form select {
-  background-color: #1e1e1e;
-  color: #f1f1f1;
-  border: 1px solid #444;
+form select,
+.form-control {
+  background-color: #1e1e1e !important;
+  color: #f1f1f1 !important;
+  border: 1px solid #444 !important;
+  transition: border-color 0.2s, background-color 0.2s;
+  caret-color: #f1f1f1;
 }
+
 form input:focus,
 form textarea:focus,
-form select:focus {
-  border-color: #888;
-  box-shadow: none;
-  outline: none;
+form select:focus,
+.form-control:focus {
+  border-color: #888 !important;
+  background-color: #252525 !important;
+  color: #ffffff !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(136, 136, 136, 0.2);
 }
-::placeholder {
-  color: #bbbbbb;
-  opacity: 1;
+
+::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #aaaaaa !important;
+  opacity: 1 !important;
 }
-/* Remove number input arrows (Chrome) */
-input[type="number"]::-webkit-inner-spin-button {
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  background-color: #252525 !important;
+  color: #f1f1f1 !important;
+  -webkit-text-fill-color: #f1f1f1 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Remove number input arrows (Chrome / Safari) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   opacity: 0.25;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input arrows (Firefox) */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* Fix invisible focus border in modals */
+.modal:focus-visible,
+.modal:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ============================================================
