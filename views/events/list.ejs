@@ -8,9 +8,11 @@
     </button>
   </div>
 
-  <!-- Simple sequence timeline -->
-  <div class="timeline-wrapper sequence">
-    <div id="timeline" data-project-id="<%= projectId %>"></div>
+  <!-- Timeline container -->
+  <div class="timeline-wrapper">
+    <div id="timeline" data-project-id="<%= projectId %>">
+      <!-- Timeline items will be inserted dynamically -->
+    </div>
   </div>
 
   <!-- List of events below -->
@@ -28,7 +30,6 @@
           data-id="<%= ev.id %>"
         >Edit</button>
 
-        <!-- this form will POST with _method=DELETE -->
         <form
           action="/events/<%= projectId %>/delete/<%= ev.id %>"
           method="post"
@@ -44,8 +45,7 @@
   <% }) %>
 </ul>
 
-
-<!-- Modal as before -->
+<!-- Modal for create/edit -->
 <div class="modal fade" id="eventModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content bg-dark text-light">

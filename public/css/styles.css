@@ -396,112 +396,82 @@ ul.list-group[data-part-id] {
 }
 
 /* ============================================================
-  17. Timeline & Events
+  Timeline & Events — Final Tuning
   ============================================================ */
 
-/* Wrapper for our custom timeline */
 .timeline-wrapper {
   position: relative;
-  height: 120px;       /* enough room for date, line, title */
-  margin-bottom: 2rem;
-  padding: 2rem 0;
-}
-
-/* The central horizontal line */
-.timeline-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 2%;
-  right: 2%;
-  height: 1px;
-  background: #555;
-  transform: translateY(-50%);
-}
-
-/* Container for the event items */
-#timeline {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Each event “node” */
-.timeline-event {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  cursor: pointer;
-}
-
-/* Title box above dot */
-.title-box {
-  background: #444;
-  color: #eee;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.9rem;
-  text-align: center;
-  margin-bottom: 0.75rem; /* space down to dot */
+  padding: 3rem 0;
+  overflow-x: auto;
+  overflow-y: visible;
   white-space: nowrap;
 }
 
-/* Dot */
-.dot {
-  width: 10px;
-  height: 10px;
-  background: #2a9d8f;
-  border-radius: 50%;
-  margin-bottom: 0.75rem; /* space down to date */
-}
-.timeline-event.abstract .dot {
-  background: #666;
-}
-
-/* Date label below dot */
-.date {
-  font-size: 0.75rem;
-  color: #9ab;
-}
-
-/* The circular marker */
-.timeline-event::before {
-  content: '';
+/* Horizontal central axis line */
+.timeline-axis {
   position: absolute;
   top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background: #2a9d8f;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #666;
+  transform: translateY(-1px);
+  z-index: 0;
+}
+
+/* Event container */
+#timeline {
+  display: flex;
+  gap: 4rem;
+  padding: 0 1rem;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+/* Individual event block */
+.timeline-event {
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  min-width: 120px;
+}
+
+/* Title on top */
+.timeline-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f4f4f4;
+  margin-bottom: 0.5rem;
+  white-space: normal;
+}
+
+/* Vertical line from title to dot */
+.timeline-line {
+  width: 2px;
+  height: 25px;
+  background-color: #aaa;
+  margin: 0 auto;
+}
+
+/* Dot on axis */
+.timeline-dot {
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
+  background-color: #1a1a1a;
+  border: 2px solid #ccc;
+  margin: 0.5rem auto 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
-/* Abstract-event override */
-.timeline-event.abstract::before {
-  background: #666;
-}
-
-/* Hide any old timeline line if present */
-.timeline-wrapper.sequence .timeline-line {
-  display: none;
-}
-
-/* Date label above the line */
-.timeline-event .date {
-  display: block;
-  font-size: 0.75rem;
+/* Date below the dot */
+.timeline-date {
+  font-size: 0.95rem;
+  font-weight: 400;
   color: #9ab;
-  margin-bottom: 0.25rem;
-}
-
-/* Title label below the line */
-.timeline-event .title {
-  display: block;
-  font-size: 0.9rem;
-  color: #eee;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   white-space: nowrap;
 }
 
