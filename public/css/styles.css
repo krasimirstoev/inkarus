@@ -421,18 +421,48 @@ ul.list-group[data-part-id] {
 
 /* Container for the event items */
 #timeline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Each event “node” */
 .timeline-event {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 1;
-  text-align: center;
   cursor: pointer;
+}
+
+/* Title box above dot */
+.title-box {
+  background: #444;
+  color: #eee;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 0.75rem; /* space down to dot */
+  white-space: nowrap;
+}
+
+/* Dot */
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #2a9d8f;
+  border-radius: 50%;
+  margin-bottom: 0.75rem; /* space down to date */
+}
+.timeline-event.abstract .dot {
+  background: #666;
+}
+
+/* Date label below dot */
+.date {
+  font-size: 0.75rem;
+  color: #9ab;
 }
 
 /* The circular marker */
@@ -451,6 +481,11 @@ ul.list-group[data-part-id] {
 /* Abstract-event override */
 .timeline-event.abstract::before {
   background: #666;
+}
+
+/* Hide any old timeline line if present */
+.timeline-wrapper.sequence .timeline-line {
+  display: none;
 }
 
 /* Date label above the line */

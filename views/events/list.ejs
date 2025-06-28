@@ -28,12 +28,17 @@
           data-id="<%= ev.id %>"
         >Edit</button>
 
-        <!-- AJAX Delete button -->
-       <button
-          type="button"
-          class="btn btn-link text-danger btn-delete"
-          data-id="<%= ev.id %>"
-        >Delete</button>
+        <!-- this form will POST with _method=DELETE -->
+        <form
+          action="/events/<%= projectId %>/delete/<%= ev.id %>"
+          method="post"
+          class="d-inline"
+        >
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-link text-danger">
+            Delete
+          </button>
+        </form>
       </div>
     </li>
   <% }) %>

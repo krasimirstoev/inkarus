@@ -17,12 +17,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     slot.className = 'timeline-event' + (ev.is_abstract ? ' abstract' : '');
     slot.dataset.id = ev.id;
 
-    // dot marker
+    // 3a) Title box
+    const titleBox = document.createElement('div');
+    titleBox.className = 'title-box';
+    titleBox.textContent = ev.title;
+    slot.appendChild(titleBox);
+
+    // 3b) Dot marker
     const dot = document.createElement('div');
     dot.className = 'dot';
     slot.appendChild(dot);
 
-    // date label
+    // 3c) Date label
     const date = document.createElement('div');
     date.className = 'date';
     date.textContent = ev.event_date || '';
