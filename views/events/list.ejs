@@ -30,20 +30,16 @@
           data-id="<%= ev.id %>"
         >Edit</button>
 
-        <form
-          action="/events/<%= projectId %>/delete/<%= ev.id %>"
-          method="post"
-          class="d-inline"
-        >
-          <input type="hidden" name="_method" value="DELETE">
-          <button type="submit" class="btn btn-link text-danger">
-            Delete
-          </button>
-        </form>
-      </div>
+      <!-- AJAX Delete button -->
+        <button
+          type="button"
+          class="btn btn-link text-danger btn-delete"
+          data-id="<%= ev.id %>"
+        >Delete</button>
+      </div> 
     </li>
   <% }) %>
-</ul>
+  </ul>
 
 <!-- Modal for create/edit -->
 <div class="modal fade" id="eventModal" tabindex="-1" aria-hidden="true">
