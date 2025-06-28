@@ -500,6 +500,9 @@ ul.list-group[data-part-id] {
   }
 }
 
+.timeline-line-horizontal {
+  background: linear-gradient(to right, #444, #999, #444);
+}
 
 /* ================================
    Events List: dark list‐group
