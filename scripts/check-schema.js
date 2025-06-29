@@ -1,3 +1,6 @@
+// scripts/check-schema.js - Helper script to check the SQLite database schema for the Inkarus app
+// Usage: node scripts/check-schema.js
+
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
