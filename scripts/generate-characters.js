@@ -3,9 +3,9 @@
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const { faker } = require('@faker-js/faker');
+const generateCharacterData = require('../lib/generateCharacterData');
 
-// Parse arguments
+// Parse CLI args
 const args = process.argv.slice(2);
 const countArg = args.find(arg => arg.startsWith('--count='));
 const projectArg = args.find(arg => arg.startsWith('--project='));
@@ -20,6 +20,7 @@ if (!projectId || isNaN(projectId)) {
   process.exit(1);
 }
 
+// Open DB
 const db = new sqlite3.Database(path.resolve('db/database.sqlite'));
 
 db.serialize(() => {
@@ -37,7 +38,7 @@ db.serialize(() => {
       process.exit(1);
     }
 
-    console.log(`\n👤 Generating ${count} fake characters for project ID ${projectId}...\n`);
+    console.log(`\n👤 Generating ${count} character(s) for project ID ${projectId}...\n`);
 
     const stmt = db.prepare(`
       INSERT INTO characters (
@@ -66,56 +67,15 @@ db.serialize(() => {
     `);
 
     for (let i = 0; i < count; i++) {
-      const name = faker.person.fullName();
-      const pseudonym = faker.hacker.adjective() + ' ' + faker.animal.type();
-      const description = faker.lorem.paragraph();
-      const birthdate = faker.date.birthdate({ min: 18, max: 70, mode: 'age' }).toISOString().split('T')[0];
-      const gender = faker.helpers.arrayElement(['male', 'female', 'non-binary']);
-      const origin = faker.location.city();
-      const location = faker.location.country();
-      const occupation = faker.person.jobTitle();
-      const health_status = faker.helpers.arrayElement(['healthy', 'injured', 'sick']);
-      const comment = faker.lorem.sentence();
-      const goal = faker.lorem.sentence();
-      const character_type = faker.helpers.arrayElement(['main', 'supporting', 'antagonist']);
-      const motivation = faker.lorem.words(5);
-      const fears = faker.lorem.words(3);
-      const weaknesses = faker.lorem.words(4);
-      const arc = faker.word.adjective();
-      const secrets = faker.word.noun() + ', ' + faker.word.noun();
-      const allies = faker.person.firstName() + ', ' + faker.person.firstName();
-      const enemies = faker.person.firstName();
-
+      const characterData = generateCharacterData(projectId);
       if (verbose) {
-        console.log(`➕ ${name} (${pseudonym})`);
+        console.log(`➕ ${characterData[1]} (${characterData[2]})`);
       }
-
-      stmt.run(
-        projectId,
-        name,
-        pseudonym,
-        description,
-        birthdate,
-        gender,
-        origin,
-        location,
-        occupation,
-        health_status,
-        comment,
-        goal,
-        character_type,
-        motivation,
-        fears,
-        weaknesses,
-        arc,
-        secrets,
-        allies,
-        enemies
-      );
+      stmt.run(characterData);
     }
 
     stmt.finalize(() => {
-      console.log(`\n✅ Successfully inserted ${count} characters into project ${projectId}.\n`);
+      console.log(`\n✅ Successfully inserted ${count} character(s) into project ${projectId}.\n`);
       db.close();
     });
   });
