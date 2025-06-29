@@ -23,7 +23,6 @@ if (!projectId || isNaN(projectId)) {
 const db = new sqlite3.Database(path.resolve('db/database.sqlite'));
 
 db.serialize(() => {
-  // Fetch characters for the project
   db.all(
     `SELECT id, name FROM characters WHERE project_id = ?`,
     [projectId],
@@ -40,46 +39,86 @@ db.serialize(() => {
         process.exit(1);
       }
 
-      const stmt = db.prepare(`
-        INSERT INTO character_relationships (character_id, related_character_id, relation)
-        VALUES (?, ?, ?)
-      `);
-
       let inserted = 0;
       const usedPairs = new Set();
 
-      while (inserted < count) {
+      const tryNext = () => {
+        if (inserted >= count) {
+          console.log(`\n✅ Successfully inserted ${inserted} relationships into project ${projectId}.\n`);
+          db.close();
+          return;
+        }
+
         const charA = characters[Math.floor(Math.random() * characters.length)];
         const charB = characters[Math.floor(Math.random() * characters.length)];
 
-        if (charA.id === charB.id) continue;
+        if (charA.id === charB.id) return tryNext();
 
         const pairKey = `${charA.id}-${charB.id}`;
         const reverseKey = `${charB.id}-${charA.id}`;
-        if (usedPairs.has(pairKey) || usedPairs.has(reverseKey)) continue;
+        if (usedPairs.has(pairKey) || usedPairs.has(reverseKey)) return tryNext();
 
-        const rel = relationshipTypes[Math.floor(Math.random() * relationshipTypes.length)];
-        usedPairs.add(pairKey);
+        // Check if relationship already exists in DB
+        db.get(
+          `SELECT 1 FROM character_relationships 
+           WHERE (character_id = ? AND related_character_id = ?) 
+              OR (character_id = ? AND related_character_id = ?)`,
+          [charA.id, charB.id, charB.id, charA.id],
+          (checkErr, row) => {
+            if (checkErr) {
+              console.error('❌ Failed to check existing relationships:', checkErr.message);
+              return tryNext();
+            }
 
-        stmt.run(charA.id, charB.id, rel.relation);
-        if (rel.inverse) {
-          stmt.run(charB.id, charA.id, rel.inverse);
-        }
+            if (row) {
+              usedPairs.add(pairKey);
+              return tryNext(); // Already exists
+            }
 
-        if (verbose) {
-          console.log(`🔗 ${charA.name} → ${rel.relation} → ${charB.name}`);
-          if (rel.inverse && rel.inverse !== rel.relation) {
-            console.log(`🔁 ${charB.name} → ${rel.inverse} → ${charA.name}`);
+            const rel = relationshipTypes[Math.floor(Math.random() * relationshipTypes.length)];
+
+            db.run(
+              `INSERT INTO character_relationships (character_id, related_character_id, relation) VALUES (?, ?, ?)`,
+              [charA.id, charB.id, rel.relation],
+              function (err1) {
+                if (err1) {
+                  console.error('❌ Insert failed:', err1.message);
+                  return tryNext();
+                }
+
+                if (rel.inverse && rel.inverse !== rel.relation) {
+                  db.run(
+                    `INSERT INTO character_relationships (character_id, related_character_id, relation) VALUES (?, ?, ?)`,
+                    [charB.id, charA.id, rel.inverse],
+                    function (err2) {
+                      if (err2) {
+                        console.warn(`⚠️ Inserted only one-way relation: ${err2.message}`);
+                      }
+                      done();
+                    }
+                  );
+                } else {
+                  done();
+                }
+
+                function done() {
+                  if (verbose) {
+                    console.log(`🔗 ${charA.name} → ${rel.relation} → ${charB.name}`);
+                    if (rel.inverse && rel.inverse !== rel.relation) {
+                      console.log(`🔁 ${charB.name} → ${rel.inverse} → ${charA.name}`);
+                    }
+                  }
+                  usedPairs.add(pairKey);
+                  inserted++;
+                  tryNext();
+                }
+              }
+            );
           }
-        }
+        );
+      };
 
-        inserted++;
-      }
-
-      stmt.finalize(() => {
-        console.log(`\n✅ Successfully inserted ${inserted} relationships into project ${projectId}.\n`);
-        db.close();
-      });
+      tryNext(); // Begin the loop
     }
   );
 });
