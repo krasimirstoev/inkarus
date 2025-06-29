@@ -44,6 +44,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id),
     FOREIGN KEY(part_id)    REFERENCES parts(id)
   )`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_drafts_project_id ON drafts(project_id);`);
 
   // Notes
   db.run(`CREATE TABLE IF NOT EXISTS notes (
@@ -53,6 +54,7 @@ db.serialize(() => {
     content TEXT,
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_notes_project_id ON notes(project_id);`);
 
   // Characters
   db.run(`CREATE TABLE IF NOT EXISTS characters (
@@ -81,6 +83,7 @@ db.serialize(() => {
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_characters_project_id ON characters(project_id);`);
 
   // Health history
   db.run(`CREATE TABLE IF NOT EXISTS health_history (
@@ -142,7 +145,7 @@ db.serialize(() => {
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
   );`);
 
-  // Events—for project timelines
+  // Events
   db.run(`CREATE TABLE IF NOT EXISTS events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -154,7 +157,7 @@ db.serialize(() => {
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );`);
-  db.run(`CREATE INDEX IF NOT EXISTS idx_events_project ON events(project_id);`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_events_project_id ON events(project_id);`);
 
   // Trigger to auto-update updated_at for locations
   db.run(`
