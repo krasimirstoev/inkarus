@@ -1,4 +1,5 @@
-// scripts/generate-relationships.js - Helper script to generate fake relationships between characters
+// scripts/generate-relationships.js - Helper script to generate random character relationships in Inkarus
+
 // Usage: node scripts/generate-relationships.js --project=<ID> [--count=10] [--verbose|-v]
 
 const sqlite3 = require('sqlite3').verbose();

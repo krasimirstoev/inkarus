@@ -1,4 +1,5 @@
 // scripts/generate-events.js - Helper script to generate events for a project in the Inkarus
+
 // Usage: node scripts/generate-events.js --project=<ID> --is_abstract=yes|no [--count=5] [--verbose|-v]
 
 const sqlite3 = require('sqlite3').verbose();

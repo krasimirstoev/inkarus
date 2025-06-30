@@ -1,4 +1,5 @@
-// scripts/generate-parts.js – Generate Parts (e.g. Acts, Volumes) for Inkarus
+// scripts/generate-parts.js – Helper script to generate fake parts for Inkarus
+
 // Usage: node scripts/generate-parts.js --project=1 [--count=3] [--verbose|-v]
 
 const sqlite3 = require('sqlite3').verbose();

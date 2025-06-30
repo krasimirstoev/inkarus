@@ -1,4 +1,5 @@
-// scripts/generate-notes.js - Helper script to generate fake notes for a project in the Inkarus app
+// scripts/generate-notes.js - Helper script to generate fake notes for a project in the Inkarus
+
 // Usage: node scripts/generate-notes.js --project=<ID> [--count=10] [--verbose|-v]
 
 const sqlite3 = require('sqlite3').verbose();

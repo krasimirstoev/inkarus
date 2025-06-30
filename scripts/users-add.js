@@ -1,5 +1,6 @@
-// scripts/users-add.js
-// CLI: Add new user manually to the database
+// scripts/users-add.js - Helper script to add a new user to the Inkarus database
+
+// Usage: node scripts/users-add.js --username= --email= --password=
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');

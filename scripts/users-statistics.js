@@ -1,4 +1,6 @@
-// scripts/users-statistics.js - Script to gather user statistics from the database
+// scripts/users-statistics.js - Helper script to gather user statistics in Inkarus
+
+// Usage: node scripts/users-statistics.js 
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');

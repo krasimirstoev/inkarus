@@ -1,5 +1,7 @@
-// scripts/users-change-password.js
-// CLI: Change a user's password (randomly generated) via --username or --id
+// scripts/users-change-password.js - Helper script to change a user's password in the Inkarus database
+
+// Usage: node scripts/users-change-password.js --username=example
+//        or:   node scripts/users-change-password.js --id=1
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');

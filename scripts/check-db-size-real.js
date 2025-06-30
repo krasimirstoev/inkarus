@@ -1,4 +1,6 @@
-// scripts/check-db-size-raw.js
+// scripts/check-db-size-raw.js - Helper script to check raw size of SQLite DB
+
+// Usage: node scripts/check-db-size-raw.js
 // Check raw size of SQLite DB using page_count * page_size
 
 const sqlite3 = require('sqlite3').verbose();

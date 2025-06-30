@@ -1,4 +1,5 @@
 // scripts/generate-projects.js - Helper script to generate fake projects for a user in the Inkarus app
+
 // Usage: node scripts/generate-projects.js --user=1 [--count=3] [--verbose|-v]
 
 const sqlite3 = require('sqlite3').verbose();

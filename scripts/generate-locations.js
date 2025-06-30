@@ -1,4 +1,5 @@
 // scripts/generate-locations.js – Helper script to generate fake locations for a project
+
 // Usage: node scripts/generate-locations.js --project=<ID> [--count=5] [--verbose|-v]
 
 const sqlite3 = require('sqlite3').verbose();

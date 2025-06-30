@@ -1,5 +1,6 @@
-// scripts/users-list.js
-// CLI: List all users
+// scripts/users-list.js - Helper script to list all registered users in Inkarus
+
+//usage: node scripts/users-list.js
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');

@@ -1,5 +1,7 @@
 // scripts/generate-drafts.js - Helper script to generate random drafts for Inkarus
 
+// Usage: node scripts/generate-drafts.js --project=<ID> [--verbose|-v]
+
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const readline = require('readline');

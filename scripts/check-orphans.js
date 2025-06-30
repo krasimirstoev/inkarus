@@ -1,5 +1,6 @@
-// scripts/check-orphans.js
-// Check or clean orphaned records in the Inkarus database
+// scripts/check-orphans.js - Helper script to check and clean orphaned records in the Inkarus database
+
+
 // Usage: node scripts/check-orphans.js --justcheck
 //     or: node scripts/check-orphans --cleanup
 

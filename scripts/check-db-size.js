@@ -1,5 +1,9 @@
-// scripts/check-db-size.js
-// Estimate SQLite table sizes with MB / KB output
+// scripts/check-db-size.js - Helper script to estimate SQLite table sizes
+
+// Usage: node scripts/check-db-size.js
+// This script estimates the size of each table in the Inkarus SQLite database
+// by calculating the total byte size of specified columns. It provides a
+// summary of the number of rows and size in MB/KB for each table.
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');

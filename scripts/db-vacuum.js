@@ -1,6 +1,8 @@
 // scripts/db-vacuum.js - Vacuum to reduce SQLite DB file size
+
 // This script runs a VACUUM command on the SQLite database to reduce its file size.
 // It should be run periodically to maintain optimal database performance.
+
 // Usage: node scripts/db-vacuum.js
 
 const sqlite3 = require('sqlite3').verbose();

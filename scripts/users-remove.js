@@ -1,5 +1,6 @@
-// scripts/users-remove.js
-// CLI: Remove a user and all their related data (projects, drafts, notes, etc.)
+// scripts/users-remove.js - Helper script to remove a user and all their data from the Inkarus database
+
+// Usage: node scripts/users-remove.js --username=example
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
