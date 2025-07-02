@@ -16,7 +16,6 @@ const expectedSchema = {
   notes: ['id', 'project_id', 'title', 'content'],
   characters: ['id', 'project_id', 'name', 'pseudonym', 'description', 'birthdate', 'gender', 'origin', 'location', 'occupation', 'health_status', 'comment', 'goal',
     'character_type', 'motivation', 'fears', 'weaknesses', 'arc', 'secrets', 'allies', 'enemies', 'created_at', 'updated_at'],
-  health_history: ['id', 'character_id', 'event', 'date'],
   character_relationships: ['id', 'character_id', 'related_character_id', 'relation'],
   preferences: ['id', 'user_id', 'autosave_interval', 'show_status_bar', 'font_choice'],
   draft_revisions: ['id', 'draft_id', 'content', 'word_count', 'type', 'created_at'],

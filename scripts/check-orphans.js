@@ -80,12 +80,6 @@ function getAsync(sql, params = []) {
       refColumn: 'id',
     },
     {
-      table: 'health_history',
-      column: 'character_id',
-      refTable: 'characters',
-      refColumn: 'id',
-    },
-    {
       table: 'character_relationships',
       column: 'character_id',
       refTable: 'characters',
