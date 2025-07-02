@@ -120,6 +120,12 @@ function getAsync(sql, params = []) {
       column: 'project_id',
       refTable: 'projects',
       refColumn: 'id',
+    },
+    {
+    table: 'items',
+    column: 'project_id',
+    refTable: 'projects',
+    refColumn: 'id',
     }
   ];
 

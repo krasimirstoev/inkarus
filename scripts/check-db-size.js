@@ -25,6 +25,7 @@ const TABLES = {
   users: ['username', 'email'],
   locations: ['name', 'description', 'type', 'custom_type'],
   events: ['title', 'description', 'event_date'],
+  items: ['id', 'project_id', 'name', 'description', 'status', 'custom_status', 'created_at', 'updated_at']
 };
 
 function analyzeTable(table, columns) {
