@@ -1,4 +1,4 @@
-// public/js/quill/formats/place.js
+// public/js/quill/init/formats/place.js
 import Quill from 'https://cdn.skypack.dev/quill@1.3.7';
 const Inline = Quill.import('blots/inline');
 

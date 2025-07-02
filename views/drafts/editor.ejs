@@ -5,6 +5,7 @@
     <button class="sidebar-item" id="toggle-notes">Notes</button>
     <button class="sidebar-item" id="toggle-characters">Characters</button>
     <button class="sidebar-item" id="toggle-places">Geography</button>
+    <button class="sidebar-item" id="toggle-items">Items</button>
     <button class="sidebar-item">Outline</button>
   </aside>
 
@@ -149,6 +150,34 @@
     </div>
   </div>
 
+<!-- Items Panel -->
+<div id="items-panel" class="side-panel d-none">
+  <div class="panel-header d-flex justify-content-between align-items-center">
+    <h5>🧿 Items</h5>
+    <button id="close-items" class="btn btn-sm btn-outline-light">✕</button>
+  </div>
+  <div class="panel-body p-2">
+    <input type="text" id="item-search" class="form-control mb-2" placeholder="Search items…">
+    <ul id="item-list" class="list-group list-group-flush"></ul>
+  </div>
+</div>
+
+<!-- Items modal-->
+<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="itemModalLabel">Item Info</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="itemModalBody">
+        <div class="text-center text-muted">Loading...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Quill Snow CSS via Skypack -->
 <link
   rel="stylesheet"
@@ -168,5 +197,6 @@
 <script type="module" src="/js/pages/revision-panel.js"></script>
 <script type="module" src="/js/pages/place-panel.js"></script>
 <script type="module" src="/js/pages/place-highlighter.js"></script>
+<script type="module" src="/js/pages/item-panel.js"></script>
 
 

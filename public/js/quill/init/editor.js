@@ -3,9 +3,10 @@
 // Import Quill from a CDN-backed ESM bundle
 import Quill from 'https://cdn.skypack.dev/quill@1.3.7';
 
-// Import and register our custom CharacterBlot and PlaceBlot formats
+// Import and register our custom CharacterBlot, PlaceBlot, and ItemBlot formats
 import './formats/character.js';
 import './formats/place.js';
+import './formats/item.js'; 
 
 /**
  * Initialize the Quill editor, register event handlers, and expose
@@ -29,7 +30,8 @@ export function initEditor() {
       'bold', 'italic', 'underline', 'strike', 'blockquote', 'link',
       'list', 'bullet', 'indent',
       'character', // Our custom CharacterBlot
-      'place'      // Our custom PlaceBlot
+      'place',     // Our custom PlaceBlot
+      'item'       // Our custom ItemBlot
     ]
   });
 

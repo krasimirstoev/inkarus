@@ -25,6 +25,7 @@ const relationshipRoutes = require('./routes/relationships');
 const partsRoutes = require('./routes/parts');
 const placesRouter = require('./routes/places');
 const eventsRouter = require('./routes/events');
+const itemRoutes = require('./routes/items');
 
 // EJS Setup
 app.set('view engine', 'ejs');
@@ -72,6 +73,7 @@ app.use('/relationships', relationshipRoutes);
 app.use('/parts', partsRoutes);
 app.use('/places', placesRouter);
 app.use('/events', eventsRouter);
+app.use('/items', itemRoutes);
 
 // Home
 app.get('/', (req, res) => {

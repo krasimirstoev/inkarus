@@ -305,6 +305,17 @@ ul.list-group[data-part-id] {
   border-bottom-style: solid;
 }
 
+.ql-editor a.item-link {
+  color: #ffd54f !important; /* меко жълто */
+  text-decoration: none !important;
+  border-bottom: 1px dashed #ffd54f;
+  cursor: pointer;
+}
+.ql-editor a.item-link:hover {
+  border-bottom-style: solid;
+  color: #ffe082 !important;
+}
+
 /* ============================================================
   13. Fullscreen & Reading Modes
   ============================================================ */
@@ -638,4 +649,74 @@ ul.list-group[data-part-id] {
 .tooltip.persistent-tooltip.show {
   opacity: 1;
   transition: opacity 0.15s ease-in-out;
+}
+
+/* ============================================================
+  20. Items Sidebar Panel
+  ============================================================ */
+#items-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+#items-panel .panel-header h5 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+#items-panel #item-search {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  background-color: #2a2a2a !important;
+  color: #eee !important;
+  border: 1px solid #444 !important;
+}
+
+#items-panel #item-list .list-group-item {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s ease;
+  background-color: #222 !important;
+  color: #eee !important;
+}
+
+#items-panel #item-list .list-group-item + .list-group-item {
+  border-top: 1px solid #333;
+}
+
+#items-panel #item-list .list-group-item:hover {
+  background-color: #333 !important;
+}
+
+#items-panel .panel-header button#close-items {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+}
+
+#items-panel .panel-header button#close-items:hover {
+  color: #fff;
+}
+
+#items-panel .panel-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+#items-panel #item-list .list-group-item::after {
+  content: "›";
+  font-weight: bold;
+  color: #888;
+  margin-left: auto;
+}
+
+#items-panel #item-list .list-group-item:hover::after {
+  color: #ddd;
 }
