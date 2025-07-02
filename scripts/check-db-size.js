@@ -18,7 +18,6 @@ const TABLES = {
   drafts: ['title', 'content'],
   notes: ['title', 'content'],
   characters: ['name', 'pseudonym', 'description', 'origin', 'location', 'occupation', 'health_status', 'comment', 'goal', 'motivation', 'fears', 'weaknesses', 'arc', 'secrets', 'allies', 'enemies'],
-  health_history: ['event'],
   character_relationships: ['relation'],
   preferences: [], // ignored
   draft_revisions: ['content'],

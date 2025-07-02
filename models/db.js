@@ -84,16 +84,7 @@ db.serialize(() => {
     FOREIGN KEY(project_id) REFERENCES projects(id)
   )`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_characters_project_id ON characters(project_id);`);
-
-  // Health history
-  db.run(`CREATE TABLE IF NOT EXISTS health_history (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    character_id INTEGER,
-    event TEXT,
-    date TEXT,
-    FOREIGN KEY(character_id) REFERENCES characters(id)
-  )`);
-
+  
   // Character relationships
   db.run(`CREATE TABLE IF NOT EXISTS character_relationships (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
