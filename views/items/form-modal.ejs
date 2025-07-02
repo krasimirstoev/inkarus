@@ -1,0 +1,59 @@
+<% const title = item.id ? 'Edit Item' : 'Add Item'; %>
+
+<div id="itemFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title"><%= title %></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="item-form" action="<%= item.id ? `/items/${projectId}/update/${item.id}` : `/items/${projectId}` %>" method="POST">
+          <% if (item.id) { %>
+            <input type="hidden" name="_method" value="POST">
+          <% } %>
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required value="<%= item.name || '' %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" id="item-status" class="form-select">
+              <% statuses.forEach(s => { %>
+                <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>><%= s %></option>
+              <% }) %>
+            </select>
+            <input type="text"
+                   name="customStatus"
+                   id="custom-status"
+                   class="form-control mt-2 d-none"
+                   placeholder="Custom status"
+                   value="<%= item.status === 'custom' ? item.custom_status : '' %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="4"><%= item.description || '' %></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="item-form" class="btn btn-sm btn-outline-success">💾 Save</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Show customStatus input if “custom” selected
+  const statusEl = document.getElementById('item-status');
+  const customEl = document.getElementById('custom-status');
+  function toggleCustom() {
+    customEl.classList.toggle('d-none', statusEl.value !== 'custom');
+  }
+  statusEl.addEventListener('change', toggleCustom);
+  toggleCustom();
+</script>

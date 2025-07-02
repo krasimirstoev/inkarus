@@ -22,7 +22,8 @@ const expectedSchema = {
   draft_revisions: ['id', 'draft_id', 'content', 'word_count', 'type', 'created_at'],
   users: ['id', 'username', 'password', 'email'],
   locations: ['id', 'project_id', 'name', 'description', 'type', 'custom_type', 'created_at', 'updated_at'],
-  events: ['id', 'project_id', 'title', 'description', 'event_date', 'is_abstract', 'display_order', 'created_at', 'updated_at']
+  events: ['id', 'project_id', 'title', 'description', 'event_date', 'is_abstract', 'display_order', 'created_at', 'updated_at'],
+  items: ['id', 'project_id', 'name', 'description', 'status', 'custom_status', 'created_at', 'updated_at']
 };
 
 // Expected indexes
