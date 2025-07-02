@@ -1,62 +1,79 @@
 const db = require('./db');
 
-// Add relationship + its inverse
-function addRelationship(characterId, relatedCharacterId, relation, description = '', callback) {
-  db.run(
-    `INSERT INTO character_relationships 
-     (character_id, related_character_id, relation, description) 
-     VALUES (?, ?, ?, ?)`,
-    [characterId, relatedCharacterId, relation, description],
-    function (err) {
-      if (err) return callback(err);
+/**
+ * Add a single relationship record between two characters.
+ *
+ * @param {number}   characterId
+ * @param {number}   relatedCharacterId
+ * @param {string}   relation
+ * @param {function} callback(err, lastID)
+ */
+function addRelationship(characterId, relatedCharacterId, relation, callback) {
+  const sql = `
+    INSERT INTO character_relationships
+      (character_id, related_character_id, relation)
+    VALUES (?, ?, ?)
+  `;
+  db.run(sql, [characterId, relatedCharacterId, relation], function(err) {
+    if (err) return callback(err);
+    // return the new record’s ID
+    callback(null, this.lastID);
+  });
+}
 
-      // Insert inverse relationship if specified
-      if (inverseRelation) {
-        db.run(
-          `INSERT INTO character_relationships 
-           (character_id, related_character_id, relation, inverse_relation, description) 
-           VALUES (?, ?, ?, ?, ?)`,
-          [relatedCharacterId, characterId, inverseRelation, relation, description],
-          function (invErr) {
-            if (invErr) return callback(invErr);
-            callback(null, this.lastID);
-          }
-        );
-      } else {
-        callback(null, this.lastID);
-      }
+/**
+ * Get all relationships for a given character.
+ *
+ * @param {number}   characterId
+ * @param {function} callback(err, rows)
+ */
+function getRelationships(characterId, callback) {
+  const sql = `
+    SELECT
+      cr.id,
+      cr.relation,
+      c.id   AS related_id,
+      c.name AS related_name
+    FROM character_relationships AS cr
+    JOIN characters AS c
+      ON cr.related_character_id = c.id
+    WHERE cr.character_id = ?
+    ORDER BY c.name ASC
+  `;
+  db.all(sql, [characterId], callback);
+}
+
+/**
+ * Delete a relationship (both directions).
+ *
+ * @param {number}   id
+ * @param {function} callback(err)
+ */
+function deleteRelationship(id, callback) {
+  // First fetch the row to know both character IDs
+  db.get(
+    `SELECT character_id, related_character_id
+       FROM character_relationships
+      WHERE id = ?`,
+    [id],
+    (err, row) => {
+      if (err) return callback(err);
+      if (!row) return callback(new Error('Relationship not found'));
+
+      const { character_id, related_character_id } = row;
+      // Delete any record linking these two in either direction
+      const sql = `
+        DELETE FROM character_relationships
+         WHERE (character_id = ? AND related_character_id = ?)
+            OR (character_id = ? AND related_character_id = ?)
+      `;
+      db.run(
+        sql,
+        [character_id, related_character_id, related_character_id, character_id],
+        callback
+      );
     }
   );
-}
-
-// Get all relationships for a character
-function getRelationships(characterId, callback) {
-  db.all(
-    `SELECT cr.id, cr.relation, cr.inverse_relation, cr.description, c.name AS related_name, c.id AS related_id
-     FROM character_relationships cr
-     JOIN characters c ON cr.related_character_id = c.id
-     WHERE cr.character_id = ?
-     ORDER BY c.name ASC`,
-    [characterId],
-    callback
-  );
-}
-
-// Delete a relationship (and optional inverse)
-function deleteRelationship(id, callback) {
-  // Get relation info
-  db.get(`SELECT * FROM character_relationships WHERE id = ?`, [id], (err, row) => {
-    if (err || !row) return callback(err || new Error('Relationship not found'));
-
-    // Delete both directions
-    db.run(
-      `DELETE FROM character_relationships 
-       WHERE (character_id = ? AND related_character_id = ?) 
-          OR (character_id = ? AND related_character_id = ?)`,
-      [row.character_id, row.related_character_id, row.related_character_id, row.character_id],
-      callback
-    );
-  });
 }
 
 module.exports = {
