@@ -1,3 +1,6 @@
+// controller/authController.js - Authentication Controller
+// This controller handles user authentication, including login, registration, and logout.
+
 const bcrypt = require('bcrypt');
 const db = require('../models/db');
 
