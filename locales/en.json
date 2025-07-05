@@ -8,8 +8,7 @@
     "save": "Save Settings",
     "saved": "Your preferences have been saved!"
   },
-
-    "navbar": {
+  "navbar": {
     "brand": "Inkarus",
     "projects": "Projects",
     "search": "Search",
@@ -17,19 +16,18 @@
     "logout": "Logout",
     "login": "Login",
     "register": "Register"
-  }, 
-
-    "footer": {
+  },
+  "footer": {
     "copyright": "Inkarus © {{year}} — Made with ❤️ for writers"
   },
-    "NotFoundPage": {
+  "NotFoundPage": {
     "message": "The page you're looking for doesn't exist.",
     "back": "Back to Projects"
   },
   "App": {
     "name": "Writers Hub"
   },
-    "Auth": {
+  "Auth": {
     "Login": {
       "title": "Login",
       "error": {
@@ -53,6 +51,168 @@
       "password": "Password",
       "button": "Register",
       "login_link": "Already have an account? Login here"
+    }
+  },
+  "Characters": {
+    "Form": {
+      "edit": "Edit Character",
+      "new": "New Character",
+      "name": "Name",
+      "pseudonym": "Pseudonym",
+      "description": "Description",
+      "birthdate": "Birth Date",
+      "gender": "Gender",
+      "origin": "Origin",
+      "occupation": "Occupation",
+      "location": "Location",
+      "health_status": "Health Status",
+      "healthy": "Healthy",
+      "sick": "Sick",
+      "injured": "Injured",
+      "deceased": "Deceased",
+      "comment": "Author Notes",
+      "details": "Character Details",
+      "goal": "Goal",
+      "character_type": "Character Type",
+      "select_type": "Select Type",
+      "protagonist": "Protagonist",
+      "antagonist": "Antagonist",
+      "supporting": "Supporting",
+      "mentor": "Mentor",
+      "other": "Other",
+      "motivation": "Motivation",
+      "fears": "Fears",
+      "weaknesses": "Weaknesses",
+      "arc": "Character Arc",
+      "select_arc": "Select Arc",
+      "arc_positive": "Positive",
+      "arc_negative": "Negative",
+      "arc_flat": "Flat/Static",
+      "secrets": "Secrets",
+      "allies": "Allies (comma-separated IDs)",
+      "enemies": "Enemies (comma-separated IDs)",
+      "optional_relation": "Optional Relationship",
+      "choose_related": "Choose Related Character",
+      "none": "None",
+      "relation_type": "Relation Type",
+      "save": "Save Character",
+      "back": "Back",
+      "relation_placeholder": "e.g. father, rival, ally",
+      "edit_title": "Edit Character",
+      "new_title": "New Character"
+    },
+    "Graph": {
+      "title": "Character Relationships Graph",
+      "back": "Back to Characters"
+    },
+    "List": {
+      "title": "Characters",
+      "relationships": "Relationships",
+      "new": "New Character",
+      "empty": "No characters yet.",
+      "aka": "AKA",
+      "confirm_delete": "Are you sure?",
+      "modal_title": "Character Info",
+      "loading": "Loading..."
+    },
+    "PartialList": {
+      "empty": "No characters found.",
+      "aka": "AKA"
+    },
+    "Profile": {
+      "title": "Characters",
+      "new": "New Character",
+      "empty": "No characters yet.",
+      "no_description": "No description provided.",
+      "health": "Health Status",
+      "edit": "Edit"
+    },
+    "GraphView":{
+      "title": "Character Relationships Graph",
+      "back": "Back to Characters",
+      "connections": "Connections",
+      "click_hint": "Click on a character to see their relationships",
+      "all_characters": "All Characters",
+      "zoom_in": "Zoom In",
+      "zoom_out": "Zoom Out",
+      "save_png": "Save as PNG",
+      "reset_view": "Reset View",
+      "no_relationships": "No relationships found for this character",
+      "title_with_project": "Character Relationships Graph - {{title}}",
+      "error_loading_graph": "❌ Failed to load graph data",
+      "title_heading": "🔗 Character Relationships"
+    },
+    "Relationships": {
+      "title": "Character Relationships",
+      "back": "Back to Characters",
+      "graph_view": "Graph View",
+      "error_same": "A character cannot be related to themselves. Please choose two different characters.",
+      "character": "Character",
+      "related_character": "Related Character",
+      "relation": "Relation",
+      "placeholder": "e.g. sibling, friend",
+      "empty": "No relationships defined yet.",
+      "edit_tooltip": "Edit Relation",
+      "confirm_delete": "Are you sure you want to delete this relationship? This action cannot be undone.",
+      "modal_title": "Edit Relationship",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "error_missing_fields": "Please fill in all required fields: related character and relation type.",
+      "update_failed": "Failed to update relation.",
+      "update_error": "Error updating relation."
+    },
+    "Modal": {
+      "loading_character": "Loading character...",
+      "failed_to_load": "Failed to load character.",
+      "error_loading": "Error loading character.",
+      "desc": "Description",
+      "goal": "Goal",
+      "type": "Type", 
+      "created": "Created",
+      "updated": "Updated",
+      "no_description": "No description provided.",
+      "goal": "Goal",
+      "type": "Type",
+      "motivation": "Motivation",
+      "fears": "Fears",
+      "weaknesses": "Weaknesses",
+      "arc": "Character Arc",
+      "secrets": "Secrets",
+      "allies": "Allies",
+      "enemies": "Enemies",
+      "birthdate": "Birth Date",
+      "gender": "Gender",
+      "origin": "Origin",
+      "occupation": "Occupation",
+      "location": "Location",
+      "health": "Health Status",
+      "comment": "Author Notes"
+    },
+    "Panel": {
+      "loading": "Loading...",
+      "info_title": "Character Info",
+      "no_characters": "No characters found.",
+      "failed_load_list": "Failed to load characters.",
+      "desc": "📖 Description",
+      "goal": "🎯 Goal",
+      "type": "📚 Type",
+      "motivation": "🔥 Motivation",
+      "fears": "😨 Fears",
+      "weaknesses": "💔 Weaknesses",
+      "arc": "🌀 Arc",
+      "secrets": "🤫 Secrets",
+      "allies": "🛡️ Allies",
+      "enemies": "⚔️ Enemies",
+      "birthdate": "🎂 Birth Date",
+      "gender": "⚧ Gender",
+      "origin": "🌍 Origin",
+      "location": "📍 Location",
+      "occupation": "💼 Occupation",
+      "notes": "📝 Notes",
+      "created": "🗓 Created",
+      "updated": "✏️ Updated",
+      "failed_fetch": "❌ Failed to load character data.",
+      "error_fetch": "❌ Error loading character."
     }
   }
 }

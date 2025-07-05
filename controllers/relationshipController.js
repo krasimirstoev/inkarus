@@ -168,7 +168,7 @@ exports.graphView = (req, res) => {
     }
 
     res.render('characters/relationships-graph', {
-      title: `Relationship Graph – ${project.title}`,
+      title: res.__('Characters.GraphView.title_with_project', { title: project.title }),
       projectId
     });
   });

@@ -190,6 +190,25 @@
   window.Quill = Quill;
 </script>
 
+  <!-- Inject translations and helper into browser -->
+<script>
+  // helper function to support dot notation for translations
+  window.__ = function(key) {
+    const parts = key.split('.');
+    let o = window.translations;
+    for (const p of parts) {
+      if (!o || typeof o !== 'object' || !(p in o)) {
+        return key;   // fallback 
+      }
+      o = o[p];
+    }
+    return o;
+  };
+
+  // full translations object from server
+  window.translations = <%- JSON.stringify(translations || {}) %>;
+</script>
+
 <!-- Our application scripts -->
 <script type="module" src="/js/quill-init.js"></script>
 <script type="module" src="/js/pages/character-panel.js"></script>

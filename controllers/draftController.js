@@ -191,10 +191,32 @@ exports.jsonGroups = (req, res) => {
  */
 exports.edit = (req, res) => {
   const { id } = req.params;
-  db.get(`SELECT * FROM drafts WHERE id = ?`, [id], (err, draft) => {
-    if (err || !draft) return res.sendStatus(404);
-    res.render('drafts/editor', { title: draft.title, draft });
-  });
+  db.get(
+    `SELECT * FROM drafts WHERE id = ?`,
+    [id],
+    (err, draft) => {
+      if (err || !draft) return res.sendStatus(404);
+
+      db.all(
+        `SELECT id, name, pseudonym FROM characters WHERE project_id = ? ORDER BY name`,
+        [draft.project_id],
+        (err2, characters) => {
+          if (err2) {
+            console.error('❌ DB error loading characters:', err2);
+            return res.sendStatus(500);
+          }
+
+          res.render('drafts/editor', {
+            title:       draft.title,
+            draft,
+            characters,
+            projectId:   draft.project_id,
+            translations: res.locals.translations || {}
+          });
+        }
+      ); 
+    }
+  ); 
 };
 
 /**

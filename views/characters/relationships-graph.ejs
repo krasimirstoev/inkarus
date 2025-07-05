@@ -1,15 +1,16 @@
+<!-- views/characters/relationships-graph.ejs -->
 <div class="container-fluid py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>📊 Character Graph</h2>
-    <a href="/characters/<%= projectId %>/relationships" class="btn btn-sm btn-outline-secondary">← Back</a>
+    <h2>📊 <%= __('Characters.GraphView.title') %></h2>
+    <a href="/characters/<%= projectId %>/relationships" class="btn btn-sm btn-outline-secondary">← <%= __('Characters.GraphView.back') %></a>
   </div>
 
   <div class="row">
     <!-- Info panel (left) -->
     <div class="col-md-3">
       <div class="bg-dark text-light p-3 rounded" style="min-height: 150px;">
-        <h5 class="mb-3">📋 Connections</h5>
-        <div id="connectionList" class="small text-muted">Click a node or edge to view relationships.</div>
+        <h5 class="mb-3">📋 <%= __('Characters.GraphView.connections') %></h5>
+        <div id="connectionList" class="small text-muted"><%= __('Characters.GraphView.click_hint') %></div>
       </div>
     </div>
 
@@ -17,12 +18,12 @@
     <div class="col-md-9">
       <div class="mb-3 d-flex gap-2">
         <select id="characterFilter" class="form-select w-auto">
-          <option value="">All characters</option>
+          <option value=""><%= __('Characters.GraphView.all_characters') %></option>
         </select>
-        <button id="zoomInBtn" class="btn btn-outline-light btn-sm">➕ Zoom In</button>
-        <button id="zoomOutBtn" class="btn btn-outline-light btn-sm">➖ Zoom Out</button>
-        <button id="savePngBtn" class="btn btn-outline-success btn-sm">💾 Save as PNG</button>
-        <button id="resetViewBtn" class="btn btn-outline-warning btn-sm">🔄 Reset View</button>
+        <button id="zoomInBtn" class="btn btn-outline-light btn-sm">➕ <%= __('Characters.GraphView.zoom_in') %></button>
+        <button id="zoomOutBtn" class="btn btn-outline-light btn-sm">➖ <%= __('Characters.GraphView.zoom_out') %></button>
+        <button id="savePngBtn" class="btn btn-outline-success btn-sm">💾 <%= __('Characters.GraphView.save_png') %></button>
+        <button id="resetViewBtn" class="btn btn-outline-warning btn-sm">🔄 <%= __('Characters.GraphView.reset_view') %></button>
       </div>
 
       <div id="graph" style="height: 600px; background: #1e1e1e; border-radius: 12px;"></div>
@@ -164,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         connectionList.innerHTML = relations.length > 0
           ? relations.map(r => `<div>${r}</div>`).join('')
-          : `<em>No relationships.</em>`;
+          : `<em><%= __('Characters.GraphView.no_relationships') %></em>`;
 
         // Highlight
         data.nodes.update({ id: selectedId, color: '#00aced' });
@@ -197,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     network.on('deselectNode', () => {
-      connectionList.innerHTML = `Click a node or edge to view relationships.`;
+      connectionList.innerHTML = `<%= __('Characters.GraphView.click_hint') %>`;
       allNodes.forEach(n => data.nodes.update({ id: n.id, color: '#00aced' }));
       allEdges.forEach(e => data.edges.update({ id: e.id, color: e.color }));
     });

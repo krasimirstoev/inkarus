@@ -1,35 +1,35 @@
 // app.js
 
-const express = require('express');
-const session = require('express-session');
-const SQLiteStore = require('connect-sqlite3')(session);
-const methodOverride = require('method-override');
-const bodyParser = require('body-parser');
-const path = require('path');
-const expressLayouts = require('express-ejs-layouts');
-const i18n = require('i18n');
-const config = require('./config/config');
-const db = require('./models/db');
+const express            = require('express');
+const session            = require('express-session');
+const SQLiteStore        = require('connect-sqlite3')(session);
+const methodOverride     = require('method-override');
+const bodyParser         = require('body-parser');
+const path               = require('path');
+const expressLayouts     = require('express-ejs-layouts');
+const i18n               = require('i18n');
+const config             = require('./config/config');
+const db                 = require('./models/db');
 
 const app = express();
 
-// EJS view engine
+// 1) EJS view engine + layouts
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');
 app.use(expressLayouts);
 
-// Static folders
+// 2) Static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
-app.use('/quill', express.static(path.join(__dirname, 'node_modules', 'quill', 'dist')));
+app.use('/quill', express.static(path.join(__dirname, 'node_modules/quill/dist')));
 
-// Parse POST requests
+// 3) Parse POST bodies & method override
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 
-// Sessions with SQLite store
+// 4) Session (SQLite store)
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.sqlite' }),
   secret: config.sessionSecret,
@@ -37,78 +37,88 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// i18n configuration
+// 5) i18n configuration
 i18n.configure({
-  locales: ['en', 'bg'],
-  directory: path.join(__dirname, 'locales'),
-  defaultLocale: 'en',
+  locales:        ['en', 'bg'],
+  directory:      path.join(__dirname, 'locales'),
+  defaultLocale:  'en',
   queryParameter: 'lang',
-  cookie: 'language',
-  autoReload: true,
-  updateFiles: false,
-  syncFiles: false,
+  cookie:         'language',
+  autoReload:     true,
+  updateFiles:    false,
+  syncFiles:      false,
   objectNotation: true
 });
 
-// Initialize i18n
+// 6) Initialize i18n (adds req.__, req.getLocale, req.setLocale, etc.)
 app.use(i18n.init);
 
-// Middleware to set the locale based on query parameter or cookie
+// 7) Make translation helper available in all views
 app.use((req, res, next) => {
   res.locals.__ = req.__.bind(req);
   next();
 });
 
-// Set currentUser globally
+// 8) Make currentUser available in all views
 app.use((req, res, next) => {
   res.locals.currentUser = req.session.user || null;
   next();
 });
 
-// Load user preferences and set language
+// 9) Load user preferences (including preferred language) and apply locale
 app.use((req, res, next) => {
-  if (!req.session.user) return next();
+  if (!req.session.user) {
+    // no user → keep default or query param locale
+    return next();
+  }
 
   const userId = req.session.user.id;
+  db.get(
+    'SELECT * FROM preferences WHERE user_id = ?',
+    [userId],
+    (err, prefs) => {
+      if (err) {
+        console.error('❌ Error loading preferences:', err);
+        return next();
+      }
 
-  db.get('SELECT * FROM preferences WHERE user_id = ?', [userId], (err, prefs) => {
-    if (err) {
-      console.error('❌ Error loading preferences:', err);
-      return next();
+      // Attach prefs to req and views
+      req.userPrefs         = prefs || {};
+      res.locals.preferences = prefs || {};
+
+      // If user has a saved language, switch locale
+      if (prefs?.language && typeof req.setLocale === 'function') {
+        req.setLocale(prefs.language);
+        res.locals.__ = req.__.bind(req);
+      }
+
+      next();
     }
+  );
+});
 
-    // Attach preferences to request and views
-    req.userPrefs = prefs || {};
-    res.locals.preferences = prefs || {};
-
-    // Set locale only if available
-    if (typeof req.setLocale === 'function' && prefs?.language) {
-      req.setLocale(prefs.language);
-    }
-
-    // Make translation function available in views
-    res.locals.__ = req.__.bind(req);
-
-    next();
-  });
+// 10) Inject full translations catalog into views, _after_ locale is set
+app.use((req, res, next) => {
+  res.locals.translations = i18n.getCatalog(req.getLocale());
+  next();
 });
 
 // ---------------- ROUTES ----------------
-const authRoutes = require('./routes/auth');
-const projectRoutes = require('./routes/projects');
-const draftRoutes = require('./routes/drafts');
-const noteRoutes = require('./routes/notes');
-const characterRoutes = require('./routes/characters');
-const characterRelationshipsRoutes = require('./routes/characterRelationships');
-const searchRoutes = require('./routes/search');
-const settingsRoutes = require('./routes/settings');
-const relationshipRoutes = require('./routes/relationships');
-const partsRoutes = require('./routes/parts');
-const placesRouter = require('./routes/places');
-const eventsRouter = require('./routes/events');
-const itemRoutes = require('./routes/items');
+const authRoutes                     = require('./routes/auth');
+const projectRoutes                  = require('./routes/projects');
+const draftRoutes                    = require('./routes/drafts');
+const noteRoutes                     = require('./routes/notes');
+const characterRoutes                = require('./routes/characters');
+const characterRelationshipsRoutes   = require('./routes/characterRelationships');
+const searchRoutes                   = require('./routes/search');
+const settingsRoutes                 = require('./routes/settings');
+const relationshipRoutes             = require('./routes/relationships');
+const partsRoutes                    = require('./routes/parts');
+const placesRouter                   = require('./routes/places');
+const eventsRouter                   = require('./routes/events');
+const itemRoutes                     = require('./routes/items');
 
-// Mount routes
+// Mount
 app.use('/', authRoutes);
 app.use('/projects', projectRoutes);
 app.use('/drafts', draftRoutes);
@@ -123,15 +133,15 @@ app.use('/places', placesRouter);
 app.use('/events', eventsRouter);
 app.use('/items', itemRoutes);
 
-// Home route
+// Home redirect
 app.get('/', (req, res) => {
   if (!req.session.user) return res.redirect('/login');
   res.redirect('/projects');
 });
 
-// 404 page
+// 404 handler
 app.use((req, res) => {
-  res.status(404).render('404', { title: 'Not Found' });
+  res.status(404).render('404', { title: req.__('NotFoundPage.message') });
 });
 
 // Start server

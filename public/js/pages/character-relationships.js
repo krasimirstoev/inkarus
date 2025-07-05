@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeDisplay) activeDisplay.textContent = input.value;
         modal.hide();
       } else {
-        alert('Failed to update relation.');
+        alert(window.__('Characters.Relationships.update_failed'));
       }
     })
-    .catch(() => alert('Error updating relation.'));
+    .catch(() => alert(window.__('Characters.Relationships.update_error')));
   });
 });

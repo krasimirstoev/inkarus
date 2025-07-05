@@ -46,21 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (characters.length === 0) {
-          characterList.innerHTML = `<p class="text-muted small">No characters found.</p>`;
+          characterList.innerHTML = `<p class="text-muted small">${window.__('Characters.Panel.no_characters')}</p>`;
         } else {
           initCharacterHighlighter();
         }
       })
       .catch(err => {
         console.error('Failed to load characters:', err);
-        characterList.innerHTML = `<p class="text-danger">Failed to load characters.</p>`;
+        characterList.innerHTML = `<p class="text-danger">${window.__('Characters.Panel.failed_load_list')}</p>`;
       });
   };
 
   const loadCharacterProfile = (characterId) => {
     if (!modal) return;
-    modalBody.innerHTML = `<div class="text-center text-muted">Loading...</div>`;
-    modalTitle.textContent = 'Character Info';
+    modalBody.innerHTML = `<div class="text-center text-muted">${window.__('Characters.Panel.loading')}</div>`;
+    modalTitle.textContent = window.__('Characters.Panel.info_title');
 
     fetch(`/characters/${projectId}/json/${characterId}`)
       .then(res => res.json())
@@ -71,36 +71,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
           modalBody.innerHTML = `
             <div>
-              <p><strong>📖 Description:</strong> ${c.description || '<em>No description</em>'}</p>
-              <p><strong>🎯 Goal:</strong> ${c.goal || '-'}</p>
-              <p><strong>📚 Type:</strong> ${c.character_type || '-'}</p>
-              <p><strong>🔥 Motivation:</strong> ${c.motivation || '-'}</p>
-              <p><strong>😨 Fears:</strong> ${c.fears || '-'}</p>
-              <p><strong>💔 Weaknesses:</strong> ${c.weaknesses || '-'}</p>
-              <p><strong>🌀 Arc:</strong> ${c.arc || '-'}</p>
-              <p><strong>🤫 Secrets:</strong> ${c.secrets || '-'}</p>
-              <p><strong>🛡️ Allies:</strong> ${c.allies || '-'}</p>
-              <p><strong>⚔️ Enemies:</strong> ${c.enemies || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.desc')}:</strong> ${c.description || '<em>No description</em>'}</p>
+              <p><strong>${window.__('Characters.Panel.goal')}:</strong> ${c.goal || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.type')}:</strong> ${c.character_type || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.motivation')}:</strong> ${c.motivation || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.fears')}:</strong> ${c.fears || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.weaknesses')}:</strong> ${c.weaknesses || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.arc')}:</strong> ${c.arc || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.secrets')}:</strong> ${c.secrets || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.allies')}:</strong> ${c.allies || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.enemies')}:</strong> ${c.enemies || '-'}</p>
               <hr/>
-              <p><strong>🎂 Birth Date:</strong> ${c.birthdate || '-'}</p>
-              <p><strong>⚧ Gender:</strong> ${c.gender || '-'}</p>
-              <p><strong>🌍 Origin:</strong> ${c.origin || '-'}</p>
-              <p><strong>📍 Location:</strong> ${c.location || '-'}</p>
-              <p><strong>💼 Occupation:</strong> ${c.occupation || '-'}</p>
-              <p><strong>📝 Notes:</strong> ${c.comment || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.birthdate')}:</strong> ${c.birthdate || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.gender')}:</strong> ${c.gender || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.origin')}:</strong> ${c.origin || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.location')}:</strong> ${c.location || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.occupation')}:</strong> ${c.occupation || '-'}</p>
+              <p><strong>${window.__('Characters.Panel.notes')}:</strong> ${c.comment || '-'}</p>
             </div>
             <div class="modal-footer d-flex flex-column align-items-start mt-3 border-top pt-2">
-              <time>🗓 Created: ${formatDate(c.created_at)}</time>
-              <time>✏️ Updated: ${formatDate(c.updated_at)}</time>
+              <time>${window.__('Characters.Panel.created')}: ${formatDate(c.created_at)}</time>
+              <time>${window.__('Characters.Panel.updated')}: ${formatDate(c.updated_at)}</time>
             </div>
           `;
           modal.show();
         } else {
-          modalBody.innerHTML = `<div class="text-danger">❌ Failed to load character data.</div>`;
+          modalBody.innerHTML = `<div class="text-danger">${window.__('Characters.Panel.failed_fetch')}</div>`;
         }
       })
       .catch(() => {
-        modalBody.innerHTML = `<div class="text-danger">❌ Error loading character.</div>`;
+        modalBody.innerHTML = `<div class="text-danger">${window.__('Characters.Panel.error_fetch')}</div>`;
       });
   };
 
