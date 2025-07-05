@@ -26,7 +26,7 @@ exports.view = (req, res) => {
       }
 
       res.render('characters/relationships', {
-        title: 'Character Relationships',
+        title: res.__('Characters.Relationships.title'),
         characters,
         relationships,
         projectId,
