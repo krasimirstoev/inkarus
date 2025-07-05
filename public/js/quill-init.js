@@ -1,21 +1,39 @@
-import { initEditor } from './quill/init/editor.js';
-import { initAutosave } from './quill/init/autosave.js';
-import { initModes } from './quill/init/modes.js';
-import { initNotes } from './quill/init/notes.js';
+// public/js/quill-init.js - Main entry point for Quill editor initialization
+
+import { initEditor }               from './quill/init/editor.js';
+import { initAutosave }             from './quill/init/autosave.js';
+import { initModes }                from './quill/init/modes.js';
+import { initNotes }                from './quill/init/notes.js';
 import { initCharacterHighlighter } from './pages/character-highlighter.js';
 import { initPlaceHighlighter }     from './pages/place-highlighter.js';
 import { initItemHighlighter }      from './pages/item-highlighter.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Initialize Quill and other modules
+  // 1. Initialize Quill and get IDs
   const { quill, projectId, draftId } = initEditor();
-  initAutosave(quill, draftId);
+
+  // 2. Fetch user's autosave interval from server (in minutes)
+  let intervalMins = 2; // default fallback
+  try {
+    const resp = await fetch('/settings/api');
+    if (resp.ok) {
+      const data = await resp.json();
+      intervalMins = Number(data.autosave_interval) || intervalMins;
+    }
+  } catch (err) {
+    console.warn('Could not load autosave interval, using default:', err);
+  }
+
+  // 3. Initialize autosave with the fetched interval
+  initAutosave(quill, draftId, intervalMins);
+
+  // 4. Other init modules
   initModes();
   initNotes(projectId);
 
   try {
     // --- Characters ---
-    const charRes = await fetch(`/characters/${projectId}/json-list`);
+    const charRes  = await fetch(`/characters/${projectId}/json-list`);
     const charData = await charRes.json();
     if (!charData.success) throw new Error('Server returned failure for characters');
     console.log('[INIT] Characters for highlighter:', charData.characters);

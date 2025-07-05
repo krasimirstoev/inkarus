@@ -1,0 +1,108 @@
+<!-- views/settings/settings.ejs -->
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+
+    <!-- Page title -->
+    <h2 class="mb-4 text-center"><%= text.title %></h2>
+
+    <!-- Flash message (already translated) -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> flash-message" role="alert">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- Settings form -->
+    <form action="/settings" method="POST">
+
+      <!-- Autosave interval -->
+      <div class="mb-3">
+        <label for="autosave_interval" class="form-label">
+          <%= text.autosave_interval %>
+        </label>
+        <input
+          type="number"
+          class="form-control"
+          id="autosave_interval"
+          name="autosave_interval"
+          min="1"
+          value="<%= prefs.autosave_interval || 2 %>">
+      </div>
+
+      <!-- Show status bar -->
+      <div class="form-check form-switch mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="show_status_bar"
+          name="show_status_bar"
+          <%= prefs.show_status_bar ? 'checked' : '' %>>
+        <label class="form-check-label" for="show_status_bar">
+          <%= text.show_status_bar %>
+        </label>
+      </div>
+
+      <!-- Font choice -->
+      <div class="mb-3">
+        <label for="font_choice" class="form-label">
+          <%= text.font_choice %>
+        </label>
+        <select
+          name="font_choice"
+          id="font_choice"
+          class="form-select">
+          <option value="Manrope"
+            <%= prefs.font_choice === 'Manrope' ? 'selected' : '' %>>
+            Manrope
+          </option>
+          <option value="Fira Sans"
+            <%= prefs.font_choice === 'Fira Sans' ? 'selected' : '' %>>
+            Fira Sans
+          </option>
+          <option value="IBM Plex Sans"
+            <%= prefs.font_choice === 'IBM Plex Sans' ? 'selected' : '' %>>
+            IBM Plex Sans
+          </option>
+        </select>
+      </div>
+
+      <!-- Language -->
+      <div class="mb-4">
+        <label for="language" class="form-label">
+          <%= text.language %>
+        </label>
+        <select
+          name="language"
+          id="language"
+          class="form-select">
+          <option value="en"
+            <%= prefs.language === 'en' ? 'selected' : '' %>>
+            English
+          </option>
+          <option value="bg"
+            <%= prefs.language === 'bg' ? 'selected' : '' %>>
+            Български
+          </option>
+        </select>
+      </div>
+
+      <!-- Save button -->
+      <button type="submit" class="btn btn-success w-100">
+        💾 <%= text.save %>
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- Auto-hide flash -->
+<script>
+  const flashEl = document.querySelector('.flash-message');
+  if (flashEl) {
+    setTimeout(() => {
+      flashEl.classList.add('opacity-0');
+      setTimeout(() => flashEl.remove(), 500);
+    }, 3000);
+  }
+</script>

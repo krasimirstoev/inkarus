@@ -102,6 +102,7 @@ db.serialize(() => {
     autosave_interval INTEGER DEFAULT 2,
     show_status_bar INTEGER DEFAULT 1,
     font_choice TEXT DEFAULT 'Manrope',
+    language TEXT DEFAULT 'en',
     FOREIGN KEY(user_id) REFERENCES users(id)
   )`);
 

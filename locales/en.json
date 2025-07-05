@@ -1,0 +1,11 @@
+{
+  "SettingsPage": {
+    "title": "Settings",
+    "autosave_interval": "Autosave interval (minutes)",
+    "show_status_bar": "Show status bar",
+    "font_choice": "Font choice",
+    "language": "Language",
+    "save": "Save Settings",
+    "saved": "Your preferences have been saved!"
+  }
+}

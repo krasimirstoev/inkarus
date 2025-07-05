@@ -1,6 +1,18 @@
-export function initAutosave(quill, draftId) {
+// public/js/quill/init/autosave.js
+
+/**
+ * Initialize autosave for a Quill editor.
+ * @param {Quill} quill
+ * @param {string|number} draftId
+ * @param {number} autosaveIntervalMinutes – interval in minutes
+ */
+export function initAutosave(quill, draftId, autosaveIntervalMinutes = 1) {
   const lastSavedDisplay = document.getElementById('last-saved');
-  const manualSaveBtn = document.getElementById('manual-save');
+  const manualSaveBtn    = document.getElementById('manual-save');
+
+  // calculate milliseconds from minutes
+  const intervalMs = autosaveIntervalMinutes * 60 * 1000;
+  console.log(`[Autosave] interval set to ${intervalMs} ms`);
 
   const saveContent = async (manual = false) => {
     const content = quill.root.innerHTML;
@@ -11,16 +23,16 @@ export function initAutosave(quill, draftId) {
         body: JSON.stringify({ content, manualSave: manual })
       });
 
-      if (res.ok) {
-        const now = new Date();
-        lastSavedDisplay.textContent = now.toLocaleTimeString();
+      if (res.ok && lastSavedDisplay) {
+        lastSavedDisplay.textContent = new Date().toLocaleTimeString();
       }
     } catch (err) {
       console.error('Autosave failed:', err);
     }
   };
 
-  setInterval(saveContent, 30000);
+  // use the dynamic interval instead of hard-coded 30000
+  setInterval(saveContent, intervalMs);
 
   if (manualSaveBtn) {
     manualSaveBtn.addEventListener('click', () => saveContent(true));
