@@ -21,5 +21,38 @@
 
     "footer": {
     "copyright": "Inkarus © {{year}} — Made with ❤️ for writers"
+  },
+    "NotFoundPage": {
+    "message": "The page you're looking for doesn't exist.",
+    "back": "Back to Projects"
+  },
+  "App": {
+    "name": "Writers Hub"
+  },
+    "Auth": {
+    "Login": {
+      "title": "Login",
+      "error": {
+        "db": "Database error",
+        "not_found": "User not found",
+        "incorrect_password": "Incorrect password"
+      },
+      "email": "Email address",
+      "password": "Password",
+      "button": "Login",
+      "register_link": "Don't have an account? Register here"
+    },
+    "Register": {
+      "title": "Register",
+      "error": {
+        "exists": "User or email already exists",
+        "generic": "Registration error"
+      },
+      "username": "Username",
+      "email": "Email address",
+      "password": "Password",
+      "button": "Register",
+      "login_link": "Already have an account? Login here"
+    }
   }
 }

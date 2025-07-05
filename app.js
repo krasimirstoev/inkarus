@@ -53,6 +53,12 @@ i18n.configure({
 // Initialize i18n
 app.use(i18n.init);
 
+// Middleware to set the locale based on query parameter or cookie
+app.use((req, res, next) => {
+  res.locals.__ = req.__.bind(req);
+  next();
+});
+
 // Set currentUser globally
 app.use((req, res, next) => {
   res.locals.currentUser = req.session.user || null;

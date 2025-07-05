@@ -1,8 +1,12 @@
+<!-- views/layout.ejs -->
+<!-- This file serves as the main layout for the application, including header, footer, and main content. -->
+<!-- It uses EJS templating to inject dynamic content such as title and body. -->
+<!-- The layout also includes links to CSS stylesheets and JavaScript files for functionality and styling. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= title %> — Writers Hub</title>
+  <title><%= title %> — <%= __('App.name') %></title>
 
   <!-- CSS -->
   <link href="https://unpkg.com/vis-timeline@7.4.9/dist/vis-timeline-graph2d.min.css" rel="stylesheet">
