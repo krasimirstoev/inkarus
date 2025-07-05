@@ -1,11 +1,25 @@
 {
   "SettingsPage": {
     "title": "Настройки",
-    "autosave_interval": "Интервал за автоматичен (минути)",
-    "show_status_bar": "Показвай статус лента",
+    "autosave_interval": "Интервал за автоматично запазване (минути)",
+    "show_status_bar": "Покажи статус лента",
     "font_choice": "Избор на шрифт",
     "language": "Език",
     "save": "Запази настройките",
     "saved": "Настройките бяха запазени!"
+  },
+
+    "navbar": {
+    "brand": "Inkarus",
+    "projects": "Проекти",
+    "search": "Търсене",
+    "settings": "Настройки",
+    "logout": "Изход",
+    "login": "Вход",
+    "register": "Добавяне на потребител"
+  },
+
+  "footer": {
+    "copyright": "Inkarus © {{year}} — Създадено с ❤️ за писатели"
   }
 }

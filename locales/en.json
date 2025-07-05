@@ -7,5 +7,19 @@
     "language": "Language",
     "save": "Save Settings",
     "saved": "Your preferences have been saved!"
+  },
+
+    "navbar": {
+    "brand": "Inkarus",
+    "projects": "Projects",
+    "search": "Search",
+    "settings": "Settings",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  }, 
+
+    "footer": {
+    "copyright": "Inkarus © {{year}} — Made with ❤️ for writers"
   }
 }
