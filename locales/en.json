@@ -291,6 +291,13 @@
     "New": {
       "title": "Add Item"
     },
+    "Status": {
+      "active": "Active",
+      "lost": "Lost",
+      "destroyed": "Destroyed",
+      "custom": "Custom",
+      "custom_placeholder": "Custom status"
+    },
     "Form":{
       "name": "Name",
       "status": "Status",

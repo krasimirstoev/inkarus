@@ -109,3 +109,17 @@ exports.delete = (id, callback) => {
     callback
   );
 };
+
+/**
+ * Add display_status to each item, based on current language
+ */
+function addDisplayStatus(req, items) {
+  return items.map(item => ({
+    ...item,
+    display_status: item.status === 'custom'
+      ? item.custom_status
+      : req.__('Items.Status.' + item.status)
+  }));
+}
+
+exports.addDisplayStatus = addDisplayStatus;

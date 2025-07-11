@@ -22,7 +22,9 @@
             <label class="form-label"><%= __('Items.Form.status') %></label>
             <select name="status" id="item-status" class="form-select">
               <% statuses.forEach(s => { %>
-                <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>><%= s %></option>
+                <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>>
+                  <%= s === 'custom' ? __('Items.Status.custom_placeholder') : __('Items.Status.' + s) %>
+                </option>
               <% }) %>
             </select>
             <input type="text"
