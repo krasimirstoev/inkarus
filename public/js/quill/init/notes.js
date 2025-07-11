@@ -1,3 +1,5 @@
+// public/js/quill/init/notes.js - This file initializes the notes functionality in the Quill editor
+
 export function initNotes(projectId) {
   const notesToggle = document.getElementById('toggle-notes');
   const notesPanel = document.getElementById('notes-panel');
@@ -46,11 +48,11 @@ export function initNotes(projectId) {
           delete noteForm.dataset.editingId;
           loadNotes(projectId);
         } else {
-          alert('⚠ Server rejected the note.');
+          alert(window.__('Notes.Editor.rejected'));
         }
       } catch (err) {
         console.error("💥 AJAX ERROR:", err);
-        alert('Something went wrong. Check console.');
+        alert(window.__('Notes.Editor.generic_error'));
       }
     });
   }
@@ -76,12 +78,12 @@ export function exposeNoteActions(projectId) {
       const noteForm = document.getElementById('note-form');
       noteForm.dataset.editingId = id;
     } catch (err) {
-      console.error("Failed to load note for editing", err);
+      console.error(window.__('Notes.Editor.load_failed'), err);
     }
   };
 
   window.deleteNote = async function (id) {
-    if (!confirm("Are you sure you want to delete this note?")) return;
+    if (!confirm(window.__('Notes.Editor.confirm_delete'))) return;
 
     try {
       const res = await fetch(`/notes/delete/${id}`, {
@@ -98,11 +100,11 @@ export function exposeNoteActions(projectId) {
       if (res.ok && data.success) {
         loadNotes(projectId);
       } else {
-        alert("❌ Failed to delete note");
+        alert(window.__('Notes.Editor.delete_failed'));
       }
     } catch (err) {
       console.error("Delete failed", err);
-      alert("❌ Error occurred while deleting");
+      alert(window.__('Notes.Editor.delete_error'));
     }
   };
 }
@@ -124,8 +126,8 @@ export async function loadNotes(projectId) {
           div.innerHTML = `
             <div class="d-flex justify-content-between align-items-start">
               <div class="me-3">
-                <h6 class="text-light mb-1">${note.title || '(No title)'}</h6>
-                <p class="text-secondary small mb-0">${note.content || '(No content)'}</p>
+                <h6 class="text-light mb-1">${note.title || window.__('Notes.Editor.no_title')}</h6>
+                <p class="text-secondary small mb-0">${note.content || window.__('Notes.Editor.no_content')}</p>
               </div>
               <div class="text-end">
                 <button class="btn btn-sm btn-outline-warning me-1" onclick="editNote(${note.id})">📝</button>
@@ -136,7 +138,7 @@ export async function loadNotes(projectId) {
           noteList.appendChild(div);
         });
     } else {
-      noteList.innerHTML = '<p class="text-secondary small">No notes yet.</p>';
+      noteList.innerHTML = `<p class="text-secondary small">${window.__('Notes.Editor.empty')}</p>`;
     }
   } catch (err) {
     console.error("Failed to load notes", err);

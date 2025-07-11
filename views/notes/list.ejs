@@ -1,11 +1,11 @@
 <div class="container py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Notes</h2>
-    <a href="/notes/<%= projectId %>/new" class="btn btn-outline-light">+ New Note</a>
+    <h2><%= __('Notes.List.title') %></h2>
+    <a href="/notes/<%= projectId %>/new" class="btn btn-outline-light">+ <%= __('Notes.List.new_button') %></a>
   </div>
 
   <% if (notes.length === 0) { %>
-    <p class="text-muted">No notes yet.</p>
+    <p class="text-muted"><%= __('Notes.List.empty') %></p>
   <% } else { %>
     <div class="list-group">
       <% notes.forEach(note => { %>
@@ -15,7 +15,7 @@
           </div>
           <div class="btn-group btn-group-sm ms-3">
             <a href="/notes/<%= projectId %>/edit/<%= note.id %>" class="btn btn-outline-warning">📝</a>
-            <form action="/notes/delete/<%= note.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure?')" style="display:inline;">
+            <form action="/notes/delete/<%= note.id %>?_method=DELETE" method="POST" onsubmit="return confirm(__('Notes.List.confirm_delete'))" style="display:inline;">
               <button type="submit" class="btn btn-outline-danger">🗑</button>
             </form>
           </div>

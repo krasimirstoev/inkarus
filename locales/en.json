@@ -171,8 +171,6 @@
       "created": "Created",
       "updated": "Updated",
       "no_description": "No description provided.",
-      "goal": "Goal",
-      "type": "Type",
       "motivation": "Motivation",
       "fears": "Fears",
       "weaknesses": "Weaknesses",
@@ -214,5 +212,39 @@
       "failed_fetch": "❌ Failed to load character data.",
       "error_fetch": "❌ Error loading character."
     }
+  },
+    "Notes": {
+    "List": {
+      "title": "Notes",
+      "confirm_delete": "Are you sure you want to delete this note?",
+      "delete_failed": "❌ Failed to delete note.",
+      "delete_error": "❌ Something went wrong.",
+      "empty": "No notes yet.",
+      "new_button": "New Note"
+    },
+    "Form": {
+      "new_title": "New Note",
+      "edit_title": "Edit Note",
+      "title_label": "Title",
+      "content_label": "Content",
+      "save_button": "Save Note",
+      "back_button": "Back to List"
+    },
+    "Errors": {
+      "empty_note_not_allowed": "Empty note not allowed",
+      "not_found": "Note not found"
+    },
+    "Editor": {
+      "title": "Notes Editor",
+      "no_title": "No title",
+      "no_content": "No content",
+      "confirm_delete": "Are you sure you want to delete this note?",
+      "delete_failed": "❌ Failed to delete note",
+      "delete_error": "❌ Error occurred while deleting",
+      "load_failed": "Failed to load note for editing",
+      "generic_error": "Something went wrong. Check console.",
+      "rejected": "⚠ Server rejected the note.",
+      "empty": "No notes yet."
+   }
   }
 }

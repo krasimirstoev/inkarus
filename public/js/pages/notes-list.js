@@ -1,3 +1,6 @@
+// public/js/pages/notes-list.js - This file handles the notes list page functionality
+
+// Ensure the DOM is fully loaded before running scripts
 document.addEventListener('DOMContentLoaded', () => {
   const deleteButtons = document.querySelectorAll('[data-delete-note]');
 
@@ -6,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const noteId = btn.dataset.deleteNote;
 
-      if (!confirm('Are you sure you want to delete this note?')) return;
+      if (!confirm(window.__('Notes.List.confirm_delete'))) return;
 
       try {
         const res = await fetch(`/notes/delete/${noteId}`, {
@@ -21,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const row = btn.closest('.note-row');
           if (row) row.remove();
         } else {
-          alert('❌ Failed to delete note.');
+          alert(window.__('Notes.List.delete_failed'));
         }
       } catch (err) {
         console.error('💥 Error deleting note:', err);
-        alert('❌ Something went wrong.');
+        alert(window.__('Notes.List.delete_error'));
       }
     });
   });
