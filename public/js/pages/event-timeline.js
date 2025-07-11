@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelectorAll('#events-list .btn-delete').forEach(btn => {
     btn.addEventListener('click', async () => {
-      if (!confirm('Delete this event?')) return;
+      if (!confirm(__('Events.Timeline.delete'))) return;
       const id = btn.dataset.id;
       const resp = await fetch(`/events/${projectId}/delete/${id}`, { method: 'DELETE' });
       const json = await resp.json();

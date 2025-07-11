@@ -338,6 +338,34 @@
     },
     "NotFound": "Item not found"
   },
+  "Events": {
+    "Page": {
+      "title": "Events"
+    },
+    "List": {
+      "add": "Add Event",
+      "edit": "Edit event",
+      "delete": "Delete"
+    },
+    "Modal": {
+      "title": "Events"
+    },
+    "Timeline": {
+      "delete": "Delete this event?"
+    },
+    "Form": {
+      "title": "Title",
+      "date": "Date",
+      "dateHelp": "YYYY-MM-DD or free-form text for abstract events.",
+      "abstract": "Abstract event",
+      "abstractHelp": "An abstract event represents a conceptual point in time, such as “In the beginning” or “The fall of man”, which does not have a precise date.",
+      "displayOrder": "Display order",
+      "displayOrderHelp": "Used only when \"Abstract\" is checked. Determines the relative position of the abstract event in the timeline. Lower numbers appear earlier.",
+      "description": "Description",
+      "saveChanges": "Save Changes",
+      "create": "Create Event"
+    }
+  },
   "Errors": {
     "Items": {
       "load": "❌ DB error loading items:"
