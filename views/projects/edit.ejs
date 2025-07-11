@@ -1,19 +1,19 @@
 <div class="row justify-content-center">
   <div class="col-md-8">
-    <h2 class="mb-4 text-center">Edit Project</h2>
+    <h2 class="mb-4 text-center"><%= __('Projects.Form.edit_title') %></h2>
 
     <form action="/projects/<%= project.id %>?_method=POST" method="POST">
       <div class="mb-3">
-        <label for="title" class="form-label">Project Title</label>
+        <label for="title" class="form-label"><%= __('Projects.Form.title_label') %></label>
         <input type="text" class="form-control" id="title" name="title" required value="<%= project.title %>">
       </div>
 
       <div class="mb-3">
-        <label for="description" class="form-label">Description (optional)</label>
+        <label for="description" class="form-label"><%= __('Projects.Form.description_label') %></label>
         <textarea class="form-control" id="description" name="description" rows="4"><%= project.description %></textarea>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+      <button type="submit" class="btn btn-primary w-100"><%= __('Projects.Form.save_button') %></button>
     </form>
   </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2>📁 <%= project.title %></h2>
-  <a href="/projects" class="btn btn-outline-light">← Back to Projects</a>
+  <a href="/projects" class="btn btn-outline-light">← <%= __('Projects.Dashboard.back_button') %></a>
 </div>
 
 <% if (project.description) { %>
@@ -12,33 +12,33 @@
 <div class="row g-3">
   <div class="col-md-4">
     <a href="/drafts/<%= project.id %>" class="btn btn-lg btn-outline-light w-100">
-      ✍ Drafts
+      ✍ <%= __('Projects.Dashboard.drafts') %>
     </a>
   </div>
   <div class="col-md-4">
     <a href="/notes/<%= project.id %>" class="btn btn-lg btn-outline-light w-100">
-      🗒 Notes
+      🗒 <%= __('Projects.Dashboard.notes') %>
     </a>
   </div>
   <div class="col-md-4">
     <a href="/characters/<%= project.id %>" class="btn btn-lg btn-outline-light w-100">
-      🎭 Characters
+      🎭 <%= __('Projects.Dashboard.characters') %>
     </a>
   </div>
 
   <div class="col-md-4">
     <a href="/places/<%= project.id %>" class="btn btn-lg btn-outline-light w-100">
-      🗺️ Geography
+      🗺️ <%= __('Projects.Dashboard.places') %>
     </a>
   </div>
   <div class="col-md-4">
     <a href="/events/<%= project.id %>" class="btn btn-lg btn-outline-light w-100">
-      🗓️ Events
+      🗓️ <%= __('Projects.Dashboard.events') %>
     </a>
   </div>
   <div class="col-md-4">
     <a href="/items/<%= project.id %>" class="btn btn-lg btn-outline-light w-100">
-      🧿 Items
+      🧿 <%= __('Projects.Dashboard.items') %>
     </a>
   </div>
 </div>

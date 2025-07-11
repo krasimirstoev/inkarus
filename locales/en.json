@@ -213,7 +213,7 @@
       "error_fetch": "❌ Error loading character."
     }
   },
-    "Notes": {
+  "Notes": {
     "List": {
       "title": "Notes",
       "confirm_delete": "Are you sure you want to delete this note?",
@@ -246,5 +246,34 @@
       "rejected": "⚠ Server rejected the note.",
       "empty": "No notes yet."
    }
+  },
+  "Projects": {
+    "List": {
+      "title": "My Projects",
+      "title_heading": "Projects",
+      "new_button": "New Project",
+      "empty": "No projects yet. Start by creating one!",
+      "open_button": "Open",
+      "edit_button": "Edit",
+      "delete_button": "Delete"
+    },
+    "Form": {
+      "new_title": "New Project",
+      "edit_title": "Edit Project",
+      "title_label": "Project Title",
+      "description_label": "Description (optional)",
+      "save_button": "Save",
+      "create_button": "Create Project"
+    },
+    "Dashboard": {
+      "title": "Dashboard",
+      "back_button": "Back to Projects",
+      "drafts": "Drafts",
+      "notes": "Notes",
+      "characters": "Characters",
+      "places": "Geography",
+      "events": "Events",
+      "items": "Items"
+    }
   }
 }

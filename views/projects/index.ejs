@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Your Projects</h2>
-  <a href="/projects/new" class="btn btn-outline-light">+ New Project</a>
+  <h2><%= __('Projects.List.title_heading') %></h2>
+  <a href="/projects/new" class="btn btn-outline-light">+ <%= __('Projects.List.new_button') %></a>
 </div>
 
 <% if (projects.length === 0) { %>
-  <p>No projects yet. Start by creating one!</p>
+  <p><%= __('Projects.List.empty') %></p>
 <% } else { %>
   <div class="list-group">
     <% projects.forEach(project => { %>
@@ -16,10 +16,10 @@
           <% } %>
         </div>
         <div class="d-flex gap-2">
-          <a href="/projects/<%= project.id %>/dashboard" class="btn btn-sm btn-light">Open</a>
-          <a href="/projects/edit/<%= project.id %>" class="btn btn-sm btn-outline-warning">Edit</a>
+          <a href="/projects/<%= project.id %>/dashboard" class="btn btn-sm btn-light"><%= __('Projects.List.open_button') %></a>
+          <a href="/projects/edit/<%= project.id %>" class="btn btn-sm btn-outline-warning"><%= __('Projects.List.edit_button') %></a>
           <form action="/projects/<%= project.id %>?_method=DELETE" method="POST">
-            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            <button type="submit" class="btn btn-sm btn-danger"><%= __('Projects.List.delete_button') %></button>
           </form>
         </div>
       </div>
