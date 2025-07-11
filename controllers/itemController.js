@@ -13,7 +13,11 @@ exports.list = (req, res) => {
       console.error('❌ DB error loading items:', err);
       return res.sendStatus(500);
     }
-    res.render('items/list', { title: 'Items', items, projectId });
+    res.render('items/list', {
+      title: req.__('Items.List.title'),
+      items,
+      projectId
+    });
   });
 };
 
@@ -42,7 +46,7 @@ exports.jsonDetail = (req, res) => {
       return res.sendStatus(500);
     }
     if (!item) {
-      return res.status(404).json({ success: false, error: 'Item not found' });
+      return res.status(404).json({ success: false, error: req.__('Items.NotFound') });
     }
     res.json({ success: true, item });
   });
@@ -61,14 +65,14 @@ exports.form = (req, res) => {
     itemModel.getById(id, (err, item) => {
       if (err || !item) return res.sendStatus(404);
       data.item = item;
-      data.title = 'Edit Item';
+      data.title = req.__('Items.Edit.title');
       if (req.xhr) return res.render('items/form-modal', data);
       res.render('items/form-page', data);
     });
   } else {
     // new
     data.item = { name:'', status:'active', custom_status:'', description:'' };
-    data.title = 'Add Item';
+    data.title = req.__('Items.New.title');
     if (req.xhr) return res.render('items/form-modal', data);
     res.render('items/form-page', data);
   }

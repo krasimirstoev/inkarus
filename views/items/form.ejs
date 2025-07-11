@@ -10,13 +10,13 @@
     <% } %>
 
     <div class="mb-3">
-      <label class="form-label">Name</label>
+      <label class="form-label"><%= __('Items.FormPage.name') %></label>
       <input type="text" name="name" class="form-control" required
              value="<%= item.name || '' %>">
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Status</label>
+      <label class="form-label"><%= __('Items.FormPage.status') %></label>
       <select name="status" id="item-status" class="form-select">
         <% statuses.forEach(s => { %>
           <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>><%= s %></option>
@@ -24,17 +24,17 @@
       </select>
       <input type="text" name="customStatus" id="custom-status"
              class="form-control mt-2 d-none"
-             placeholder="Custom status"
+             placeholder="<%= __('Items.FormPage.customStatusPlaceholder') %>"
              value="<%= item.status === 'custom' ? item.custom_status : '' %>">
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Description</label>
+      <label class="form-label"><%= __('Items.FormPage.description') %></label>
       <textarea name="description" class="form-control" rows="4"><%= item.description || '' %></textarea>
     </div>
 
-    <button type="submit" class="btn btn-success">💾 Save Item</button>
-    <a href="/items/<%= projectId %>" class="btn btn-secondary ms-2">← Back to List</a>
+    <button type="submit" class="btn btn-success"><%= __('Items.FormPage.saveBtn') %></button>
+    <a href="/items/<%= projectId %>" class="btn btn-secondary ms-2"><%= __('Items.FormPage.backBtn') %></a>
   </form>
 </div>
 
