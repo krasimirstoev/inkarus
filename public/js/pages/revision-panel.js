@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Open revisions modal and load history
   openBtn.addEventListener('click', async () => {
     modal.show();
-    listEl.innerHTML = '<div class="text-center text-muted">Loading...</div>';
+    listEl.innerHTML = `<div class="text-center text-muted">${__('Drafts.Revisions.loading')}</div>`;
 
     try {
       const res  = await fetch(`/drafts/${projectId}/revisions/${draftId}`);
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok || !json.success) throw new Error('Failed to load revisions');
       renderRevisions(json.revisions, json.count);
     } catch (err) {
-      listEl.innerHTML = '<div class="text-danger text-center">Error loading revisions</div>';
+      listEl.innerHTML = `<div class="text-danger text-center">${__('Drafts.Revisions.error_loading')}</div>`;
       console.error(err);
     }
   });
@@ -34,10 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render revisions list with restore/delete/preview buttons
   function renderRevisions(revisions, count) {
     const header = document.getElementById('revision-count');
-    header && (header.textContent = `${count} revision${count !== 1 ? 's' : ''}`);
-
+      if (header) {
+        header.textContent = count === 1
+          ? __('Drafts.Revisions.revision_count_singular')
+          : __('Drafts.Revisions.revision_count_plural', { count });
+      }
     if (!revisions.length) {
-      listEl.innerHTML = '<div class="text-center text-muted">No revisions available.</div>';
+      listEl.innerHTML = `<div class="text-center text-muted">${__('Drafts.Revisions.none')}</div>`;
       return;
     }
 
@@ -68,14 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-restore').forEach(btn => {
       btn.addEventListener('click', async () => {
         const revisionId = btn.dataset.id;
-        if (!confirm('Are you sure you want to restore this revision?')) return;
+        if (!confirm(__('Drafts.Revisions.confirm_restore'))) return;
         try {
           const res = await fetch(`/drafts/${projectId}/restore/${revisionId}`, { method: 'POST' });
           if (res.ok) {
-            alert('✅ Revision restored.');
+            alert(__('Drafts.Revisions.restored'));
             window.location.reload();
           } else {
-            alert('❌ Failed to restore revision.');
+            alert(__('Drafts.Revisions.restore_failed'));
           }
         } catch (err) {
           alert('❌ An error occurred.');
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-delete').forEach(btn => {
       btn.addEventListener('click', async () => {
         const revisionId = btn.dataset.id;
-        if (!confirm('Are you sure you want to delete this revision? This action cannot be undone.')) return;
+        if (!confirm(__('Drafts.Revisions.confirm_delete'))) return;
         try {
           const res = await fetch(`/drafts/${projectId}/revision/${revisionId}`, { method: 'DELETE' });
           if (res.ok) {
@@ -98,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const current = parseInt(badge.textContent) || 1;
             badge.textContent = `${Math.max(current - 1, 0)} revision${current - 1 !== 1 ? 's' : ''}`;
           } else {
-            alert('❌ Failed to delete revision.');
+            alert(__('Drafts.Revisions.delete_failed'));
           }
         } catch (err) {
           alert('❌ An error occurred.');
@@ -113,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const revisionId = btn.dataset.id;
         const previewModal = new bootstrap.Modal(document.getElementById('revisionPreviewModal'));
         const container = document.getElementById('revisionPreviewContent');
-        container.innerHTML = '<div class="text-muted text-center">Loading...</div>';
+        container.innerHTML = `<div class="text-muted text-center">${__('Drafts.Revisions.preview_loading')}</div>`;
         try {
           const res  = await fetch(`/drafts/revision/${revisionId}`);
           const data = await res.json();
@@ -122,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
           previewModal.show();
         } catch (err) {
           console.error(err);
-          container.innerHTML = '<div class="text-danger text-center">Error loading preview.</div>';
+          container.innerHTML = `<div class="text-danger text-center">${__('Drafts.Revisions.preview_failed')}</div>`;
         }
       });
     });
@@ -135,10 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const delRes = await fetch(`/drafts/${projectId}/revisions/delete-autosaves`, { method: 'DELETE' });
       if (!delRes.ok) {
-        alert('❌ Failed to delete autosave revisions.');
+        alert(__('Drafts.Revisions.autosave_delete_failed'));
         return;
       }
-      alert('🧹 All autosave revisions deleted.');
+      alert(__('Drafts.Revisions.autosave_deleted'));
       // reload list
       listEl.innerHTML = '<div class="text-center text-muted">Loading...</div>';
       const res2  = await fetch(`/drafts/${projectId}/revisions/${draftId}`);
@@ -150,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error('❌ Error deleting all autosaves:', err);
-      alert('⚠️ Request failed.');
+      alert(__('Drafts.Revisions.request_failed'));
     }
   });
 

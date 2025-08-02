@@ -37,7 +37,7 @@ exports.list = (req, res) => {
               return res.sendStatus(500);
             }
             res.render('drafts/list', {
-              title:    'Drafts',
+              title: req.__('Drafts.Page.title'),
               parts:    grouped,
               rawParts,            // for inline CRUD in modal
               projectId
@@ -59,7 +59,7 @@ exports.list = (req, res) => {
               console.error('❌ DB error loading ungrouped drafts:', err3);
               return res.sendStatus(500);
             }
-            grouped.push({ id: null, title: 'Ungrouped', order: 0, chapters: drafts });
+            grouped.push({ id: null, title: req.__('Drafts.Group.ungrouped'), order: 0, chapters: drafts });
             finish();
           }
         );
@@ -146,7 +146,7 @@ exports.jsonGroups = (req, res) => {
             if (draftsU.length) {
               groups.push({
                 id:      null,
-                title:   'Ungrouped',
+                title: req.__('Drafts.Group.ungrouped'),
                 order:   Infinity,
                 chapters:draftsU
               });
