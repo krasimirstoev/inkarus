@@ -61,25 +61,37 @@ document.addEventListener('DOMContentLoaded', () => {
     await loadList();
   });
 
-  // Submit form handler
-  formWrap.addEventListener('submit', async e => {
-    e.preventDefault();
-    const form = e.target;
-    const res  = await fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form)
-    });
+// Submit form handler (URL-encoded version)
+formWrap.addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
 
-    if (res.headers.get('content-type')?.includes('application/json')) {
-      const json = await res.json();
-      if (json.success) {
-        await loadForm();
-        await loadList();
-      }
-    } else {
-      await loadList();
-    }
+  // Convert form data to URL-encoded string
+  const formData = new FormData(form);
+  const payload = new URLSearchParams(formData);
+
+  const res = await fetch(form.action, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: payload
   });
+
+  // Handle response: either JSON or HTML (redirect/render)
+  if (res.headers.get('content-type')?.includes('application/json')) {
+    const json = await res.json();
+    if (json.success) {
+      await loadForm();
+      await loadList();
+    } else {
+      // Optional: show error message here (e.g. toast or alert)
+      console.warn('⚠️ Server error:', json.error || 'Unknown error');
+    }
+  } else {
+    await loadList();
+  }
+});
 
   // Edit/Delete button handling
   listWrap.addEventListener('click', async e => {

@@ -385,6 +385,7 @@
       "revision_count_singular": "",
       "revision_count_plural": "",
       "confirm_delete_autosaves": "",
+      "confirm_delete_all_autosaves": "",
       "autosaves_deleted": "",
       "autosaves_delete_error": "",
       "request_failed": "",
@@ -512,6 +513,11 @@
       "description4": "",
       "titleHint": "",
       "orderHint": ""
+    },
+    "Errors": {
+      "empty_input": "",
+      "invalid_order": "",
+      "invalid_input": ""
     }
   },
   "Places": {

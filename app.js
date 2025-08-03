@@ -29,6 +29,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 
+// 3.1 Allow PUT/PATCH/DELETE via query string
+app.use(express.urlencoded({ extended: true }));
+
 // 4) Session (SQLite store)
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.sqlite' }),
