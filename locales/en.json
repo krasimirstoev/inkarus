@@ -528,6 +528,7 @@
       "customPlaceholder": "Custom type (optional)"
     },
     "List": {
+      "add": "Add Place",
       "new": "New Place",
       "empty": "No places yet."
     },
@@ -567,7 +568,6 @@
       "delete": "Delete this place?"
     }
   },
-
   "Errors": {
     "Items": {
       "load": "❌ DB error loading items:"
