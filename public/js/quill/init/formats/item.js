@@ -1,5 +1,5 @@
 // public/js/quill/init/formats/item.js
-import Quill from 'https://cdn.skypack.dev/quill@1.3.7';
+import Quill from 'https://cdn.skypack.dev/quill@2.0.3';
 const Inline = Quill.import('blots/inline');
 
 class ItemBlot extends Inline {
