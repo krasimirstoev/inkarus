@@ -31,6 +31,27 @@
 
     <!-- Quill Editor -->
     <form id="editor-form" data-draft-id="<%= draft.id %>" data-project-id="<%= draft.project_id %>">
+        <!-- Quill custom toolbar -->
+          <div id="toolbar" class="d-flex mb-2">
+            <span class="ql-formats">
+              <select class="ql-header">
+                <option value="1"></option>
+                <option value="2"></option>
+                <option selected></option>
+              </select>
+              <button class="ql-bold"></button>
+              <button class="ql-italic"></button>
+              <button class="ql-underline"></button>
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+            </span>
+
+            <span class="ql-formats ms-auto">
+              <button class="ql-direction" value="rtl" title="Right-to-left"></button>
+            </span>
+          </div>
+
+        <!-- Quill editor container -->
       <div id="quill-editor"><%- draft.content %></div>
     </form>
 
@@ -181,12 +202,12 @@
 <!-- Quill Snow CSS via Skypack -->
 <link
   rel="stylesheet"
-  href="https://cdn.skypack.dev/quill@1.3.7/dist/quill.snow.css"
+  href="https://cdn.skypack.dev/quill@2.0.3/dist/quill.snow.css"
 />
 
 <!-- Load Quill as an ES module and expose globally -->
 <script type="module">
-  import Quill from 'https://cdn.skypack.dev/quill@1.3.7';
+  import Quill from 'https://cdn.skypack.dev/quill@2.0.3';
   window.Quill = Quill;
 </script>
 
