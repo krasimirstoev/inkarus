@@ -127,7 +127,7 @@
       "health": "Health Status",
       "edit": "Edit"
     },
-    "GraphView":{
+    "GraphView": {
       "title": "Character Relationships Graph",
       "back": "Back to Characters",
       "connections": "Connections",
@@ -167,7 +167,7 @@
       "error_loading": "Error loading character.",
       "desc": "Description",
       "goal": "Goal",
-      "type": "Type", 
+      "type": "Type",
       "created": "Created",
       "updated": "Updated",
       "no_description": "No description provided.",
@@ -245,7 +245,7 @@
       "generic_error": "Something went wrong. Check console.",
       "rejected": "⚠ Server rejected the note.",
       "empty": "No notes yet."
-   }
+    }
   },
   "Projects": {
     "List": {
@@ -298,13 +298,13 @@
       "custom": "Custom",
       "custom_placeholder": "Custom status"
     },
-    "Form":{
+    "Form": {
       "name": "Name",
       "status": "Status",
       "description": "Description",
       "customStatusPlaceholder": "Custom status (optional)"
     },
-    "Modal":{
+    "Modal": {
       "editTitle": "Edit Item",
       "addTitle": "Add Item",
       "loadingTitle": "Loading Item",
@@ -366,111 +366,112 @@
       "create": "Create Event"
     }
   },
-"Drafts": {
-  "Page": {
-    "title": "Drafts"
+  "Drafts": {
+    "Page": {
+      "title": "Drafts"
+    },
+    "Group": {
+      "ungrouped": "Ungrouped"
+    },
+    "UI": {
+      "confirm_delete_chapter": "Are you sure you want to delete this chapter?",
+      "rename_failed": "Rename failed",
+      "json_groups_failed": "json-groups failed",
+      "btn_open": "Open",
+      "btn_rename": "Rename",
+      "btn_delete": "Delete",
+      "no_revisions": "No revisions found for this chapter.",
+      "revisions_for": "Revisions for",
+      "revision_count_singular": "revision",
+      "revision_count_plural": "revisions",
+      "confirm_delete_autosaves": "Are you sure you want to delete all autosave revisions?",
+      "confirm_delete_all_autosaves": "Are you sure you want to delete all autosave revisions? This action cannot be undone.",
+      "autosaves_deleted": "Autosave revisions deleted.",
+      "autosaves_delete_error": "Error deleting autosaves.",
+      "request_failed": "Request failed.",
+      "revision_modal_missing": "❌ Some elements of the revision modal are missing in the DOM",
+      "showing_modal": "🟢 Showing modal now"
+    },
+    "Revisions": {
+      "type_manual": "Manual ★",
+      "type_autosave": "Autosave",
+      "type_unknown": "Unknown",
+      "confirm_delete_all_autosaves": "Are you sure you want to delete all autosave revisions?",
+      "words": "words",
+      "button_restore": "Restore",
+      "button_preview": "Preview",
+      "button_delete": "Delete",
+      "loading": "Loading...",
+      "error_loading": "Error loading revisions",
+      "none": "No revisions available.",
+      "revision_count_singular": "1 revision",
+      "revision_count_plural": "{{count}} revisions",
+      "restored": "✅ Revision restored.",
+      "restore_failed": "❌ Failed to restore revision.",
+      "confirm_restore": "Are you sure you want to restore this revision?",
+      "confirm_delete": "Are you sure you want to delete this revision? This action cannot be undone.",
+      "delete_failed": "❌ Failed to delete revision.",
+      "preview_loading": "Loading...",
+      "preview_failed": "Error loading preview.",
+      "autosave_delete_failed": "❌ Failed to delete autosave revisions.",
+      "autosave_deleted": "🧹 All autosave revisions deleted.",
+      "request_failed": "⚠️ Request failed."
+    },
+    "TheEditor": {
+      "sidebar_projects": "Projects",
+      "sidebar_notes": "Notes",
+      "sidebar_characters": "Characters",
+      "sidebar_places": "Geography",
+      "sidebar_items": "Items",
+      "sidebar_outline": "Outline",
+      "last_autosave": "Last autosave",
+      "last_autosave_time": "Never",
+      "word_count": "Word count",
+      "save_now": "Save Now",
+      "history": "History",
+      "back": "Back",
+      "fullscreen": "Full Screen",
+      "reading_mode": "Reading Mode",
+      "exit_reading": "Exit Reading",
+      "exit_fullscreen": "Exit Fullscreen",
+      "project_notes": "Project Notes",
+      "note_title": "Title",
+      "note_content": "Content",
+      "add_note": "Add Note",
+      "notes_placeholder": "Your notes will appear here.",
+      "characters": "Characters",
+      "search_characters": "Search characters...",
+      "characters_placeholder": "Characters will appear here.",
+      "character_info": "Character Info",
+      "places": "Places",
+      "search_places": "Search places…",
+      "place_info": "Place Info",
+      "items": "Items",
+      "search_items": "Search items…",
+      "item_info": "Item Info",
+      "RevisionsModalTitle": "Revisions",
+      "delete_autosaves": "Delete all autosave revisions",
+      "RevisionPreviewModalTitle": "Revision Preview"
+    },
+    "List": {
+      "new_chapter_title": "New chapter title...",
+      "add_chapter": "Add Chapter",
+      "parts": "Parts",
+      "no_parts": "No parts or chapters found.",
+      "ungrouped_label": "Ungrouped (Without Part)",
+      "ungrouped_option": "Ungrouped",
+      "open": "Open",
+      "rename": "Rename",
+      "delete": "Delete",
+      "drop_here": "Drop here",
+      "rename_modal_title": "Rename Chapter",
+      "rename_new_title": "New Title",
+      "rename_save": "Save",
+      "rename_cancel": "Cancel",
+      "manage_parts": "Manage Parts"
+    }
   },
-  "Group": {
-    "ungrouped": "Ungrouped"
-  },
-   "UI": {
-    "confirm_delete_chapter": "Are you sure you want to delete this chapter?",
-    "rename_failed": "Rename failed",
-    "json_groups_failed": "json-groups failed",
-    "btn_open": "Open",
-    "btn_rename": "Rename",
-    "btn_delete": "Delete",
-    "no_revisions": "No revisions found for this chapter.",
-    "revisions_for": "Revisions for",
-    "revision_count_singular": "revision",
-    "revision_count_plural": "revisions",
-    "confirm_delete_autosaves": "Are you sure you want to delete all autosave revisions?",
-    "autosaves_deleted": "Autosave revisions deleted.",
-    "autosaves_delete_error": "Error deleting autosaves.",
-    "request_failed": "Request failed.",
-    "revision_modal_missing": "❌ Some elements of the revision modal are missing in the DOM",
-    "showing_modal": "🟢 Showing modal now"
-  },
-  "Revisions": {
-    "type_manual": "Manual ★",
-    "type_autosave": "Autosave",
-    "type_unknown": "Unknown",
-    "confirm_delete_all_autosaves": "Are you sure you want to delete all autosave revisions?",
-    "words": "words",
-    "button_restore": "Restore",
-    "button_preview": "Preview",
-    "button_delete": "Delete",
-    "loading": "Loading...",
-    "error_loading": "Error loading revisions",
-    "none": "No revisions available.",
-    "revision_count_singular": "1 revision",
-    "revision_count_plural": "{{count}} revisions",
-    "restored": "✅ Revision restored.",
-    "restore_failed": "❌ Failed to restore revision.",
-    "confirm_restore": "Are you sure you want to restore this revision?",
-    "confirm_delete": "Are you sure you want to delete this revision? This action cannot be undone.",
-    "delete_failed": "❌ Failed to delete revision.",
-    "preview_loading": "Loading...",
-    "preview_failed": "Error loading preview.",
-    "autosave_delete_failed": "❌ Failed to delete autosave revisions.",
-    "autosave_deleted": "🧹 All autosave revisions deleted.",
-    "request_failed": "⚠️ Request failed."
-  },
-  "TheEditor": {
-    "sidebar_projects": "Projects",
-    "sidebar_notes": "Notes",
-    "sidebar_characters": "Characters",
-    "sidebar_places": "Geography",
-    "sidebar_items": "Items",
-    "sidebar_outline": "Outline",
-    "last_autosave": "Last autosave",
-    "last_autosave_time": "Never",
-    "word_count": "Word count",
-    "save_now": "Save Now",
-    "history": "History",
-    "back": "Back",
-    "fullscreen": "Full Screen",
-    "reading_mode": "Reading Mode",
-    "exit_reading": "Exit Reading",
-    "exit_fullscreen": "Exit Fullscreen",
-    "project_notes": "Project Notes",
-    "note_title": "Title",
-    "note_content": "Content",
-    "add_note": "Add Note",
-    "notes_placeholder": "Your notes will appear here.",
-    "characters": "Characters",
-    "search_characters": "Search characters...",
-    "characters_placeholder": "Characters will appear here.",
-    "character_info": "Character Info",
-    "places": "Places",
-    "search_places": "Search places…",
-    "place_info": "Place Info",
-    "items": "Items",
-    "search_items": "Search items…",
-    "item_info": "Item Info",
-    "RevisionsModalTitle": "Revisions",
-    "delete_autosaves": "Delete all autosave revisions",
-    "RevisionPreviewModalTitle": "Revision Preview"
-  },
-  "List": {
-    "new_chapter_title": "New chapter title...",
-    "add_chapter": "Add Chapter",
-    "parts": "Parts",
-    "no_parts": "No parts or chapters found.",
-    "ungrouped_label": "Ungrouped (Without Part)",
-    "ungrouped_option": "Ungrouped",
-    "open": "Open",
-    "rename": "Rename",
-    "delete": "Delete",
-    "drop_here": "Drop here",
-    "rename_modal_title": "Rename Chapter",
-    "rename_new_title": "New Title",
-    "rename_save": "Save",
-    "rename_cancel": "Cancel",
-    "manage_parts": "Manage Parts"
-  }
-},  
-"Parts": {
+  "Parts": {
     "Page": {
       "title": "Parts"
     },
@@ -512,6 +513,11 @@
       "description4": "Using <b>Parts</b> helps you stay organized and focused while writing, making it easier to manage the flow of your story and work on one section at a time.",
       "titleHint": "Use a clear and meaningful name to organize your chapters.",
       "orderHint": "This helps structure your book – parts with smaller numbers appear earlier."
+    },
+    "Errors": {
+      "empty_input": "No data was provided.",
+      "invalid_order": "Invalid order value. Please enter a valid number.",
+      "invalid_input": "Title and order are required."
     }
   },
   "Places": {

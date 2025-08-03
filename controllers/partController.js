@@ -76,33 +76,44 @@ exports.form = (req, res) => {
 exports.save = (req, res) => {
   const { projectId, id } = req.params;
   const { title, order } = req.body;
-  const parsedOrder = parseInt(order, 10) || 0;
+
+  // Parse "order" safely, allowing "0" as a valid number
+  const parsedOrder = Number.isInteger(Number(order)) ? Number(order) : null;
+
+  // If both fields are missing, reject the request
+  if (typeof title === 'undefined' && parsedOrder === null) {
+    return res.status(400).json({
+      success: false,
+      error: req.__('Parts.Errors.empty_input')  // Add to translation files
+    });
+  }
 
   if (id) {
-    // UPDATE: detect if title was provided
+    // Only reorder if title is missing
     if (typeof title === 'undefined') {
-      // Only reorder
+      if (parsedOrder === null) {
+        return res.status(400).json({
+          success: false,
+          error: req.__('Parts.Errors.invalid_order')  // Add to translation files
+        });
+      }
+
       db.run(
-        `UPDATE parts
-            SET "order" = ?
-          WHERE id = ?`,
+        `UPDATE parts SET "order" = ? WHERE id = ?`,
         [parsedOrder, id],
         function (err) {
           if (err) {
             console.error('❌ DB error in parts.save (reorder):', err);
             return res.sendStatus(500);
           }
-          // For AJAX reorder we don't need to redirect
           return res.json({ success: true });
         }
       );
     } else {
-      // Update title and order
+      // Update both title and order
       db.run(
-        `UPDATE parts
-            SET title = ?, "order" = ?
-          WHERE id = ?`,
-        [title, parsedOrder, id],
+        `UPDATE parts SET title = ?, "order" = ? WHERE id = ?`,
+        [title, parsedOrder ?? 0, id],
         function (err) {
           if (err) {
             console.error('❌ DB error in parts.save (update):', err);
@@ -113,10 +124,19 @@ exports.save = (req, res) => {
       );
     }
   } else {
-    // Insert new
+    // INSERT: Require title and a valid order
+    if (!title || parsedOrder === null) {
+      return res.status(400).render('parts/form', {
+        title: req.__('Parts.Form.new'),
+        part: req.body,
+        projectId,
+        error: req.__('Parts.Errors.invalid_input')  // Add to translation files
+      });
+    }
+
     db.run(
       `INSERT INTO parts (project_id, title, "order")
-           VALUES (?, ?, ?)`,
+       VALUES (?, ?, ?)`,
       [projectId, title, parsedOrder],
       function (err) {
         if (err) {
