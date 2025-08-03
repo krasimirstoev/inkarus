@@ -9,18 +9,18 @@
     <div class="mb-3 w-100">
     <div class="p-3 rounded text-light"
         style="background-color: #1f2d3a; border: 1px solid #2e3f4d;">
-      <strong><i class="bi bi-journal-text me-2 text-info"></i>How book structure works:</strong><br>
-      Books can be divided into logical sections such as
-      <em>Volumes</em>, <em>Parts</em>, or <em>Acts</em>.<br>
-      For example: "Volume I" → "Part 1" → "Act 1" → Chapters.<br>
-      Use parts to break your story into larger thematic or narrative chunks.
+      <strong><i class="bi bi-journal-text me-2 text-info"></i><%= __('Parts.Help.title') %></strong><br>
+      <%- __('Parts.Help.description1') %><br><br>
+      <%- __('Parts.Help.description2') %><br><br>
+      <%- __('Parts.Help.description3') %><br><br>
+      <%- __('Parts.Help.description4') %><br>
     </div>
   </div>
     <label for="part-title" class="form-label">
-      Title
+      <%= __('Parts.Form.titleLabel') %>
       <i class="bi bi-info-circle-fill text-info ms-1"
          data-bs-toggle="tooltip" data-bs-placement="top"
-         title="A short name for this part. Example: 'Act I', 'Act II', 'Act III' and so on.">
+         title="<%= __('Parts.Tooltip.title') %>">
       </i>
     </label>
     <input
@@ -33,16 +33,16 @@
       style="border-color: #6c757d;"
     />
     <div class="form-text text-muted">
-      Use a clear and meaningful name to organize your chapters.
+      <%= __('Parts.Help.titleHint') %>
     </div>
   </div>
 
   <div class="mb-3">
     <label for="part-order" class="form-label">
-      Order
+      <%= __('Parts.Form.orderLabel') %>
       <i class="bi bi-info-circle-fill text-info ms-1"
          data-bs-toggle="tooltip" data-bs-placement="top"
-         title="Controls the order in which parts appear. Lower numbers come first.">
+         title="<%= __('Parts.Tooltip.order') %>">
       </i>
     </label>
     <input
@@ -55,12 +55,12 @@
       style="border-color: #6c757d;"
     />
     <div class="form-text text-muted">
-      This helps structure your book – parts with smaller numbers appear earlier.
+      <%= __('Parts.Help.orderHint') %>
     </div>
   </div>
 
   <button type="submit"
           class="btn btn-primary btn-sm">
-    <%= part ? 'Update Part' : 'Create Part' %>
+    <%= part ? __('Parts.Form.update') : __('Parts.Form.create') %>
   </button>
 </form>

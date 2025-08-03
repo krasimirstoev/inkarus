@@ -366,7 +366,7 @@
       "create": "Create Event"
     }
   },
-  "Drafts": {
+"Drafts": {
   "Page": {
     "title": "Drafts"
   },
@@ -462,7 +462,50 @@
     "manage_parts": "Manage Parts"
   }
 },  
-  
+"Parts": {
+    "Page": {
+      "title": "Parts"
+    },
+    "Form": {
+      "new": "New Part",
+      "edit": "Edit Part",
+      "back": "Back to Parts",
+      "titleLabel": "Title",
+      "orderLabel": "Order",
+      "create": "Create Part",
+      "update": "Update Part"
+    },
+    "Error": {
+      "loadForm": "Error loading form"
+    },
+    "Button": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "Confirm": {
+      "delete": "Delete this part?"
+    },
+    "List": {
+      "new": "New part",
+      "add": "Add Part",
+      "empty": "No parts defined yet.",
+      "placeholderTitle": "Part title…",
+      "placeholderOrder": "Order"
+    },
+    "Tooltip": {
+      "title": "A short name for this part. Example: 'Part I', 'Part II', 'Part III' and so on.",
+      "order": "Controls the order in which parts appear. Lower numbers come first."
+    },
+    "Help": {
+      "title": "How book structure works:",
+      "description1": "Books are often organized into <b>Volumes</b>, <b>Parts</b> and <b>Chapters</b>.",
+      "description2": "In <b>Inkarus</b>, <b>Parts</b> are especially useful for grouping related chapters into larger logical sections — like story arcs, timelines, or themes.",
+      "description3": "For example: <b>Volume I</b> → <b>Part 1</b> → <b>Chapter 1</b>",
+      "description4": "Using <b>Parts</b> helps you stay organized and focused while writing, making it easier to manage the flow of your story and work on one section at a time.",
+      "titleHint": "Use a clear and meaningful name to organize your chapters.",
+      "orderHint": "This helps structure your book – parts with smaller numbers appear earlier."
+    }
+  },
 
   "Errors": {
     "Items": {

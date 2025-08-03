@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : `/parts/${projectId}/modal/form`;
     const res = await fetch(url);
     if (!res.ok) {
-      formWrap.innerHTML = `<p class="text-danger">Error ${res.status} loading form</p>`;
+      formWrap.innerHTML = `<p class="text-danger">${__('Parts.Error.loadForm')} (${res.status})</p>`;
       return;
     }
     formWrap.innerHTML = await res.text();
@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>${p.title}</span>
         <div>
           <button class="btn btn-outline-light btn-sm btn-edit-part me-1"
-                  data-id="${p.id}">Edit</button>
+                  data-id="${p.id}">${__('Parts.Button.edit')}</button>
           <button class="btn btn-danger btn-sm btn-delete-part"
-                  data-id="${p.id}">Delete</button>
+                  data-id="${p.id}">${__('Parts.Button.delete')}</button>
         </div>
       </li>
     `).join('');
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (e.target.matches('.btn-delete-part')) {
       const id = e.target.dataset.id;
-      if (!confirm('Delete this part?')) return;
+      if (!confirm(__('Parts.Confirm.delete'))) return;
       const res = await fetch(`/parts/${projectId}/${id}`, {
         method: 'DELETE',
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
