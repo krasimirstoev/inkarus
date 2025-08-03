@@ -1,0 +1,580 @@
+{
+  "SettingsPage": {
+    "title": "",
+    "autosave_interval": "",
+    "show_status_bar": "",
+    "font_choice": "",
+    "language": "",
+    "save": "",
+    "saved": ""
+  },
+  "navbar": {
+    "brand": "",
+    "projects": "",
+    "search": "",
+    "settings": "",
+    "logout": "",
+    "login": "",
+    "register": ""
+  },
+  "footer": {
+    "copyright": ""
+  },
+  "NotFoundPage": {
+    "message": "",
+    "back": ""
+  },
+  "App": {
+    "name": ""
+  },
+  "Auth": {
+    "Login": {
+      "title": "",
+      "error": {
+        "db": "",
+        "not_found": "",
+        "incorrect_password": ""
+      },
+      "email": "",
+      "password": "",
+      "button": "",
+      "register_link": ""
+    },
+    "Register": {
+      "title": "",
+      "error": {
+        "exists": "",
+        "generic": ""
+      },
+      "username": "",
+      "email": "",
+      "password": "",
+      "button": "",
+      "login_link": ""
+    }
+  },
+  "Characters": {
+    "Form": {
+      "edit": "",
+      "new": "",
+      "name": "",
+      "pseudonym": "",
+      "description": "",
+      "birthdate": "",
+      "gender": "",
+      "origin": "",
+      "occupation": "",
+      "location": "",
+      "health_status": "",
+      "healthy": "",
+      "sick": "",
+      "injured": "",
+      "deceased": "",
+      "comment": "",
+      "details": "",
+      "goal": "",
+      "character_type": "",
+      "select_type": "",
+      "protagonist": "",
+      "antagonist": "",
+      "supporting": "",
+      "mentor": "",
+      "other": "",
+      "motivation": "",
+      "fears": "",
+      "weaknesses": "",
+      "arc": "",
+      "select_arc": "",
+      "arc_positive": "",
+      "arc_negative": "",
+      "arc_flat": "",
+      "secrets": "",
+      "allies": "",
+      "enemies": "",
+      "optional_relation": "",
+      "choose_related": "",
+      "none": "",
+      "relation_type": "",
+      "save": "",
+      "back": "",
+      "relation_placeholder": "",
+      "edit_title": "",
+      "new_title": ""
+    },
+    "Graph": {
+      "title": "",
+      "back": ""
+    },
+    "List": {
+      "title": "",
+      "relationships": "",
+      "new": "",
+      "empty": "",
+      "aka": "",
+      "confirm_delete": "",
+      "modal_title": "",
+      "loading": ""
+    },
+    "PartialList": {
+      "empty": "",
+      "aka": ""
+    },
+    "Profile": {
+      "title": "",
+      "new": "",
+      "empty": "",
+      "no_description": "",
+      "health": "",
+      "edit": ""
+    },
+    "GraphView": {
+      "title": "",
+      "back": "",
+      "connections": "",
+      "click_hint": "",
+      "all_characters": "",
+      "zoom_in": "",
+      "zoom_out": "",
+      "save_png": "",
+      "reset_view": "",
+      "no_relationships": "",
+      "title_with_project": "",
+      "error_loading_graph": "",
+      "title_heading": ""
+    },
+    "Relationships": {
+      "title": "",
+      "back": "",
+      "graph_view": "",
+      "error_same": "",
+      "character": "",
+      "related_character": "",
+      "relation": "",
+      "placeholder": "",
+      "empty": "",
+      "edit_tooltip": "",
+      "confirm_delete": "",
+      "modal_title": "",
+      "save": "",
+      "cancel": "",
+      "error_missing_fields": "",
+      "update_failed": "",
+      "update_error": ""
+    },
+    "Modal": {
+      "loading_character": "",
+      "failed_to_load": "",
+      "error_loading": "",
+      "desc": "",
+      "goal": "",
+      "type": "",
+      "created": "",
+      "updated": "",
+      "no_description": "",
+      "motivation": "",
+      "fears": "",
+      "weaknesses": "",
+      "arc": "",
+      "secrets": "",
+      "allies": "",
+      "enemies": "",
+      "birthdate": "",
+      "gender": "",
+      "origin": "",
+      "occupation": "",
+      "location": "",
+      "health": "",
+      "comment": ""
+    },
+    "Panel": {
+      "loading": "",
+      "info_title": "",
+      "no_characters": "",
+      "failed_load_list": "",
+      "desc": "",
+      "goal": "",
+      "type": "",
+      "motivation": "",
+      "fears": "",
+      "weaknesses": "",
+      "arc": "",
+      "secrets": "",
+      "allies": "",
+      "enemies": "",
+      "birthdate": "",
+      "gender": "",
+      "origin": "",
+      "location": "",
+      "occupation": "",
+      "notes": "",
+      "created": "",
+      "updated": "",
+      "failed_fetch": "",
+      "error_fetch": ""
+    }
+  },
+  "Notes": {
+    "List": {
+      "title": "",
+      "confirm_delete": "",
+      "delete_failed": "",
+      "delete_error": "",
+      "empty": "",
+      "new_button": ""
+    },
+    "Form": {
+      "new_title": "",
+      "edit_title": "",
+      "title_label": "",
+      "content_label": "",
+      "save_button": "",
+      "back_button": ""
+    },
+    "Errors": {
+      "empty_note_not_allowed": "",
+      "not_found": ""
+    },
+    "Editor": {
+      "title": "",
+      "no_title": "",
+      "no_content": "",
+      "confirm_delete": "",
+      "delete_failed": "",
+      "delete_error": "",
+      "load_failed": "",
+      "generic_error": "",
+      "rejected": "",
+      "empty": ""
+    }
+  },
+  "Projects": {
+    "List": {
+      "title": "",
+      "title_heading": "",
+      "new_button": "",
+      "empty": "",
+      "open_button": "",
+      "edit_button": "",
+      "delete_button": ""
+    },
+    "Form": {
+      "new_title": "",
+      "edit_title": "",
+      "title_label": "",
+      "description_label": "",
+      "save_button": "",
+      "create_button": ""
+    },
+    "Dashboard": {
+      "title": "",
+      "back_button": "",
+      "drafts": "",
+      "notes": "",
+      "characters": "",
+      "places": "",
+      "events": "",
+      "items": ""
+    }
+  },
+  "Items": {
+    "List": {
+      "title": "",
+      "addBtn": "",
+      "noResults": "",
+      "editTooltip": "",
+      "deleteTooltip": "",
+      "confirmDelete": ""
+    },
+    "Edit": {
+      "title": ""
+    },
+    "New": {
+      "title": ""
+    },
+    "Status": {
+      "active": "",
+      "lost": "",
+      "destroyed": "",
+      "custom": "",
+      "custom_placeholder": ""
+    },
+    "Form": {
+      "name": "",
+      "status": "",
+      "description": "",
+      "customStatusPlaceholder": ""
+    },
+    "Modal": {
+      "editTitle": "",
+      "addTitle": "",
+      "loadingTitle": "",
+      "loadingBody": "",
+      "failed": "",
+      "error": "",
+      "description": "",
+      "status": ""
+    },
+    "Panel": {
+      "loading": "",
+      "error": "",
+      "noResults": "",
+      "saveError": "",
+      "formError": ""
+    },
+    "Profile": {
+      "noDescription": "",
+      "editBtn": "",
+      "closeBtn": ""
+    },
+    "FormPage": {
+      "editTitle": "",
+      "addTitle": "",
+      "name": "",
+      "status": "",
+      "customStatusPlaceholder": "",
+      "description": "",
+      "saveBtn": "",
+      "backBtn": ""
+    },
+    "NotFound": ""
+  },
+  "Events": {
+    "Page": {
+      "title": ""
+    },
+    "List": {
+      "add": "",
+      "edit": "",
+      "delete": ""
+    },
+    "Modal": {
+      "title": ""
+    },
+    "Timeline": {
+      "delete": ""
+    },
+    "Form": {
+      "title": "",
+      "date": "",
+      "dateHelp": "",
+      "abstract": "",
+      "abstractHelp": "",
+      "displayOrder": "",
+      "displayOrderHelp": "",
+      "description": "",
+      "saveChanges": "",
+      "create": ""
+    }
+  },
+  "Drafts": {
+    "Page": {
+      "title": ""
+    },
+    "Group": {
+      "ungrouped": ""
+    },
+    "UI": {
+      "confirm_delete_chapter": "",
+      "rename_failed": "",
+      "json_groups_failed": "",
+      "btn_open": "",
+      "btn_rename": "",
+      "btn_delete": "",
+      "no_revisions": "",
+      "revisions_for": "",
+      "revision_count_singular": "",
+      "revision_count_plural": "",
+      "confirm_delete_autosaves": "",
+      "autosaves_deleted": "",
+      "autosaves_delete_error": "",
+      "request_failed": "",
+      "revision_modal_missing": "",
+      "showing_modal": ""
+    },
+    "Revisions": {
+      "type_manual": "",
+      "type_autosave": "",
+      "type_unknown": "",
+      "confirm_delete_all_autosaves": "",
+      "words": "",
+      "button_restore": "",
+      "button_preview": "",
+      "button_delete": "",
+      "loading": "",
+      "error_loading": "",
+      "none": "",
+      "revision_count_singular": "",
+      "revision_count_plural": "",
+      "restored": "",
+      "restore_failed": "",
+      "confirm_restore": "",
+      "confirm_delete": "",
+      "delete_failed": "",
+      "preview_loading": "",
+      "preview_failed": "",
+      "autosave_delete_failed": "",
+      "autosave_deleted": "",
+      "request_failed": ""
+    },
+    "TheEditor": {
+      "sidebar_projects": "",
+      "sidebar_notes": "",
+      "sidebar_characters": "",
+      "sidebar_places": "",
+      "sidebar_items": "",
+      "sidebar_outline": "",
+      "last_autosave": "",
+      "last_autosave_time": "",
+      "word_count": "",
+      "save_now": "",
+      "history": "",
+      "back": "",
+      "fullscreen": "",
+      "reading_mode": "",
+      "exit_reading": "",
+      "exit_fullscreen": "",
+      "project_notes": "",
+      "note_title": "",
+      "note_content": "",
+      "add_note": "",
+      "notes_placeholder": "",
+      "characters": "",
+      "search_characters": "",
+      "characters_placeholder": "",
+      "character_info": "",
+      "places": "",
+      "search_places": "",
+      "place_info": "",
+      "items": "",
+      "search_items": "",
+      "item_info": "",
+      "RevisionsModalTitle": "",
+      "delete_autosaves": "",
+      "RevisionPreviewModalTitle": ""
+    },
+    "List": {
+      "new_chapter_title": "",
+      "add_chapter": "",
+      "parts": "",
+      "no_parts": "",
+      "ungrouped_label": "",
+      "ungrouped_option": "",
+      "open": "",
+      "rename": "",
+      "delete": "",
+      "drop_here": "",
+      "rename_modal_title": "",
+      "rename_new_title": "",
+      "rename_save": "",
+      "rename_cancel": "",
+      "manage_parts": ""
+    }
+  },
+  "Parts": {
+    "Page": {
+      "title": ""
+    },
+    "Form": {
+      "new": "",
+      "edit": "",
+      "back": "",
+      "titleLabel": "",
+      "orderLabel": "",
+      "create": "",
+      "update": ""
+    },
+    "Error": {
+      "loadForm": ""
+    },
+    "Button": {
+      "edit": "",
+      "delete": ""
+    },
+    "Confirm": {
+      "delete": ""
+    },
+    "List": {
+      "new": "",
+      "add": "",
+      "empty": "",
+      "placeholderTitle": "",
+      "placeholderOrder": ""
+    },
+    "Tooltip": {
+      "title": "",
+      "order": ""
+    },
+    "Help": {
+      "title": "",
+      "description1": "",
+      "description2": "",
+      "description3": "",
+      "description4": "",
+      "titleHint": "",
+      "orderHint": ""
+    }
+  },
+  "Places": {
+    "Loading": "",
+    "Page": {
+      "title": ""
+    },
+    "Form": {
+      "add": "",
+      "edit": "",
+      "nameLabel": "",
+      "typeLabel": "",
+      "descriptionLabel": "",
+      "customPlaceholder": ""
+    },
+    "List": {
+      "add": "",
+      "new": "",
+      "empty": ""
+    },
+    "Type": {
+      "city": "",
+      "village": "",
+      "country": "",
+      "continent": "",
+      "mountain": "",
+      "river": "",
+      "sea": "",
+      "lake": "",
+      "forest": "",
+      "desert": "",
+      "region": "",
+      "island": "",
+      "planet": "",
+      "custom": ""
+    },
+    "Error": {
+      "notFound": "",
+      "loadFailed": "",
+      "formLoad": "",
+      "saveFailed": ""
+    },
+    "Empty": {
+      "notFound": "",
+      "noDescription": ""
+    },
+    "Button": {
+      "edit": "",
+      "close": "",
+      "savePlace": "",
+      "backToList": ""
+    },
+    "Confirm": {
+      "delete": ""
+    }
+  },
+  "Errors": {
+    "Items": {
+      "load": ""
+    }
+  },
+  "Common": {
+    "save": "",
+    "close": ""
+  }
+}
