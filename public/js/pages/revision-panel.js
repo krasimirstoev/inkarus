@@ -48,19 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const rev of revisions) {
       const date = new Date(rev.created_at);
       const typeLabel =
-        rev.type === 'manual'   ? 'Manual ★' :
-        rev.type === 'autosave' ? 'Autosave' :
-        rev.type || 'Unknown';
+        rev.type === 'manual'   ? __('Drafts.Revisions.type_manual') :
+        rev.type === 'autosave' ? __('Drafts.Revisions.type_autosave') :
+        __('Drafts.Revisions.type_unknown');
 
       html += `
         <li class="list-group-item bg-dark text-light border-secondary d-flex justify-content-between align-items-center">
           <div>
-            <strong>[${typeLabel}]</strong> ${date.toLocaleString()} – ${rev.word_count} words
+            <strong>[${typeLabel}]</strong> ${date.toLocaleString()} – ${rev.word_count} ${__('Drafts.Revisions.words')}
           </div>
           <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">♻️ Restore</button>
-            <button class="btn btn-sm btn-outline-primary btn-preview" data-id="${rev.id}">👁️ Preview</button>
-            <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">🗑 Delete</button>
+            <button class="btn btn-sm btn-outline-success btn-restore" data-id="${rev.id}">♻️ ${__('Drafts.Revisions.button_restore')}</button>
+            <button class="btn btn-sm btn-outline-primary btn-preview" data-id="${rev.id}">👁️ ${__('Drafts.Revisions.button_preview')}</button>
+            <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${rev.id}">🗑 ${__('Drafts.Revisions.button_delete')}</button>
           </div>
         </li>`;
     }
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ————— Delete all AUTOSAVE revisions —————
   const deleteAllBtn = document.getElementById('delete-autosaves-btn');
   deleteAllBtn?.addEventListener('click', async () => {
-    if (!confirm('Are you sure you want to delete all autosave revisions?')) return;
+    if (!confirm(__('Drafts.Revisions.confirm_delete_all_autosaves'))) return;
     try {
       const delRes = await fetch(`/drafts/${projectId}/revisions/delete-autosaves`, { method: 'DELETE' });
       if (!delRes.ok) {
@@ -143,13 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       alert(__('Drafts.Revisions.autosave_deleted'));
       // reload list
-      listEl.innerHTML = '<div class="text-center text-muted">Loading...</div>';
+      listEl.innerHTML = `<div class="text-center text-muted">${__('Drafts.Revisions.loading')}</div>`;
       const res2  = await fetch(`/drafts/${projectId}/revisions/${draftId}`);
       const json2 = await res2.json();
       if (res2.ok && json2.success) {
         renderRevisions(json2.revisions, json2.count);
       } else {
-        listEl.innerHTML = '<div class="text-danger text-center">Error loading revisions</div>';
+        listEl.innerHTML = `<div class="text-danger text-center">${__('Drafts.Revisions.error_loading')}</div>`;
       }
     } catch (err) {
       console.error('❌ Error deleting all autosaves:', err);

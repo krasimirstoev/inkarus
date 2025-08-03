@@ -392,6 +392,14 @@
     "showing_modal": "🟢 Showing modal now"
   },
   "Revisions": {
+    "type_manual": "Manual ★",
+    "type_autosave": "Autosave",
+    "type_unknown": "Unknown",
+    "confirm_delete_all_autosaves": "Are you sure you want to delete all autosave revisions?",
+    "words": "words",
+    "button_restore": "Restore",
+    "button_preview": "Preview",
+    "button_delete": "Delete",
     "loading": "Loading...",
     "error_loading": "Error loading revisions",
     "none": "No revisions available.",
