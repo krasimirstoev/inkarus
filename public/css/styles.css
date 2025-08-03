@@ -339,27 +339,44 @@ ul.list-group[data-part-id] {
 /* ============================================================
   12. Quill Editor: Link Highlighting
   ============================================================ */
+
+/* Base style for all editor links – no color override */
 .ql-editor a.character-link,
-.ql-editor a.place-link {
-  color: #fff !important;
+.ql-editor a.place-link,
+.ql-editor a.item-link {
   text-decoration: none !important;
-  border-bottom: 1px dotted currentColor;
   cursor: pointer;
 }
-.ql-editor a.character-link:hover,
+
+/* Characters – blue dotted underline */
+.ql-editor a.character-link {
+  border-bottom: 1px dotted #66bfff;
+}
+.ql-editor a.character-link:hover {
+  border-bottom-style: solid;
+}
+
+/* Places – green dotted underline */
+.ql-editor a.place-link {
+  border-bottom: 1px dotted #6fd98d;
+}
 .ql-editor a.place-link:hover {
   border-bottom-style: solid;
 }
 
+/* Items – yellow dotted underline */
 .ql-editor a.item-link {
-  color: #ffd54f !important; /* меко жълто */
-  text-decoration: none !important;
-  border-bottom: 1px dashed #ffd54f;
-  cursor: pointer;
+  border-bottom: 1px dotted #ffd54f;
 }
 .ql-editor a.item-link:hover {
   border-bottom-style: solid;
-  color: #ffe082 !important;
+}
+
+/* Prevent any color override for custom highlighter links */
+.ql-editor a.character-link,
+.ql-editor a.place-link,
+.ql-editor a.item-link {
+  color: inherit !important;
 }
 
 /* ============================================================

@@ -84,7 +84,7 @@ exports.save = (req, res) => {
   if (typeof title === 'undefined' && parsedOrder === null) {
     return res.status(400).json({
       success: false,
-      error: req.__('Parts.Errors.empty_input')  // Add to translation files
+      error: req.__('Parts.Errors.empty_input') 
     });
   }
 
@@ -94,7 +94,7 @@ exports.save = (req, res) => {
       if (parsedOrder === null) {
         return res.status(400).json({
           success: false,
-          error: req.__('Parts.Errors.invalid_order')  // Add to translation files
+          error: req.__('Parts.Errors.invalid_order')
         });
       }
 
@@ -130,7 +130,7 @@ exports.save = (req, res) => {
         title: req.__('Parts.Form.new'),
         part: req.body,
         projectId,
-        error: req.__('Parts.Errors.invalid_input')  // Add to translation files
+        error: req.__('Parts.Errors.invalid_input') 
       });
     }
 
