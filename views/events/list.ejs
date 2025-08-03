@@ -2,9 +2,9 @@
 
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Events</h2>
+    <h2><%= __('Events.Page.title') %></h2>
     <button class="btn btn-sm btn-outline-light" id="btn-new-event">
-      <i class="bi bi-plus-lg"></i> Add Event
+      <i class="bi bi-plus-lg"></i> <%= __('Events.List.add') %>
     </button>
   </div>
 
@@ -28,14 +28,14 @@
           type="button"
           class="btn btn-link text-light btn-edit"
           data-id="<%= ev.id %>"
-        >Edit</button>
+        ><%= __('Events.List.edit') %></button>
 
-      <!-- AJAX Delete button -->
+        <!-- AJAX Delete button -->
         <button
           type="button"
           class="btn btn-link text-danger btn-delete"
           data-id="<%= ev.id %>"
-        >Delete</button>
+        ><%= __('Events.List.delete') %></button>
       </div> 
     </li>
   <% }) %>
@@ -46,7 +46,7 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content bg-dark text-light">
       <div class="modal-header border-secondary">
-        <h5 class="modal-title" id="eventModalLabel">Event</h5>
+        <h5 class="modal-title" id="eventModalLabel"><%= __('Events.Modal.title') %></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body" id="eventModalBody"></div>

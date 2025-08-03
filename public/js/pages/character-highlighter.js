@@ -1,3 +1,5 @@
+// public/js/pages/character-highlighter.js
+
 /**
  * Highlights all occurrences of each character name or pseudonym in the Quill editor
  * using our custom 'character' blot, and wires up click-to-modal.
@@ -65,33 +67,33 @@ export function initCharacterHighlighter(quillEditor, characters, projectId) {
       const modal      = modalEl ? new bootstrap.Modal(modalEl) : null;
       if (!modal) return;
   
-      modalTitle.textContent = 'Loading…';
-      modalBody.innerHTML    = `<div class="text-center text-muted">Loading character…</div>`;
+      modalTitle.textContent = window.__('Characters.Modal.loading_character');
+      modalBody.innerHTML    = `<div class="text-center text-muted">${window.__('Characters.Modal.loading_character')}</div>`;
       modal.show();
   
       fetch(`/characters/${projectId}/json/${characterId}`)
         .then(r => r.json())
         .then(data => {
           if (!data.success || !data.character) {
-            modalBody.innerHTML = `<div class="text-danger">Failed to load character.</div>`;
+            modalBody.innerHTML = `<div class="text-danger">${window.__('Characters.Modal.failed_to_load')}</div>`;
             return;
           }
           const c = data.character;
           modalTitle.textContent = `${c.name}${c.pseudonym ? ' ('+c.pseudonym+')' : ''}`;
           modalBody.innerHTML = `
-            <p><strong>📖 Description:</strong> ${c.description || '<em>None</em>'}</p>
-            <p><strong>🎯 Goal:</strong> ${c.goal || '-'}</p>
-            <p><strong>📚 Type:</strong> ${c.character_type || '-'}</p>
+            <p><strong>${window.__('Characters.Modal.desc')}:</strong> ${c.description || '<em>None</em>'}</p>
+            <p><strong>${window.__('Characters.Modal.goal')}:</strong> ${c.goal || '-'}</p>
+            <p><strong>${window.__('Characters.Modal.type')}:</strong> ${c.character_type || '-'}</p>
             <!-- more fields… -->
             <div class="modal-footer d-flex flex-column align-items-start mt-3 border-top pt-2">
-              <time>🗓 Created: ${formatDate(c.created_at)}</time>
-              <time>✏️ Updated: ${formatDate(c.updated_at)}</time>
+              <time>${window.__('Characters.Modal.created')}: ${formatDate(c.created_at)}</time>
+              <time>${window.__('Characters.Modal.updated')}: ${formatDate(c.updated_at)}</time>
             </div>
           `;
         })
         .catch(err => {
           console.error('❌ Error loading character JSON:', err);
-          modalBody.innerHTML = `<div class="text-danger">Error loading character.</div>`;
+          modalBody.innerHTML = `<div class="text-danger">${window.__('Characters.Modal.error_loading')}</div>`;
         });
     }
   

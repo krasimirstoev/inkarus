@@ -1,7 +1,7 @@
 <% /* views/drafts/list.ejs */ %>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Drafts</h2>
+  <h2><%= __('Drafts.Page.title') %></h2>
   <form
     id="add-chapter-form"
     action="/drafts/<%= projectId %>"
@@ -12,7 +12,7 @@
       type="text"
       name="title"
       class="form-control form-control-sm bg-dark text-white me-2"
-      placeholder="New chapter title..."
+      placeholder="<%= __('Drafts.List.new_chapter_title') %>"
       required
       style="border-color: #6c757d; max-width:150px;"
     />
@@ -21,29 +21,29 @@
       class="form-select form-select-sm bg-dark text-white me-2"
       style="border-color: #6c757d; max-width:120px;"
     >
-      <option value="">Ungrouped</option>
+      <option value=""><%= __('Drafts.List.ungrouped_option') %></option>
       <% parts.filter(p => p.id !== null).forEach(p => { %>
         <option value="<%= p.id %>"><%= p.title %></option>
       <% }) %>
     </select>
 
-    <button id="addChapterBtn" type="submit" class="btn btn-success btn-sm text-nowrap me-2">+ Add Chapter</button>
+    <button id="addChapterBtn" type="submit" class="btn btn-success btn-sm text-nowrap me-2">+ <%= __('Drafts.List.add_chapter') %></button>
     <button
       type="button"
       class="btn btn-secondary btn-sm"
       data-bs-toggle="modal"
       data-bs-target="#partsModal"
-    >Parts</button>
+    ><%= __('Drafts.List.parts') %></button>
   </form>
 </div>
 
 <% if (!parts || !parts.length) { %>
-  <p class="text-muted">No parts or chapters found.</p>
+  <p class="text-muted"><%= __('Drafts.List.no_parts') %></p>
 <% } else { %>
   <div id="partsContainer" data-project-id="<%= projectId %>">
     <% parts.forEach(part => {
          const title = part.id === null
-           ? 'Ungrouped (Without Part)'
+           ? __('Drafts.List.ungrouped_label')
            : part.title;
     %>
       <div class="card mb-4 bg-dark border-secondary border-2 rounded shadow-sm text-light">
@@ -65,23 +65,23 @@
                     <button
                       class="btn btn-sm btn-primary btn-open-chapter me-2"
                       data-id="<%= ch.id %>"
-                    >Open</button>
+                    ><%= __('Drafts.List.open') %></button>
                     <button
                       class="btn btn-sm btn-warning btn-rename-chapter me-2"
                       data-id="<%= ch.id %>"
                       data-title="<%= ch.title %>"
-                    >Rename</button>
+                    ><%= __('Drafts.List.rename') %></button>
                     <button
                       class="btn btn-sm btn-danger btn-delete-chapter"
                       data-id="<%= ch.id %>"
-                    >Delete</button>
+                    ><%= __('Drafts.List.delete') %></button>
                   </div>
                 </li>
               <% }) %>
             <% } else { %>
               <li class="list-group-item empty text-center text-muted"
                   style="min-height:1.5rem;cursor:move;">
-                Drop here
+                <%= __('Drafts.List.delete') %>
               </li>
             <% } %>
           </ul>
@@ -96,13 +96,13 @@
   <div class="modal-dialog">
     <form id="rename-chapter-form" class="modal-content bg-dark text-light">
       <div class="modal-header">
-        <h5 class="modal-title">Rename Chapter</h5>
+        <h5 class="modal-title"><%= __('Drafts.List.rename_modal_title') %></h5>
         <button type="button" class="btn-close btn-close-white"
                 data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label for="rename-chapter-title" class="form-label">New Title</label>
+          <label for="rename-chapter-title" class="form-label"><%= __('Drafts.List.rename_new_title') %></label>
           <input
             type="text"
             id="rename-chapter-title"
@@ -113,9 +113,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-warning">Save</button>
+        <button type="submit" class="btn btn-warning"><%= __('Drafts.List.rename_save') %></button>
         <button type="button" class="btn btn-secondary"
-                data-bs-dismiss="modal">Cancel</button>
+                data-bs-dismiss="modal"><%= __('Drafts.List.rename_cancel') %></button>
       </div>
     </form>
   </div>
@@ -132,7 +132,7 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content bg-dark text-light">
       <div class="modal-header">
-        <h5 class="modal-title">Manage Parts</h5>
+        <h5 class="modal-title"><%= __('Drafts.List.manage_parts') %></h5>
         <button type="button" class="btn-close btn-close-white"
                 data-bs-dismiss="modal"></button>
       </div>

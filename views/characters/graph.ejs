@@ -1,7 +1,16 @@
+<!-- views/characters/graph.ejs -->
+<!--
+  Character Relationship Graph (vis-network)
+  - Fetches graph data from the server via AJAX
+  - Renders interactive nodes and edges with custom styles
+  - Uses a dark theme and custom colors
+  - Includes a back button to character list
+  - Container: 600px height, full width, styled background
+-->
 <div class="container py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Character Relationship Graph</h2>
-    <a href="/characters/<%= projectId %>" class="btn btn-outline-light">← Back to Characters</a>
+    <h2><%= __('Characters.Graph.title') %></h2>
+    <a href="/characters/<%= projectId %>" class="btn btn-outline-light">← <%= __('Characters.Graph.back') %></a>
   </div>
 
   <div id="graph" style="height: 600px; background: #1e1e1e;" class="rounded shadow"></div>

@@ -1,5 +1,6 @@
+<!-- views/characters/partial-list.ejs -->
 <% if (characters.length === 0) { %>
-    <p class="text-muted small">No characters found.</p>
+    <p class="text-muted small"><%= __('Characters.PartialList.empty') %></p>
   <% } else { %>
     <div class="list-group">
       <% characters.forEach(c => { %>
@@ -8,7 +9,7 @@
                 data-id="<%= c.id %>" data-project="<%= projectId %>">
           <strong><%= c.name %></strong>
           <% if (c.pseudonym) { %>
-            <small class="text-muted"> (<%= c.pseudonym %>)</small>
+            <small class="text-muted"> (<%= __('Characters.PartialList.aka') %>: <%= c.pseudonym %>)</small>
           <% } %>
         </button>
       <% }) %>

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fetch all items
   async function loadItems(query = '') {
-    listEl.innerHTML = '<li class="list-group-item text-center text-muted">Loading…</li>';
+    listEl.innerHTML = `<li class="list-group-item text-center text-muted">${window.__('Items.Panel.loading')}</li>`;
     try {
       const res  = await fetch(`/items/json/${projectId}`);
       const json = await res.json();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderFiltered(query);
     } catch (err) {
       console.error(err);
-      listEl.innerHTML = '<li class="list-group-item text-danger">Error loading items.</li>';
+      listEl.innerHTML = `<li class="list-group-item text-danger">${window.__('Items.Panel.error')}</li>`;
     }
   }
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderList(items) {
     if (!items.length) {
-      listEl.innerHTML = '<li class="list-group-item text-muted">No items found.</li>';
+      listEl.innerHTML = `<li class="list-group-item text-muted">${window.__('Items.Panel.noResults')}</li>`;
       return;
     }
     listEl.innerHTML = items.map(i => `
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showItemProfile(saved.id);
           } catch (err) {
             console.error(err);
-            alert('❌ Could not save item.');
+            alert('❌ ' + window.__('Items.Panel.saveError'));
           }
         });
 
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error('Failed to load form:', err);
-        alert('❌ Could not load form.');
+        alert('❌ ' + window.__('Items.Panel.formError'));
       });
   }
 
@@ -131,11 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <p>${item.description || '<em>No description available.</em>'}</p>
+              <p>${item.description || `<em>${window.__('Items.Profile.noDescription')}</em>`}</p>
             </div>
             <div class="modal-footer">
-              <button id="edit-item-btn" class="btn btn-sm btn-outline-warning">✎ Edit</button>
-              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="edit-item-btn" class="btn btn-sm btn-outline-warning">✎ ${window.__('Items.Profile.editBtn')}</button>
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">${window.__('Items.Profile.closeBtn')}</button>
             </div>
           </div>
         </div>

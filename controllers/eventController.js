@@ -15,7 +15,7 @@ exports.view = (req, res) => {
     }
     // Render and pass `events` into the template
     res.render('events/list', {
-      title: 'Events',
+      title: req.__('Events.Page.title'),
       projectId,
       events
     });

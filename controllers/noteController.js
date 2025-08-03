@@ -1,3 +1,5 @@
+// controllers/noteController.js - Controller for managing notes in a project
+
 const db = require('../models/db');
 
 // List notes in view
@@ -10,7 +12,7 @@ exports.list = (req, res) => {
       return res.sendStatus(500);
     }
 
-    res.render('notes/list', { title: 'Notes', notes, projectId });
+    res.render('notes/list', { title: res.__('Notes.List.title'), notes, projectId });
   });
 };
 
@@ -38,7 +40,7 @@ exports.form = (req, res) => {
 
   if (!id) {
     return res.render('notes/form', {
-      title: 'New Note',
+      title: res.__('Notes.Form.new_title'),
       note: null,
       projectId,
     });
@@ -51,7 +53,7 @@ exports.form = (req, res) => {
     }
 
     res.render('notes/form', {
-      title: 'Edit Note',
+      title: res.__('Notes.Form.edit_title'),
       note,
       projectId,
     });
@@ -68,7 +70,7 @@ exports.save = (req, res) => {
   if (!title?.trim() && !content?.trim()) {
     console.warn('⚠ Attempted to save empty note, ignoring.');
     return isJson
-      ? res.status(400).json({ success: false, message: 'Empty note not allowed' })
+      ? res.status(400).json({ success: false, message: req.__('Notes.Errors.empty_note_not_allowed') })
       : res.redirect(`/notes/${projectId}`);
   }
 
@@ -84,7 +86,7 @@ exports.save = (req, res) => {
 
         if (this.changes === 0) {
           return isJson
-            ? res.status(404).json({ success: false, message: 'Note not found' })
+            ? res.status(404).json({ success: false, message: req.__('Notes.Errors.not_found') })
             : res.sendStatus(404);
         }
 

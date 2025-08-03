@@ -1,65 +1,66 @@
+<!-- views/characters/form.ejs --> 
 <div class="container py-5">
-  <h2><%= character ? 'Edit Character' : 'New Character' %></h2>
+  <h2><%= character ? __('Characters.Form.edit') : __('Characters.Form.new') %></h2>
 
   <form action="/characters/<%= projectId %><%= character ? '/' + character.id : '' %>" method="POST" class="mt-4">
 
     <!-- Basic Info -->
     <div class="mb-3">
-      <label for="name" class="form-label">🧍 Name</label>
+      <label for="name" class="form-label">🧍 <%= __('Characters.Form.name') %></label>
       <input type="text" class="form-control" id="name" name="name" value="<%= character?.name || '' %>" required>
     </div>
 
     <div class="mb-3">
-      <label for="pseudonym" class="form-label">🕵️ Pseudonym</label>
+      <label for="pseudonym" class="form-label">🕵️ <%= __('Characters.Form.pseudonym') %></label>
       <input type="text" class="form-control" id="pseudonym" name="pseudonym" value="<%= character?.pseudonym || '' %>">
     </div>
 
     <div class="mb-3">
-      <label for="description" class="form-label">📝 Description</label>
+      <label for="description" class="form-label">📝 <%= __('Characters.Form.description') %></label>
       <textarea class="form-control" id="description" name="description" rows="3"><%= character?.description || '' %></textarea>
     </div>
 
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label for="birthdate" class="form-label">🎂 Birth Date</label>
+        <label for="birthdate" class="form-label">🎂 <%= __('Characters.Form.birthdate') %></label>
         <input type="text" class="form-control" name="birthdate" id="birthdate" value="<%= character?.birthdate || '' %>">
       </div>
 
       <div class="col-md-6 mb-3">
-        <label for="gender" class="form-label">⚧ Gender</label>
+        <label for="gender" class="form-label">⚧ <%= __('Characters.Form.gender') %></label>
         <input type="text" class="form-control" id="gender" name="gender" value="<%= character?.gender || '' %>">
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="origin" class="form-label">🌍 Origin</label>
+      <label for="origin" class="form-label">🌍 <%= __('Characters.Form.origin') %></label>
       <input type="text" class="form-control" id="origin" name="origin" value="<%= character?.origin || '' %>">
     </div>
 
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label for="occupation" class="form-label">💼 Occupation</label>
+        <label for="occupation" class="form-label">💼 <%= __('Characters.Form.occupation') %></label>
         <input type="text" class="form-control" id="occupation" name="occupation" value="<%= character?.occupation || '' %>">
       </div>
 
       <div class="col-md-6 mb-3">
-        <label for="location" class="form-label">📍 Location</label>
+        <label for="location" class="form-label">📍 <%= __('Characters.Form.location') %></label>
         <input type="text" class="form-control" id="location" name="location" value="<%= character?.location || '' %>">
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="health_status" class="form-label">🩺 Health Status</label>
+      <label for="health_status" class="form-label">🩺 <%= __('Characters.Form.health_status') %></label>
       <select class="form-select" id="health_status" name="health_status">
-        <option value="healthy" <%= character?.health_status === 'healthy' ? 'selected' : '' %>>Healthy</option>
-        <option value="sick" <%= character?.health_status === 'sick' ? 'selected' : '' %>>Sick</option>
-        <option value="injured" <%= character?.health_status === 'injured' ? 'selected' : '' %>>Injured</option>
-        <option value="deceased" <%= character?.health_status === 'deceased' ? 'selected' : '' %>>Deceased</option>
+        <option value="healthy" <%= character?.health_status === 'healthy' ? 'selected' : '' %>><%= __('Characters.Form.healthy') %></option>
+        <option value="sick" <%= character?.health_status === 'sick' ? 'selected' : '' %>><%= __('Characters.Form.sick') %></option>
+        <option value="injured" <%= character?.health_status === 'injured' ? 'selected' : '' %>><%= __('Characters.Form.injured') %></option>
+        <option value="deceased" <%= character?.health_status === 'deceased' ? 'selected' : '' %>><%= __('Characters.Form.deceased') %></option>
       </select>
     </div>
 
     <div class="mb-3">
-      <label for="comment" class="form-label">🗒️ Author Notes</label>
+      <label for="comment" class="form-label">🗒️ <%= __('Characters.Form.comment') %></label>
       <textarea class="form-control" id="comment" name="comment" rows="3"><%= character?.comment || '' %></textarea>
     </div>
 
@@ -67,74 +68,74 @@
 
     <!-- New fields for deeper character profiles -->
 
-    <h4>🎯 Character Details</h4>
+    <h4>🎯 <%= __('Characters.Form.details') %></h4>
 
     <div class="mb-3">
-      <label for="goal" class="form-label">🎯 Goal</label>
+      <label for="goal" class="form-label">🎯 <%= __('Characters.Form.goal') %></label>
       <textarea class="form-control" id="goal" name="goal" rows="2"><%= character?.goal || '' %></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="character_type" class="form-label">📚 Character Type</label>
+      <label for="character_type" class="form-label">📚 <%= __('Characters.Form.character_type') %></label>
       <select class="form-select" id="character_type" name="character_type">
-        <option value="">Select Type</option>
-        <option value="Protagonist" <%= character?.character_type === 'Protagonist' ? 'selected' : '' %>>Protagonist</option>
-        <option value="Antagonist" <%= character?.character_type === 'Antagonist' ? 'selected' : '' %>>Antagonist</option>
-        <option value="Supporting" <%= character?.character_type === 'Supporting' ? 'selected' : '' %>>Supporting</option>
-        <option value="Mentor" <%= character?.character_type === 'Mentor' ? 'selected' : '' %>>Mentor</option>
-        <option value="Other" <%= character?.character_type === 'Other' ? 'selected' : '' %>>Other</option>
+        <option value=""><%= __('Characters.Form.select_type') %></option>
+        <option value="Protagonist" <%= character?.character_type === 'Protagonist' ? 'selected' : '' %>><%= __('Characters.Form.protagonist') %></option>
+        <option value="Antagonist" <%= character?.character_type === 'Antagonist' ? 'selected' : '' %>><%= __('Characters.Form.antagonist') %></option>
+        <option value="Supporting" <%= character?.character_type === 'Supporting' ? 'selected' : '' %>><%= __('Characters.Form.supporting') %></option>
+        <option value="Mentor" <%= character?.character_type === 'Mentor' ? 'selected' : '' %>><%= __('Characters.Form.mentor') %></option>
+        <option value="Other" <%= character?.character_type === 'Other' ? 'selected' : '' %>><%= __('Characters.Form.other') %></option>
       </select>
     </div>
 
     <div class="mb-3">
-      <label for="motivation" class="form-label">🔥 Motivation</label>
+      <label for="motivation" class="form-label">🔥 <%= __('Characters.Form.motivation') %></label>
       <textarea class="form-control" id="motivation" name="motivation" rows="2"><%= character?.motivation || '' %></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="fears" class="form-label">😨 Fears</label>
+      <label for="fears" class="form-label">😨 <%= __('Characters.Form.fears') %></label>
       <textarea class="form-control" id="fears" name="fears" rows="2"><%= character?.fears || '' %></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="weaknesses" class="form-label">💔 Weaknesses</label>
+      <label for="weaknesses" class="form-label">💔 <%= __('Characters.Form.weaknesses') %></label>
       <textarea class="form-control" id="weaknesses" name="weaknesses" rows="2"><%= character?.weaknesses || '' %></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="arc" class="form-label">🌀 Character Arc</label>
+      <label for="arc" class="form-label">🌀 <%= __('Characters.Form.arc') %></label>
       <select class="form-select" id="arc" name="arc">
-        <option value="">Select Arc</option>
-        <option value="Positive" <%= character?.arc === 'Positive' ? 'selected' : '' %>>Positive</option>
-        <option value="Negative" <%= character?.arc === 'Negative' ? 'selected' : '' %>>Negative</option>
-        <option value="Flat" <%= character?.arc === 'Flat' ? 'selected' : '' %>>Flat/Static</option>
+        <option value=""><%= __('Characters.Form.select_arc') %></option>
+        <option value="Positive" <%= character?.arc === 'Positive' ? 'selected' : '' %>><%= __('Characters.Form.arc_positive') %></option>
+        <option value="Negative" <%= character?.arc === 'Negative' ? 'selected' : '' %>><%= __('Characters.Form.arc_negative') %></option>
+        <option value="Flat" <%= character?.arc === 'Flat' ? 'selected' : '' %>><%= __('Characters.Form.arc_flat') %></option>
       </select>
     </div>
 
     <div class="mb-3">
-      <label for="secrets" class="form-label">🤫 Secrets</label>
+      <label for="secrets" class="form-label">🤫 <%= __('Characters.Form.secrets') %></label>
       <textarea class="form-control" id="secrets" name="secrets" rows="2"><%= character?.secrets || '' %></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="allies" class="form-label">🛡️ Allies (comma-separated IDs)</label>
+      <label for="allies" class="form-label">🛡️ <%= __('Characters.Form.allies') %></label>
       <input type="text" class="form-control" id="allies" name="allies" value="<%= character?.allies || '' %>">
     </div>
 
     <div class="mb-3">
-      <label for="enemies" class="form-label">⚔️ Enemies (comma-separated IDs)</label>
+      <label for="enemies" class="form-label">⚔️ <%= __('Characters.Form.enemies') %></label>
       <input type="text" class="form-control" id="enemies" name="enemies" value="<%= character?.enemies || '' %>">
     </div>
 
     <hr class="my-4">
 
     <!-- Optional Relationship -->
-    <h5>🔗 Optional Relationship</h5>
+    <h5>🔗 <%= __('Characters.Form.optional_relation') %></h5>
     <div class="row">
       <div class="col-md-8 mb-3">
-        <label for="related_character_id" class="form-label">Choose Related Character</label>
+        <label for="related_character_id" class="form-label"><%= __('Characters.Form.choose_related') %></label>
         <select class="form-select" id="related_character_id" name="related_character_id">
-          <option value="">None</option>
+          <option value=""><%= __('Characters.Form.none') %></option>
           <% allCharacters.forEach(c => { %>
             <% if (!character || c.id !== character.id) { %>
               <option value="<%= c.id %>"><%= c.name %></option>
@@ -144,13 +145,13 @@
       </div>
 
       <div class="col-md-4 mb-3">
-        <label for="relation" class="form-label">Relation Type</label>
-        <input type="text" class="form-control" id="relation" name="relation" placeholder="e.g. father, rival, ally">
+        <label for="relation" class="form-label"><%= __('Characters.Form.relation_type') %></label>
+        <input type="text" class="form-control" id="relation" name="relation" placeholder="<%= __('Characters.Form.relation_placeholder') %>">
       </div>
     </div>
 
-    <button type="submit" class="btn btn-success">💾 Save Character</button>
-    <a href="/characters/<%= projectId %>" class="btn btn-secondary ms-2">← Back</a>
+    <button type="submit" class="btn btn-success">💾 <%= __('Characters.Form.save') %></button>
+    <a href="/characters/<%= projectId %>" class="btn btn-secondary ms-2">← <%= __('Characters.Form.back') %></a>
   </form>
 </div>
 

@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Parts</h2>
-  <a href="/parts/<%= projectId %>/new" class="btn btn-primary">+ New Part</a>
+  <h2><%= __('Parts.Page.title') %></h2>
+  <a href="/parts/<%= projectId %>/new" class="btn btn-primary">+ <%= __('Parts.List.new') %></a>
 </div>
 
 <%# Quick-add form (AJAX) %>
@@ -15,7 +15,7 @@
       name="title"
       type="text"
       class="form-control"
-      placeholder="Part title…"
+      placeholder="<%= __('Parts.List.placeholderTitle') %>"
       required
     />
   </div>
@@ -24,20 +24,20 @@
       name="order"
       type="number"
       class="form-control"
-      placeholder="Order"
+      placeholder="<%= __('Parts.List.placeholderOrder') %>"
       value="0"
       min="0"
     />
   </div>
   <div class="col-auto">
-    <button type="submit" class="btn btn-success">Add Part</button>
+    <button type="submit" class="btn btn-success"><%= __('Parts.List.add') %></button>
   </div>
 </form>
 
 <%# Container for AJAX-rendered list (initial server-rendered fallback) %>
 <div id="parts-list" data-project-id="<%= projectId %>">
   <% if (!parts.length) { %>
-    <p class="text-muted">No parts defined yet.</p>
+    <p class="text-muted"><%= __('Parts.List.empty') %></p>
   <% } else { %>
     <ul class="list-group">
       <% parts.forEach(part => { %>
@@ -53,11 +53,11 @@
             <a
               href="/parts/<%= projectId %>/edit/<%= part.id %>"
               class="btn btn-sm btn-outline-light me-2"
-            >Edit</a>
+            ><%= __('Parts.Button.edit') %></a>
             <button
               class="btn btn-sm btn-danger delete-part-btn"
               data-id="<%= part.id %>"
-            >Delete</button>
+            ><%= __('Parts.Button.delete') %></button>
           </div>
         </li>
       <% }) %>

@@ -1,3 +1,8 @@
+// controller/characterController.js - Controller for character management in a project
+// Handles listing, creating, editing, saving, and deleting characters
+// as well as managing character relationships.
+
+
 const db = require('../models/db');
 const ejs = require('ejs');
 const path = require('path');
@@ -13,10 +18,15 @@ exports.list = (req, res) => {
         console.error('❌ DB error in characters list:', err);
         return res.sendStatus(500);
       }
-      res.render('characters/list', { title: 'Characters', characters, projectId });
+      res.render('characters/list', {
+        title: req.__('Characters.List.title'),
+        characters,
+        projectId
+      });
     }
   );
 };
+
 
 // Return JSON for a single character (for modals)
 exports.json = (req, res) => {
@@ -78,10 +88,12 @@ exports.form = (req, res) => {
   Promise.all([fetchCharacter(), fetchOthers()])
     .then(([character, allCharacters]) => {
       res.render('characters/form', {
-        title: character ? 'Edit Character' : 'New Character',
+        title: character
+          ? req.__('Characters.Form.edit_title')
+          : req.__('Characters.Form.new_title'),
         character,
         allCharacters,
-        projectId,
+        projectId
       });
     })
     .catch(err => {

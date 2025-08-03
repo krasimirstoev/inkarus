@@ -1,14 +1,15 @@
+<!-- views/characters/list.ejs -->
 <div class="container py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Characters</h2>
+    <h2><%= __('Characters.List.title') %></h2>
     <div class="btn-group">
-      <a href="/characters/<%= projectId %>/relationships" class="btn btn-outline-info">🔗 Relationships</a>
-      <a href="/characters/<%= projectId %>/new" class="btn btn-outline-light">+ New Character</a>
+      <a href="/characters/<%= projectId %>/relationships" class="btn btn-outline-info">🔗 <%= __('Characters.List.relationships') %></a>
+      <a href="/characters/<%= projectId %>/new" class="btn btn-outline-light">+ <%= __('Characters.List.new') %></a>
     </div>
   </div>
 
   <% if (characters.length === 0) { %>
-    <p class="text-muted">No characters yet.</p>
+    <p class="text-muted"><%= __('Characters.List.empty') %></p>
   <% } else { %>
     <div class="list-group">
       <% characters.forEach(character => { %>
@@ -16,7 +17,7 @@
           <div class="flex-grow-1">
             <strong><%= character.name %></strong>
             <% if (character.pseudonym) { %>
-              <small class="text-muted d-block">AKA: <%= character.pseudonym %></small>
+              <small class="text-muted d-block"><%= __('Characters.List.aka') %>: <%= character.pseudonym %></small>
             <% } %>
             <% if (character.description) { %>
               <p class="mb-1 small text-secondary"><%= character.description %></p>
@@ -35,7 +36,13 @@
             <a href="/characters/<%= projectId %>/edit/<%= character.id %>" class="btn btn-sm btn-outline-warning rounded me-1">📝</a>
 
             <!-- 🗑 Delete -->
-            <form action="/characters/delete/<%= character.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure?')" style="margin: 0;">
+           <form 
+              action="/characters/<%= projectId %>/delete/<%= character.id %>?_method=DELETE" 
+              method="POST" 
+              class="delete-character-form"
+              data-message="<%= __('Characters.List.confirm_delete') %>"
+              style="margin: 0;"
+            >
               <button type="submit" class="btn btn-outline-danger rounded">🗑</button>
             </form>
           </div>
@@ -50,12 +57,12 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg">
     <div class="modal-content bg-dark text-light">
       <div class="modal-header">
-        <h5 class="modal-title" id="characterModalLabel">Character Info</h5>
+        <h5 class="modal-title" id="characterModalLabel"><%= __('Characters.List.modal_title') %></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="characterModalBody">
         <!-- AJAX content will be loaded here -->
-        <div class="text-center text-muted">Loading...</div>
+        <div class="text-center text-muted"><%= __('Characters.List.loading') %></div>
       </div>
     </div>
   </div>
@@ -63,3 +70,16 @@
 
 <!-- 🌐 Include script -->
 <script src="/js/pages/character-list.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.delete-character-form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      const msg = form.dataset.message || 'Are you sure? This action cannot be undone.';
+      if (!confirm(msg)) {
+        e.preventDefault();
+      }
+    });
+  });
+});
+</script>

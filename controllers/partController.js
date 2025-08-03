@@ -1,3 +1,5 @@
+// controllers/partController.js - Manage parts of a book
+
 const db = require('../models/db');
 
 // List all parts for a given project (HTML view)
@@ -15,7 +17,7 @@ exports.list = (req, res) => {
         return res.sendStatus(500);
       }
       // Render parts management page
-      res.render('parts/list', { title: 'Parts', parts, projectId });
+      res.render('parts/list', { title: req.__('Parts.Page.title'), parts, projectId });
     }
   );
 };
@@ -45,7 +47,7 @@ exports.form = (req, res) => {
   if (!id) {
     // New part
     return res.render('parts/form', {
-      title: 'New Part',
+      title: req.__('Parts.Form.new'),
       part: null,
       projectId
     });
@@ -62,7 +64,7 @@ exports.form = (req, res) => {
         return res.sendStatus(404);
       }
       res.render('parts/form', {
-        title: 'Edit Part',
+        title: req.__('Parts.Form.edit'),
         part,
         projectId
       });

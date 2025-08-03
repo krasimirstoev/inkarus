@@ -1,11 +1,11 @@
 <div class="container py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Places</h2>
-    <a href="/places/<%= projectId %>/new" class="btn btn-outline-light">+ New Place</a>
+    <h2><%= __('Places.Page.title') %></h2>
+    <a href="/places/<%= projectId %>/new" class="btn btn-outline-light">+ <%= __('Places.List.new') %></a>
   </div>
 
   <% if (places.length === 0) { %>
-    <p class="text-muted">No places yet.</p>
+    <p class="text-muted"><%= __('Places.List.empty') %></p>
   <% } else { %>
     <div class="list-group">
       <% places.forEach(place => { %>
@@ -13,17 +13,17 @@
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <strong><%= place.name %></strong>
-              <small class="text-secondary d-block fst-italic"><%= place.type %></small>
+              <small class="text-secondary d-block fst-italic"><%= place.display_type %></small>
               <% if (place.description) { %>
                 <p class="mb-1 small text-secondary"><%= place.description %></p>
               <% } %>
             </div>
             <div class="d-flex gap-2">
               <a href="/places/<%= projectId %>/edit/<%= place.id %>" 
-                 class="btn btn-sm btn-outline-warning" title="Edit place">✎</a>
+                 class="btn btn-sm btn-outline-warning" title="<%= __('Places.Button.edit') %>">✎</a>
               <form action="/places/<%= projectId %>/delete/<%= place.id %>?_method=DELETE" 
-                    method="POST" onsubmit="return confirm('Are you sure you want to delete this place?')" style="margin:0;">
-                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete place">🗑</button>
+                    method="POST" onsubmit="return confirm('<%= __('Places.Confirm.delete') %>')" style="margin:0;">
+                <button type="submit" class="btn btn-sm btn-outline-danger" title="<%= __('Places.Button.delete') %>">🗑</button>
               </form>
             </div>
           </div>

@@ -1,3 +1,5 @@
+// controllers/characterRelationships.js - Controller for managing character relationships in a project
+
 const relationshipModel = require('../models/characterRelationships');
 
 // Show all relationships for a character
@@ -11,7 +13,7 @@ exports.list = (req, res) => {
     }
 
     res.render('characters/relationships', {
-      title: 'Character Relationships',
+      title: req.__('Characters.Relationships.title'),
       relationships,
       characterId,
       projectId
@@ -25,7 +27,7 @@ exports.add = (req, res) => {
   const { relatedCharacterId, relation, description } = req.body;
 
   if (!relatedCharacterId || !relation) {
-    return res.status(400).send('Missing fields');
+    return res.status(400).send(req.__('Characters.Relationships.error_missing_fields'));
   }
 
   relationshipModel.addRelationship(

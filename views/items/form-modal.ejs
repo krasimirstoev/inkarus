@@ -1,4 +1,4 @@
-<% const title = item.id ? 'Edit Item' : 'Add Item'; %>
+<% const title = item.id ? __('Items.Modal.editTitle') : __('Items.Modal.addTitle'); %>
 
 <div id="itemFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -14,34 +14,36 @@
           <% } %>
 
           <div class="mb-3">
-            <label class="form-label">Name</label>
+            <label class="form-label"><%= __('Items.Form.name') %></label>
             <input type="text" name="name" class="form-control" required value="<%= item.name || '' %>">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Status</label>
+            <label class="form-label"><%= __('Items.Form.status') %></label>
             <select name="status" id="item-status" class="form-select">
               <% statuses.forEach(s => { %>
-                <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>><%= s %></option>
+                <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>>
+                  <%= s === 'custom' ? __('Items.Status.custom_placeholder') : __('Items.Status.' + s) %>
+                </option>
               <% }) %>
             </select>
             <input type="text"
                    name="customStatus"
                    id="custom-status"
                    class="form-control mt-2 d-none"
-                   placeholder="Custom status"
+                   placeholder="<%= __('Items.Form.customStatusPlaceholder') %>"
                    value="<%= item.status === 'custom' ? item.custom_status : '' %>">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Description</label>
+            <label class="form-label"><%= __('Items.Form.description') %></label>
             <textarea name="description" class="form-control" rows="4"><%= item.description || '' %></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" form="item-form" class="btn btn-sm btn-outline-success">💾 Save</button>
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" form="item-form" class="btn btn-sm btn-outline-success">💾 <%= __('Common.save') %></button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><%= __('Common.close') %></button>
       </div>
     </div>
   </div>

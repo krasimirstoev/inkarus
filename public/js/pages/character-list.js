@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const characterId = button.dataset.id;
       const projectId = button.dataset.project;
 
-      modalBody.innerHTML = `<div class="text-center text-muted">Loading...</div>`;
-      modalTitle.textContent = 'Character Info';
+      modalBody.innerHTML = `<div class="text-center text-muted">${window.__('Characters.Modal.loading_character')}</div>`;
+      modalTitle.textContent = window.__('Characters.Modal.modal_title');
 
       fetch(`/characters/${projectId}/json/${characterId}`)
         .then(res => res.json())
@@ -27,36 +27,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalBody.innerHTML = `
               <div>
-                <p><strong>📖 Description:</strong> ${c.description || '<em>No description</em>'}</p>
-                <p><strong>🎯 Goal:</strong> ${c.goal || '-'}</p>
-                <p><strong>📚 Character Type:</strong> ${c.character_type || '-'}</p>
-                <p><strong>🔥 Motivation:</strong> ${c.motivation || '-'}</p>
-                <p><strong>😨 Fears:</strong> ${c.fears || '-'}</p>
-                <p><strong>💔 Weaknesses:</strong> ${c.weaknesses || '-'}</p>
-                <p><strong>🌀 Arc:</strong> ${c.arc || '-'}</p>
-                <p><strong>🤫 Secrets:</strong> ${c.secrets || '-'}</p>
-                <p><strong>🛡️ Allies:</strong> ${c.allies || '-'}</p>
-                <p><strong>⚔️ Enemies:</strong> ${c.enemies || '-'}</p>
+                <p><strong>📖 ${window.__('Characters.Modal.desc')}:</strong> ${c.description || `<em>${window.__('Characters.Modal.no_description')}</em>`}</p>
+                <p><strong>🎯 ${window.__('Characters.Modal.goal')}:</strong> ${c.goal || '-'}</p>
+                <p><strong>📚 ${window.__('Characters.Modal.type')}:</strong> ${c.character_type || '-'}</p>
+                <p><strong>🔥 ${window.__('Characters.Form.motivation')}:</strong> ${c.motivation || '-'}</p>
+                <p><strong>😨 ${window.__('Characters.Form.fears')}:</strong> ${c.fears || '-'}</p>
+                <p><strong>💔 ${window.__('Characters.Form.weaknesses')}:</strong> ${c.weaknesses || '-'}</p>
+                <p><strong>🌀 ${window.__('Characters.Form.arc')}:</strong> ${c.arc || '-'}</p>
+                <p><strong>🤫 ${window.__('Characters.Form.secrets')}:</strong> ${c.secrets || '-'}</p>
+                <p><strong>🛡️ ${window.__('Characters.Form.allies')}:</strong> ${c.allies || '-'}</p>
+                <p><strong>⚔️ ${window.__('Characters.Form.enemies')}:</strong> ${c.enemies || '-'}</p>
                 <hr/>
-                <p><strong>🎂 Birth Date:</strong> ${c.birthdate || '-'}</p>
-                <p><strong>⚧ Gender:</strong> ${c.gender || '-'}</p>
-                <p><strong>🌍 Origin:</strong> ${c.origin || '-'}</p>
-                <p><strong>📍 Location:</strong> ${c.location || '-'}</p>
-                <p><strong>💼 Occupation:</strong> ${c.occupation || '-'}</p>
-                <p><strong>🩺 Health:</strong> ${c.health_status || '-'}</p>
-                <p><strong>📝 Author Notes:</strong> ${c.comment || '-'}</p>
+                <p><strong>🎂 ${window.__('Characters.Form.birthdate')}:</strong> ${c.birthdate || '-'}</p>
+                <p><strong>⚧ ${window.__('Characters.Form.gender')}:</strong> ${c.gender || '-'}</p>
+                <p><strong>🌍 ${window.__('Characters.Form.origin')}:</strong> ${c.origin || '-'}</p>
+                <p><strong>📍 ${window.__('Characters.Form.location')}:</strong> ${c.location || '-'}</p>
+                <p><strong>💼 ${window.__('Characters.Form.occupation')}:</strong> ${c.occupation || '-'}</p>
+                <p><strong>🩺 ${window.__('Characters.Form.health_status')}:</strong> ${c.health_status || '-'}</p>
+                <p><strong>📝 ${window.__('Characters.Form.comment')}:</strong> ${c.comment || '-'}</p>
               </div>
               <div class="modal-footer d-flex flex-column align-items-start mt-3 border-top pt-2">
-                <time>🗓 Created: ${formatDate(c.created_at)}</time>
-                <time>✏️ Updated: ${formatDate(c.updated_at)}</time>
+                <time>🗓 ${window.__('Characters.Modal.created')}: ${formatDate(c.created_at)}</time>
+                <time>✏️ ${window.__('Characters.Modal.updated')}: ${formatDate(c.updated_at)}</time>
               </div>
             `;
           } else {
-            modalBody.innerHTML = `<div class="text-danger">❌ Failed to load character data.</div>`;
+            modalBody.innerHTML = `<div class="text-danger">❌ ${window.__('Characters.Modal.failed_to_load')}</div>`;
           }
         })
         .catch(() => {
-          modalBody.innerHTML = `<div class="text-danger">❌ Error loading character.</div>`;
+          modalBody.innerHTML = `<div class="text-danger">❌ ${window.__('Characters.Modal.error_loading')}</div>`;
         });
 
       modal.show();

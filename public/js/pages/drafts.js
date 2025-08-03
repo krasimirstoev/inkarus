@@ -1,4 +1,4 @@
-// drafts.js - Handles chapter management in the draft editor 
+// public/js/pages/drafts.js - Handles chapter management in the draft editor
 import Sortable from 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/modular/sortable.esm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.matches('.btn-delete-chapter')) {
       e.preventDefault();
       const id = e.target.dataset.id;
-      if (!confirm('Are you sure you want to delete this chapter?')) return;
+      if (!confirm( __('Drafts.UI.confirm_delete_chapter') )) return;
       await fetch(`/drafts/${projectId}/delete/${id}`, { method: 'DELETE' });
       await reloadGroups();
       return;
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renameModal?.hide();
       await reloadGroups();
     } else {
-      console.error('Rename failed', res.status);
+      console.error(__('Drafts.UI.rename_failed'), res.status);
     }
   });
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res  = await fetch(`/drafts/${projectId}/json-groups`);
       const data = await res.json();
-      if (!data.success) throw new Error('json-groups failed');
+      if (!data.success) throw new Error(__('Drafts.UI.json_groups_failed'));
       renderGroups(data.groups);
       initSorting();
     } catch {
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = '';
     groups.forEach(g => {
       const title = g.id === null
-        ? 'Ungrouped (Without Part)'
+        ? __('Drafts.Group.ungrouped')
         : g.title;
 
       const itemsHtml = g.chapters.length
@@ -140,16 +140,16 @@ document.addEventListener('DOMContentLoaded', () => {
               </a>
               <div class="d-flex align-items-center">
                 <button class="btn btn-sm btn-primary btn-open-chapter me-2"
-                        data-id="${ch.id}">Open</button>
+                        data-id="${ch.id}">${__('Drafts.UI.btn_open')}</button>
                 <button class="btn btn-sm btn-warning btn-rename-chapter me-2"
                         data-id="${ch.id}"
-                        data-title="${ch.title}">Rename</button>
+                        data-title="${ch.title}">${__('Drafts.UI.btn_rename')}</button>
                 <!-- <button class="btn btn-sm btn-secondary btn-revisions me-2"
                         data-id="${ch.id}" data-title="${ch.title}">
                   🕘 History
                 </button> --> 
                 <button class="btn btn-sm btn-danger btn-delete-chapter"
-                        data-id="${ch.id}">Delete</button>
+                        data-id="${ch.id}">${__('Drafts.UI.btn_delete')}</button>
               </div>
             </li>`).join('')
         : `<li class="list-group-item empty text-center text-muted"
@@ -183,7 +183,7 @@ function openRevisionModal(draftId, title) {
 
     // Check if all elements exist in DOM
     if (!modalEl || !container || !modalTitle || !titleText || !countBadge || !deleteBtn) {
-      console.warn('❌ Some elements of the revision modal are missing in the DOM');
+      console.warn(__('Drafts.UI.revision_modal_missing'));
       console.log('modalEl:', modalEl);
       console.log('container:', container);
       console.log('modalTitle:', modalTitle);
@@ -199,16 +199,18 @@ function openRevisionModal(draftId, title) {
       .then(res => res.json())
       .then(data => {
         if (!data.success || !Array.isArray(data.revisions)) {
-          container.innerHTML = '<p class="text-muted">No revisions found for this chapter.</p>';
-          titleText.textContent = `Revisions for "${title}"`;
+          container.innerHTML = `<p class="text-muted">${__('Drafts.UI.no_revisions')}</p>`;
+          titleText.textContent = `${__('Drafts.UI.revisions_for')} "${title}"`;
           countBadge.textContent = '0';
           return;
         }
 
         const revisions = data.revisions;
 
-        titleText.textContent = `Revisions for "${title}"`;
-        countBadge.textContent = `${revisions.length} revision${revisions.length !== 1 ? 's' : ''}`;
+        titleText.textContent = `${__('Drafts.UI.revisions_for')} "${title}"`;
+        countBadge.textContent = `${revisions.length} ${revisions.length === 1
+          ? __('Drafts.UI.revision_count_singular')
+          : __('Drafts.UI.revision_count_plural')}`;
 
         container.innerHTML = `
           <ul class="list-group">
@@ -224,7 +226,7 @@ function openRevisionModal(draftId, title) {
         // Attach fresh click handler to 🧹 button
         deleteBtn.onclick = async () => {
           console.log('🧹 Delete button clicked');
-          if (!confirm('Are you sure you want to delete all autosave revisions?')) return;
+          if (!confirm( __('Drafts.UI.confirm_delete_autosaves') )) return;
 
           try {
             const res = await fetch(`/drafts/${draftId}/revisions/delete-autosaves`, {
@@ -232,14 +234,14 @@ function openRevisionModal(draftId, title) {
             });
 
             if (res.ok) {
-              alert('Autosave revisions deleted.');
+              alert( __('Drafts.UI.autosaves_deleted') );
               openRevisionModal(draftId, title); // reload the modal
             } else {
-              alert('Error deleting autosaves.');
+              alert( __('Drafts.UI.autosaves_delete_error') );
             }
           } catch (err) {
             console.error('❌ Failed to delete autosaves:', err);
-            alert('Request failed.');
+            alert( __('Drafts.UI.request_failed') );
           }
         };
       });
@@ -247,7 +249,7 @@ function openRevisionModal(draftId, title) {
     // Show the modal
     const modalInstance = new bootstrap.Modal(modalEl);
     modalInstance.show();
-    console.log('🟢 Showing modal now');
+    console.log(__('Drafts.UI.showing_modal'));
   }, 0); // Let the DOM breathe
 }
 

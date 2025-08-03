@@ -1,5 +1,9 @@
+<!-- views/404.ejs -->
 <div class="text-center mt-5">
   <h1 class="display-4">404</h1>
-  <p class="lead">The page you're looking for doesn't exist.</p>
-  <a href="/projects" class="btn btn-outline-light mt-3">Back to Projects</a>
+  <p class="lead"><%= __('NotFoundPage.message') %></p>
+  <a href="/projects" class="btn btn-outline-light mt-3">
+    <%= __('NotFoundPage.back') %>
+  </a>
 </div>
+

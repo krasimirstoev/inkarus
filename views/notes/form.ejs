@@ -1,18 +1,18 @@
 <div class="container py-5">
-  <h2><%= note ? 'Edit Note' : 'New Note' %></h2>
+  <h2><%= __(note ? 'Notes.Form.edit_title' : 'Notes.Form.new_title') %></h2>
 
   <form method="POST" action="/notes/<%= projectId %><%= note ? '/' + note.id : '' %>">
     <div class="mb-3">
-      <label for="note-title" class="form-label">Title</label>
+      <label for="note-title" class="form-label"><%= __('Notes.Form.title_label') %></label>
       <input type="text" class="form-control" id="note-title" name="title" value="<%= note?.title || '' %>" required>
     </div>
 
     <div class="mb-3">
-      <label for="note-content" class="form-label">Content</label>
+      <label for="note-content" class="form-label"><%= __('Notes.Form.content_label') %></label>
       <textarea class="form-control" id="note-content" name="content" rows="5" required><%= note?.content || '' %></textarea>
     </div>
 
-    <button type="submit" class="btn btn-success">💾 Save Note</button>
-    <a href="/notes/<%= projectId %>" class="btn btn-secondary ms-2">← Back to List</a>
+    <button type="submit" class="btn btn-success">💾 <%= __('Notes.Form.save_button') %></button>
+    <a href="/notes/<%= projectId %>" class="btn btn-secondary ms-2">← <%= __('Notes.Form.back_button') %></a>
   </form>
 </div>

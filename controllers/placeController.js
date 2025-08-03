@@ -8,16 +8,39 @@ const PLACE_TYPES = [
 ];
 
 /**
+ * Add display_type to places list, using translations
+ * @param {Object} req - Request object
+ * @param {Array} places - Array of place objects
+ * @returns {Array} - Places with display_type added
+ */
+
+function addDisplayType(req, places) {
+  return places.map(place => ({
+    ...place,
+    display_type: place.type === 'custom'
+      ? place.custom_type
+      : req.__('Places.Type.' + place.type)
+  }));
+}
+
+/**
  * Show list of places (HTML).
  */
 exports.list = (req, res) => {
   const { projectId } = req.params;
-  locationModel.getAll(projectId, (err, places) => {
+    locationModel.getAll(projectId, (err, placesRaw) => {
     if (err) {
       console.error('❌ DB error loading places:', err);
       return res.sendStatus(500);
     }
-    res.render('places/list', { title: 'Places', places, projectId });
+
+    const places = addDisplayType(req, placesRaw);
+
+    res.render('places/list', {
+      title: req.__('Places.Page.title'),
+      places,
+      projectId
+    });
   });
 };
 
@@ -48,14 +71,14 @@ exports.form = (req, res) => {
     locationModel.getById(id, (err, place) => {
       if (err || !place) return res.sendStatus(404);
       data.place = place;
-      data.title = 'Edit Place';
+      data.title = req.__('Places.Form.edit');
       if (req.xhr) return res.render('places/form-modal', data);
       res.render('places/form-page', data);
     });
   } else {
     // new
     data.place = { name:'', type:'', custom_type:'', description:'' };
-    data.title = 'Add Place';
+    data.title = req.__('Places.Form.add');
     if (req.xhr) return res.render('places/form-modal', data);
     res.render('places/form-page', data);
   }
@@ -134,14 +157,25 @@ exports.delete = (req, res) => {
  */
 exports.jsonDetail = (req, res) => {
   const { id } = req.params;
+
   locationModel.getById(id, (err, place) => {
     if (err) {
       console.error('❌ DB error loading place detail:', err);
       return res.sendStatus(500);
     }
+
     if (!place) {
-      return res.status(404).json({ success: false, error: 'Place not found' });
+      return res.status(404).json({
+        success: false,
+        error: req.__('Places.Error.notFound')
+      });
     }
+
+    // Add display_type with translation
+    place.display_type = place.type === 'custom'
+      ? place.custom_type
+      : req.__('Places.Type.' + place.type);
+
     res.json({ success: true, place });
   });
 };

@@ -1,4 +1,4 @@
-<% const title = place.id ? 'Edit Place' : 'Add Place'; %>
+<% const title = place.id ? __('Places.Form.edit') : __('Places.Form.add'); %>
 
 <div id="placeFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -14,34 +14,34 @@
           <% } %>
 
           <div class="mb-3">
-            <label class="form-label">Name</label>
+            <label class="form-label"><%= __('Places.Form.nameLabel') %></label>
             <input type="text" name="name" class="form-control" required value="<%= place.name || '' %>">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Type</label>
+            <label class="form-label"><%= __('Places.Form.typeLabel') %></label>
             <select name="type" id="place-type" class="form-select">
               <% types.forEach(t => { %>
-                <option value="<%= t %>" <%= place.type === t ? 'selected' : '' %>><%= t %></option>
+                <option value="<%= t %>" <%= place.type === t ? 'selected' : '' %>><%= __('Places.Type.' + t) %></option>
               <% }) %>
             </select>
             <input type="text"
                    name="customType"
                    id="custom-type"
                    class="form-control mt-2 d-none"
-                   placeholder="Custom type"
+                   placeholder="<%= __('Places.Form.customPlaceholder') %>"
                    value="<%= place.type && !types.includes(place.type) ? place.type : '' %>">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Description</label>
+            <label class="form-label"><%= __('Places.Form.descriptionLabel') %></label>
             <textarea name="description" class="form-control" rows="4"><%= place.description || '' %></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" form="place-form" class="btn btn-sm btn-outline-success">💾 Save</button>
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" form="place-form" class="btn btn-sm btn-outline-success">💾 <%= __('Places.Button.save') %></button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><%= __('Places.Button.close') %></button>
       </div>
     </div>
   </div>

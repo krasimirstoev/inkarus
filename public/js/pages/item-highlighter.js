@@ -35,26 +35,26 @@ export function initItemHighlighter(quillEditor, items, projectId) {
 
   function openItemModal(id) {
     const modal = new bootstrap.Modal(document.getElementById('itemModal'));
-    document.getElementById('itemModalLabel').textContent = 'Loading…';
-    document.getElementById('itemModalBody').innerHTML = `<p>Loading item…</p>`;
+    document.getElementById('itemModalLabel').textContent = window.__('Items.Modal.loadingTitle');
+    document.getElementById('itemModalBody').innerHTML = `<p>${window.__('Items.Modal.loadingBody')}</p>`;
     modal.show();
 
     fetch(`/items/json/${projectId}/${id}`)
       .then(r => r.json())
       .then(data => {
         if (!data.success) {
-          document.getElementById('itemModalBody').innerHTML = `<p>Failed to load item.</p>`;
+          document.getElementById('itemModalBody').innerHTML = `<p>${window.__('Items.Modal.failed')}</p>`;
           return;
         }
         const i = data.item;
         document.getElementById('itemModalLabel').textContent = i.name;
         document.getElementById('itemModalBody').innerHTML = `
-          <p>Description: ${i.description || '–'}</p>
-          <p>Status: ${i.display_status}</p>
+          <p>${window.__('Items.Modal.description')}: ${i.description || '–'}</p>
+          <p>${window.__('Items.Modal.status')}: ${i.display_status}</p>
         `;
       })
       .catch(() => {
-        document.getElementById('itemModalBody').innerHTML = `<p>Error loading item.</p>`;
+        document.getElementById('itemModalBody').innerHTML = `<p>${window.__('Items.Modal.error')}</p>`;
       });
   }
 }
