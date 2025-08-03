@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fetch all places
   async function loadPlaces(query = '') {
-    listEl.innerHTML = '<li class="list-group-item text-center text-muted">Loading…</li>';
+    listEl.innerHTML = `<li class="list-group-item text-center text-muted">${__('Places.Loading')}</li>`;
     try {
       const res  = await fetch(`/places/json/${projectId}`);
       const json = await res.json();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderFiltered(query);
     } catch (err) {
       console.error(err);
-      listEl.innerHTML = '<li class="list-group-item text-danger">Error loading places.</li>';
+      listEl.innerHTML = `<li class="list-group-item text-danger">${__('Places.Error.loadFailed')}</li>`;
     }
   }
 
@@ -45,14 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderList(places) {
     if (!places.length) {
-      listEl.innerHTML = '<li class="list-group-item text-muted">No places found.</li>';
+      listEl.innerHTML = `<li class="list-group-item text-muted">${__('Places.Empty.notFound')}</li>`;
       return;
     }
     listEl.innerHTML = places.map(p => `
       <li class="list-group-item d-flex align-items-center" data-id="${p.id}">
         <div>
           <strong>${p.name}</strong>
-          <small class="text-secondary fst-italic ms-2">(${p.type})</small>
+          <small class="text-secondary fst-italic ms-2">(${__('Places.Type.' + p.type)})</small>
         </div>
         <!-- <span class="ms-auto text-muted">›</span> -->
       </li>
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showPlaceProfile(saved.id);
           } catch (err) {
             console.error(err);
-            alert('❌ Could not save place.');
+            alert(`❌ ${__('Places.Error.saveFailed')}`);
           }
         });
 
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error('Failed to load form:', err);
-        alert('❌ Could not load form.');
+        alert(`❌ ${__('Places.Error.formLoad')}`);
       });
   }
 
@@ -134,16 +134,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-header border-secondary">
               <h5 class="modal-title">
                 ${place.name}
-                <small class="text-secondary fst-italic ms-2">(${place.type})</small>
+                <small class="text-secondary fst-italic ms-2">(${__('Places.Type.' + place.type)})</small>
               </h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <p>${place.description || '<em>No description available.</em>'}</p>
+              <p>${place.description || `<em>${__('Places.Empty.noDescription')}</em>`}</p>
             </div>
             <div class="modal-footer">
-              <button id="edit-place-btn" class="btn btn-sm btn-outline-warning">✎ Edit</button>
-              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="edit-place-btn" class="btn btn-sm btn-outline-warning">✎ ${__('Places.Button.edit')}</button>
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">${__('Places.Button.close')}</button>
             </div>
           </div>
         </div>

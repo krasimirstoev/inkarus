@@ -506,6 +506,59 @@
       "orderHint": "This helps structure your book – parts with smaller numbers appear earlier."
     }
   },
+  "Places": {
+    "Loading": "Loading...",
+    "Page": {
+      "title": "Places"
+    },
+    "Form": {
+      "add": "Add Place",
+      "edit": "Edit Place",
+      "nameLabel": "Name",
+      "typeLabel": "Type",
+      "descriptionLabel": "Description (optional)",
+      "customPlaceholder": "Custom type (optional)"
+    },
+    "List": {
+      "new": "New Place",
+      "empty": "No places yet."
+    },
+    "Type": {
+      "city": "City",
+      "village": "Village",
+      "country": "Country",
+      "continent": "Continent",
+      "mountain": "Mountain",
+      "river": "River",
+      "sea": "Sea",
+      "lake": "Lake",
+      "forest": "Forest",
+      "desert": "Desert",
+      "region": "Region",
+      "island": "Island",
+      "planet": "Planet",
+      "custom": "Custom"
+    },
+    "Error": {
+      "notFound": "Place not found",
+      "loadFailed": "Error loading place",
+      "formLoad": "Error loading form",
+      "saveFailed": "Could not save place"
+    },
+    "Empty": {
+      "notFound": "No places found.",
+      "noDescription": "No description available."
+    },
+    "Button": {
+      "edit": "Edit",
+      "close": "Close",
+      "savePlace": "Save Place",
+      "backToList": "← Back to List"
+    },
+    "Confirm": {
+      "delete": "Delete this place?"
+    }
+  },
 
   "Errors": {
     "Items": {
